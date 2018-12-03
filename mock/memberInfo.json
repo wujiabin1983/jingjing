@@ -1,0 +1,14 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+        	"userName":"姓名",
+        	"sex":"性别",
+            "birthDate": "生日",
+            "mobile": "手机号",
+            "addr": "所在地址"
+        }
+    ]
+}
+
+

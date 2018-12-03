@@ -1,0 +1,136 @@
+@import './element-ui.scss';
+@import './mixin.scss';
+
+
+body {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: PingFang SC!important;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  background: #f7f7f7;
+}
+
+html {
+  box-sizing: border-box;
+  background: #f7f7f7;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+//vue router transition css
+.fade-enter-active,
+.fade-leave-active {
+  transition: all .2s ease
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
+
+//main-container全局样式
+.app-main{
+  min-height: 100%;
+}
+
+.app-container {
+  padding: 10px;
+}
+
+.svg-icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+  color: #929292;
+  &.hamburger {
+    color: #009ee2;
+  }
+}
+
+// 左侧导航
+// .el-menu-item.is-active {
+//   .svg-icon {
+//     color: #009ee2;
+//   }
+// }
+// 左侧导航
+.el-menu.sidebar-container {
+  $bg-sideBar: darken(#009ee2, 30%);
+  // background: $bg-sideBar;
+  background: transparent;
+  .el-menu-item {
+    background: $bg-sideBar;
+    padding-left: rem(50px)!important;
+  }
+  .router-link-active .el-menu-item {
+    background: #283847!important;
+    // background: darken(#009ee2, 25%) !important;
+    .svg-icon {
+      color: #009ee2;
+    }
+  }
+  .router-link-active .el-menu-item:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 4px;
+    height: 50px;
+    background: #18a98c;
+  }
+  & > div > a > .el-menu-item {
+    padding-left: rem(20px)!important;
+  } 
+  .el-submenu__title:hover, .el-menu-item:hover {
+    background: #283847!important;
+    // background: darken(#009ee2, 25%) !important;
+    color: #FFF;
+  }
+  .el-submenu__title {
+    background: darken(#009ee2, 30%);
+  }
+}
+
+// 用于标题
+h4 {
+    margin: 0;
+    padding-bottom: rem(10px);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+// 分页
+.pagination {
+  margin-top: 10px;
+}
+

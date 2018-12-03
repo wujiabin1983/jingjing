@@ -1,0 +1,47 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+            "id": "记录ID(修改用)",
+            "version": "版本记录(修改用)",
+            "realName": "真实姓名",
+            "userName": "用户登录名",
+            "departmentId": "部门ID",
+            "departmentName": "部门名称",
+            "userGroupId": "用户组ID",
+            "userGroupName": "用户组名称",
+            "userRoleId": "角色ID",
+            "userRoleName": "角色名称",
+            "mobile": "手机号",
+            "status": "状态",
+            "age": "年龄",
+            "sex": "性别",
+            "email": "邮箱",
+            "tel": "固定电话",
+            "documentCode": "证件号",
+            "addr": "详细地址",
+            "remarks": "备注"
+        },
+        {
+            "id": "01",
+            "version": "01",
+            "realName": "realAdmin",
+            "userName": "userAdmin",
+            "departmentId": "部门ID",
+            "departmentName": "部门名称",
+            "userGroupId": "用户组ID",
+            "userGroupName": "用户组名称",
+            "userRoleId": "角色ID",
+            "userRoleName": "userRoleAdmin",
+            "mobile": "13918818888",
+            "status": "激活",
+            "age": "18",
+            "sex": "男",
+            "email": "102928484@qq.com",
+            "tel": "021-21909454",
+            "documentCode": "8439487502039238",
+            "addr": "浦东新区",
+            "remarks": "这里是备注"
+        }
+    ]
+}

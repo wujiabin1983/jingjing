@@ -1,0 +1,25 @@
+{
+	"returnCode": 0,
+    "returnMsg": {
+        "id": "记录id",
+        "version": "版本",
+        "memDimension": { 
+            "sex": "性别",
+            "area": ["福建", "湖南"],
+            "day": "入会天数",
+            "type": "新老会员",
+            "source": "入会来源",
+            "live": "会员活跃度",
+            "level": "会员等级"
+        },
+        "fixedDimensions": ["粉丝", "未绑卡的会员"], 
+        "plus": "未及时二回会员",
+        "unconsumed": "入会未消费",
+        "fans": "粉丝",
+        "noStrapped" : "未绑卡的会员",
+        "fixedDimension": {
+            "birthday": "会员生日",
+            "anniversary": "入会周年"
+        }
+    }
+}

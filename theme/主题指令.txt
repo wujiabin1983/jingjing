@@ -1,0 +1,5 @@
+// 创建scss文件
+node_modules/.bin/et -i theme/element-variables.scss
+
+// 编译
+node_modules/.bin/et -c theme/element-variables.scss

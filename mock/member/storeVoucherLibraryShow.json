@@ -1,0 +1,15 @@
+{
+    "messageType": "SUCCESS",
+    "messageContent": "json:分组卡片显示成功！",
+    "valueObj": [
+        {
+            "relationSotre": "关联门店（json格式字符串）",
+            "relationCoup": "关联优惠券（json格式字符串）"
+        },
+        {
+            "relationSotre": "关联门店（json格式字符串）",
+            "relationCoup": "关联优惠券（json格式字符串）"
+        }
+    ],
+    "redirectUrl": ""
+}

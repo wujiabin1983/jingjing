@@ -1,0 +1,11 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+            "areaId": "区域编码",
+            "areaName": "区域名称",
+            "areaDesc": "区域描述",
+            "storeNum": "门店数量"
+        }
+    ]
+}

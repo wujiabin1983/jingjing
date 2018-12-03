@@ -1,0 +1,31 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+        	"id":"1",
+        	"storeId":"门店编码",
+        	"orderNum":"订单编码",
+            "relationOrderNum": "关联单号",
+            "orderStatus": "订单状态",
+            "offlineCardNum": "线下卡号",
+            "orderDate": "订单时间",
+            "qty":"订单件数",
+            "orderTagAmount":"订单吊牌金额",
+            "orderPayableAmount":"订单应付金额",
+            "orderRealpayAmount":"订单实付金额"
+        },{
+        	"id":"2",
+        	"storeId":"门店编码1",
+        	"orderNum":"订单编码1",
+            "relationOrderNum": "关联单号1",
+            "orderStatus": "订单状态1",
+            "offlineCardNum": "线下卡号1",
+            "orderDate": "订单时间1",
+            "qty":"订单件数1",
+            "orderTagAmount":"订单吊牌金额1",
+            "orderPayableAmount":"订单应付金额1",
+            "orderRealpayAmount":"订单实付金额1"
+            
+        }
+    ]
+}

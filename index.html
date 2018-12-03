@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>scrm</title>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">  -->
+    <meta name="viewport" content="width=640,minimum-scale=0.5,maximum-scale=1.0,user-scalable=no, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/4.2.0/css/swiper.min.css">
+    <style>
+      /*字体*/
+      @font-face {
+        font-family: 'PingFang_SC';
+        src: url("./static/fonts/PingFang_SC.ttf");
+      }
+      @font-face {
+        font-family: 'PingFang_SC';
+        src: url("./static/fonts/PingFang_SC_Medium.ttf");
+      }
+      html, body {
+        font-family: 'PingFang_SC'!important;
+      }
+		  /*#app .app-wrapper .heade-wrapperr>.el-menu{
+		  	background: #e73839
+		  }*/
+    </style>
+  </head>
+  <body>
+    <div id="app" class="overHidden"></div>
+    
+    <script src="https://cdn.bootcss.com/Swiper/4.2.0/js/swiper.min.js" async></script>
+		<script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp&key=L54BZ-GPH6D-UV44N-HP4W5-MGQJQ-X4B4X"></script>
+		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript"> 
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                if(clientWidth>=1200){
+                    docEl.style.fontSize = '20px';
+                }else{
+                  docEl.style.fontSize = 20 * (clientWidth / 1200) + 'px';
+
+                }
+            };
+
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+    })(document, window);
+    </script> 
+  </body>
+</html>

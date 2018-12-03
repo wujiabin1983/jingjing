@@ -1,0 +1,44 @@
+{
+    "messageType": "SUCCESS",
+    "messageContent": "json:分组卡片显示成功！",
+    "valueObj": [
+        {
+            "fileType": "文件类型（视频、音频、图片）",
+            "classify": "分类",
+            "coverUrl": "http://img.zcool.cn/community/018d4e554967920000019ae9df1533.jpg@900w_1l_2o_100sh.jpg",
+            "title": "触手可及",
+            "fieldUrl": "文件路径",
+            "label": "标签",
+            "introduction": "简介",
+            "updateDate": "更新时间"
+        },
+        {
+            "fileType": "文件类型（视频、音频、图片）",
+            "classify": "分类",
+            "coverUrl": "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3562075511,645641066&fm=200&gp=0.jpg",
+            "title": "春暖花开",
+            "fieldUrl": "文件路径",
+            "label": "标签",
+            "introduction": "简介",
+            "updateDate": "更新时间"
+        }
+    ],
+    "redirectUrl": ""
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,15 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+            "id": "常量组ID",
+            "version": "版本记录(修改用)",
+            "constantGroupName": "常量组名称",
+            "constantCode": "常量编码",
+            "constantName": "常量名称",
+            "constantValue1": "常量值1",
+            "constantValue2": "常量值2"
+            
+        }
+    ]
+}

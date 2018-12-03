@@ -1,0 +1,13 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+        	"id":"记录id",
+			"constantGroupCode":"常量组代码",
+			"constantGroupName":"常量组名称",
+			"constantCode":"常量代码",
+			"constantName":"常量名称",
+			"version":"版本号"
+        }
+    ]
+}

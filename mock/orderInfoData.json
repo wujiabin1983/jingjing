@@ -1,0 +1,24 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+        	"storeId":"门店编码",
+        	"orderNum":"订单编码",
+            "commodityCode": "商品编码",
+            "commodityTagPrice": "商品吊牌价",
+            "commodityActualSellPrice": "商品实际售价",
+            "qty": "销售件数",
+            "commodityTotalAmount":"商品总金额",
+            "guidesWorkNumber":"导购工号"
+        },{
+        	"storeId":"门店编码1",
+        	"orderNum":"订单编码1",
+            "commodityCode": "商品编码1",
+            "commodityTagPrice": "商品吊牌价1",
+            "commodityActualSellPrice": "商品实际售价1",
+            "qty": "销售件数1",
+            "commodityTotalAmount":"商品总金额1",
+            "guidesWorkNumber":"导购工号1"
+        }
+    ]
+}

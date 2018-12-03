@@ -1,0 +1,19 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+         
+        	"userRoleName": "角色名称",
+			"userType": "用户类型",
+			"isEnable": "是否启用",
+			"remarks": "备注"
+        },
+        {
+         
+        	"userRoleName": "角色名称",
+			"userType": "用户类型",
+			"isEnable": "是否启用",
+			"remarks": "备注"
+        }
+    ]
+}

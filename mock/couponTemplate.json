@@ -1,0 +1,20 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+        	
+            "coupTempId": "124",
+			"couponType": "123",
+			"coupTempName": "123",
+			"operatorBy": "123",
+			"operationDate": "123"
+            
+        },{
+        	 "coupTempId": "1234",
+			"couponType": "1234",
+			"coupTempName": "1234",
+			"operatorBy": "1234",
+			"operationDate": "1234"
+        }
+    ]
+}

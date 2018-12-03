@@ -1,0 +1,21 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+            "id": "id",
+            "version": "version",
+            "num": "商户编码",
+            "name": "商户名称",
+            "principal": "负责人",
+            "contact": "联系方式"
+        },
+        {
+            "id": "0001",
+            "version": "0001",
+            "num": "0001",
+            "name": "admin",
+            "principal": "jiang",
+            "contact": "1234533265"
+        }
+    ]
+}

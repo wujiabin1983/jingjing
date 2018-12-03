@@ -1,0 +1,45 @@
+{
+    "messageType": "SUCCESS",
+    "messageContent": "json：显示成功！",
+    "valueObj": [
+        {
+            "brandId": "品牌ID",
+            "brandName": "品牌名称",
+            "pubNumCode": "公众号ID",
+            "pubNumName": "公众号名称",
+            "groupId": "0",
+            "groupName": "全部图片",
+            "groupType": "分组类型（图片/视频/音频）"
+        },
+        {
+            "brandId": "品牌ID",
+            "brandName": "品牌名称",
+            "pubNumCode": "公众号ID",
+            "pubNumName": "公众号名称",
+            "groupId": "1",
+            "groupName": "未分组",
+            "groupType": "分组类型（图片/视频/音频）"
+        },
+        {
+            "brandId": "品牌ID",
+            "brandName": "品牌名称",
+            "pubNumCode": "公众号ID",
+            "pubNumName": "公众号名称",
+            "groupId": "2",
+            "groupName": "文章配图",
+            "groupType": "分组类型（图片/视频/音频）"
+        }
+    ],
+    "redirectUrl": ""
+}
+
+
+
+
+
+
+
+
+
+
+

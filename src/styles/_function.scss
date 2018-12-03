@@ -1,0 +1,6 @@
+// 初始化rem
+$browser-default-font-size: 20px !default;
+// 将px转换为rem
+@function rem($px){
+  @return $px / $browser-default-font-size * 1rem;
+}

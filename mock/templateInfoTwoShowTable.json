@@ -1,0 +1,13 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+            "packetTypes": "分组类型",
+            "packetName": "分组名称"
+        },
+        {
+            "packetTypes": "11",
+            "packetName": "mingcheng"
+        }
+    ]
+}

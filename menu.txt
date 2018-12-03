@@ -1,0 +1,36 @@
+会员营销                 member
+移动管理                 mobile
+基础设置                 base
+    品牌信息                 brandInfo
+    商户基本设置              merchantBase
+    门店管理
+    storeManagement         门店管理
+    storeGroupManagement    店组管理
+    regionalManagement      区域管理
+数据导入                 data
+营销工具                 tool
+平台管理                 platform
+    平台系统管理
+    organization            组织架构
+    actOrganizational       组织架构 添加/编辑
+    userGroup               用户组
+    userOwn                 用户组 - 所属用户
+    roleManage              角色
+    userManage              用户管理
+    userAdd                 用户管理 - 添加
+    limitManage             权限管理
+    logManage               日志管理
+    商户管理
+    commercRegisterManage   商户注册管理
+    commercRegisterAdd      商户注册管理 - 添加   
+    commercGroupManage      商户用户组管理
+    commercGroupAdd         商户用户组管理 - 添加
+    commercRoleManage       商户角色管理
+    commercUserManage       商户用户管理
+    toAllocate              权限分配
+    模板管理                template/index
+    常量管理                common/index
+    日志管理                log/index
+
+
+工作管理                 work

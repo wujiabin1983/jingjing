@@ -1,0 +1,32 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+        	"brandName": "品牌名称",
+			"storeId": "门店编码",
+			"storeName": "门店名称",
+			"storeAliasName": "门店别名",
+			"storeUrl": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1515651095190&di=a673b2c6378a26c00fc41e14f4a2a894&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2F2015%2Fa1%2F117%2Fd%2F136.jpg",
+			"storeType": "门店分类",	
+			"addr": "详细地址",
+			"storeManager": "负责人",
+			"contactNumber1": "联系电话1",
+			"contactNumber2": "联系电话2",
+			"storeArea": "门店面积",
+			"storePerNumber": "门店人数",
+			"businessTimeBegin": "起始时间",
+			"businessTimeEnd": "结束时间",
+			"storeDesc": "门店简介",
+			"remarks": "备注",
+			"longitude":116.4035,
+			"latitude":39.915,
+			"label": "标签",
+			"shelvesStatus":"上架状态",
+			"auditStatus":"审核状态",
+			"provinceName":"省",
+			"cityName":"市",
+			"areaName":"区",
+			"status":"是"
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+{
+    "returnCode": "0",
+    "returnMsg": [{
+    	"uploadDateBegin":"开始日期",
+    	"uploadDateEnd":"结束日期",
+    	"orderQty":"订单数量",
+    	"goodsQty":"订购商品数量合计",
+    	"brandName":"订购商品品牌",
+    	"accountTotal":"订购商品金额合计"
+    }]
+}

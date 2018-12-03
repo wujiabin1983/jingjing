@@ -1,0 +1,145 @@
+<template>
+  <div :class="className" :style="{height:height,width:width}"></div>
+</template>
+
+<script>
+import echarts from 'echarts'
+require('echarts/theme/macarons') // echarts theme
+import { debounce } from '@/utils'
+
+export default {
+  props: {
+    className: {
+      type: String,
+      default: 'chart'
+    },
+    width: {
+      type: String,
+      default: '100%'
+    },
+    height: {
+      type: String,
+      default: '290px'
+    }
+  },
+  data() {
+    return {
+      chart: null
+    }
+  },
+  mounted() {
+    this.initChart()
+    this.__resizeHanlder = debounce(() => {
+      if (this.chart) {
+        this.chart.resize()
+      }
+    }, 100)
+    window.addEventListener('resize', this.__resizeHanlder)
+  },
+  beforeDestroy() {
+    if (!this.chart) {
+      return
+    }
+    window.removeEventListener('resize', this.__resizeHanlder)
+    this.chart.dispose()
+    this.chart = null
+  },
+  methods: {
+    initChart() {
+      this.chart = echarts.init(this.$el, 'macarons')
+
+      var dataStyle = {
+        normal: {
+          label: {
+            show: false
+          },
+          labelLine: {
+            show: false
+          }
+        }
+      }
+      var placeHolderStyle = {
+        normal: {
+          color: 'rgba(0,0,0,0)',
+          label: {
+            show: false
+          },
+          labelLine: {
+            show: false
+          }
+        },
+        emphasis: {
+          color: 'rgba(0,0,0,0)'
+        }
+      }
+
+      this.chart.setOption({
+        title: {
+          text: '新老会员占比',
+          x: 'center',
+          y: 'center',
+          itemGap: 20,
+          textStyle: {
+            color: 'rgba(30,144,255,0.8)',
+            fontFamily: '微软雅黑',
+            fontSize: 15,
+            fontWeight: 'bolder'
+          }
+        },
+        tooltip: {
+          show: true,
+          formatter: '{b} : {d}%'
+        },
+        legend: {
+          orient: 'vertical',
+          right: 30,
+          y: 20,
+          itemGap: 12,
+          data: ['老会员', '新会员']
+        },
+        toolbox: {
+          show: false
+        },
+        series: [
+          {
+            name: '1',
+            type: 'pie',
+            clockWise: false,
+            radius: [95, 120],
+            itemStyle: dataStyle,
+            data: [
+              {
+                value: 68,
+                name: '老会员'
+              },
+              {
+                value: 32,
+                name: 'invisible',
+                itemStyle: placeHolderStyle
+              }
+            ]
+          },
+          {
+            name: '2',
+            type: 'pie',
+            clockWise: false,
+            radius: [70, 95],
+            itemStyle: dataStyle,
+            data: [
+              {
+                value: 29,
+                name: '新会员'
+              },
+              {
+                value: 71,
+                name: 'invisible',
+                itemStyle: placeHolderStyle
+              }
+            ]
+          }
+        ]
+      })
+    }
+  }
+}
+</script>

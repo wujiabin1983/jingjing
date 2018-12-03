@@ -1,0 +1,21 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+            "storeName":  "门店名称",
+            "decimalRule":  "积分小数规则",
+            "integralValidity":  "积分有效期",
+            "overdueWarnDays":  "过期预警天数",
+            "freezingDays":  "消费积分冻结天数",
+            "integralDesc": "积分说明"
+        },
+        {
+            "storeName": "忘忧杂货店",
+            "decimalRule": "没有规则",
+            "integralValidity": "长期有效",
+            "overdueWarnDays": "1天",
+            "freezingDays": "1天",
+            "integralDesc": "没有说明"
+        }
+    ]
+}

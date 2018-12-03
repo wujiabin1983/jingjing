@@ -1,0 +1,33 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+        	"id":"1",
+        	"version":"1",
+        	"brandId":"品牌编码",
+        	"brandName":"品牌名称",
+            "brandLogo": "品牌logo",
+            "brandDesc": "品牌描述",
+            "nickname": "绑定公众号昵称",
+            "integralRuleName": "所属积分规则名称",
+            "officialAccounts":"绑定公众号",
+            "appId":"appId",
+            "apSecret":"apSecret",
+            "pattern":"POS模式"
+            
+        },{
+        	"id":"2",
+        	"version":"2",
+        	"brandId":"品牌编码1",
+        	"brandName":"品牌名称1",
+            "brandLogo": "品牌logo1",
+            "brandDesc": "品牌描述1",
+            "nickname": "绑定公众号昵称1",
+            "integralRuleName": "所属积分规则名称",
+            "officialAccounts":"绑定公众号",
+            "appId":"appId",
+            "apSecret":"apSecret",
+            "pattern":"scrm模式"
+        }
+    ]
+}

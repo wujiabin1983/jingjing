@@ -1,0 +1,204 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+            "label": "组织架构管理",
+            "msg": "组织架构管理",
+            "checked": true,
+            "children": [
+                {
+                    "label": "查询",
+                    "msg": "查询",
+                    "checked": true
+                },
+                {
+                    "label": "新增",
+                    "msg": "新增",
+                    "checked": true
+                },
+                {
+                    "label": "修改",
+                    "msg": "修改",
+                    "checked": true
+                },
+                {
+                    "label": "删除",
+                    "msg": "删除",
+                    "checked": true
+                }
+            ]
+        },
+        {
+            "label": "用户组管理",
+            "msg": "用户组管理",
+            "checked": true,
+            "children": [
+                {
+                    "label": "查询",
+                    "msg": "查询",
+                    "checked": true
+                },
+                {
+                    "label": "新增",
+                    "msg": "新增",
+                    "checked": true
+                },
+                {
+                    "label": "修改",
+                    "msg": "修改",
+                    "checked": true
+                },
+                {
+                    "label": "删除",
+                    "msg": "删除",
+                    "checked": true
+                }
+            ]
+        },
+        {
+            "label": "角色管理",
+            "msg": "角色管理",
+            "checked": true,
+            "children": [
+                {
+                    "label": "查询",
+                    "msg": "查询",
+                    "checked": true
+                },
+                {
+                    "label": "新增",
+                    "msg": "新增",
+                    "checked": true
+                },
+                {
+                    "label": "修改",
+                    "msg": "修改",
+                    "checked": true
+                },
+                {
+                    "label": "删除",
+                    "msg": "删除",
+                    "checked": true
+                }
+            ]
+        },
+        {
+            "label": "用户管理",
+            "msg": "用户管理",
+            "checked": true,
+            "children": [
+                {
+                    "label": "查询",
+                    "msg": "查询",
+                    "checked": true
+                },
+                {
+                    "label": "新增",
+                    "msg": "新增",
+                    "checked": true
+                },
+                {
+                    "label": "修改",
+                    "msg": "修改",
+                    "checked": true
+                },
+                {
+                    "label": "删除",
+                    "msg": "删除",
+                    "checked": true
+                }
+            ]
+        },
+        {
+            "label": "系统权限管理",
+            "msg": "系统权限管理",
+            "checked": true,
+            "children": [
+                {
+                    "label": "查询",
+                    "msg": "查询",
+                    "checked": true
+                },
+                {
+                    "label": "新增",
+                    "msg": "新增",
+                    "checked": true
+                },
+                {
+                    "label": "修改",
+                    "msg": "修改",
+                    "checked": true
+                },
+                {
+                    "label": "删除",
+                    "msg": "删除",
+                    "checked": true
+                },
+                {
+                    "label": "激活",
+                    "msg": "激活",
+                    "checked": true
+                },
+                {
+                    "label": "停用",
+                    "msg": "停用",
+                    "checked": true
+                }
+            ]
+        },
+        {
+            "label": "日志管理",
+            "msg": "日志管理",
+            "checked": true,
+            "children": [
+                {
+                    "label": "查询",
+                    "msg": "查询",
+                    "checked": true
+                },
+                {
+                    "label": "新增",
+                    "msg": "新增",
+                    "checked": true
+                },
+                {
+                    "label": "修改",
+                    "msg": "修改",
+                    "checked": true
+                },
+                {
+                    "label": "删除",
+                    "msg": "删除",
+                    "checked": true
+                }
+            ]
+        },
+        {
+            "label": "常量管理",
+            "msg": "常量管理",
+            "checked": true,
+            "children": [
+                {
+                    "label": "查询",
+                    "msg": "查询",
+                    "checked": false
+                },
+                {
+                    "label": "新增",
+                    "msg": "新增",
+                    "checked": false
+                },
+                {
+                    "label": "修改",
+                    "msg": "修改",
+                    "checked": false
+                },
+                {
+                    "label": "删除",
+                    "msg": "删除",
+                    "checked": false
+                }
+            ]
+        }
+    ]
+}

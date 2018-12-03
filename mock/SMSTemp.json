@@ -1,0 +1,18 @@
+{
+    "code": 0,
+    "count": 2,
+    "data": [
+        {
+            "templateId": "模板编号",
+            "templateName": "模板名称",
+            "createdBy": "创建人",
+            "createdOn": "创建时间"
+        },
+        {
+            "templateId": "1",
+            "templateName": "mingcheng ",
+            "createdBy": "jiang",
+            "createdOn": "2018-1-1"
+        }
+    ]
+}

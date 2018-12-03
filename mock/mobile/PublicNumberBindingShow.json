@@ -1,0 +1,17 @@
+{
+    "messageType": "SUCCESS",
+    "messageContent": "json：显示成功！",
+    "valueObj": 
+        {
+            "authorNikeName" : "授权方昵称",
+            "authorHeadUrl" : "授权方头像",
+            "pubNumName" : "公众号名称",
+            "pubNumOrigId" : "公众号原始ID",
+            "opernFunction" : "开通功能",
+            "qrCodeUrl" : "二维码URL",
+            "appId" : "appID",
+            "appScret" : "AppScret",
+            "authorizationList" : "授权列表"
+        },
+    "redirectUrl": ""
+}

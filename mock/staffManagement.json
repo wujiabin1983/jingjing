@@ -1,0 +1,29 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+            "loginId": "登录账号",
+			"password": "密码",
+			"userCode": "员工编号",
+			"userName": "员工姓名",
+			"userHeaderUrl":"员工头像URL",
+			"storeAliasName": "所属门店",
+			"storeUrl": "状态",
+			"age": "年龄",	
+			"sex": "性别",
+			"birthDate": "出生日期",
+			"entryDate": "入职日期",
+			"userType": "员工类型",
+			"roleTypeName": "所属角色名称",
+			"storeId": "门店编码",
+			"storeName": "门店名称",
+			"specialSignature": "个性签名",
+			"documentType": "证件类型",
+			"idNumber": "证件号码",
+			"status": "状态",
+			"workAddress":"工作地址",
+			"brandId":"品牌编码",
+			"brandName":"品牌名称"
+        }
+    ]
+}

@@ -1,0 +1,36 @@
+{
+    "returnCode": "0",
+    "returnMsg": [{
+	    "cardtype": "钻石卡",
+	    "renshu": "1231",
+	    "shouru": "229000",
+	    "zhanbi": "15%",
+	    "kedian": "2350",
+	    "jiandian": "1999",
+	    "liandai": "2.1"
+	},{
+	    "cardtype": "金卡",
+	    "renshu": "2741",
+	    "shouru": "139712",
+	    "zhanbi": "25%",
+	    "kedian": "1590",
+	    "jiandian": "1299",
+	    "liandai": "1.5"
+	},{
+	    "cardtype": "银卡",
+	    "renshu": "5631",
+	    "shouru": "338871",
+	    "zhanbi": "35%",
+	    "kedian": "899",
+	    "jiandian": "699",
+	    "liandai": "1.5"
+	},{
+	    "cardtype": "普卡",
+	    "renshu": "5432",
+	    "shouru": "987265",
+	    "zhanbi": "40%",
+	    "kedian": "699",
+	    "jiandian": "399",
+	    "liandai": "1.8"
+	}]
+}

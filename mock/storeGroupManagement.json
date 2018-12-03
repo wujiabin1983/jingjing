@@ -1,0 +1,16 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+        	"storeGroupId":"店租编码",
+        	"storeGroupName":"店租名称",
+        	"storeGroupDesc":"店租描述",
+        	"storeNum":"门店数量",
+        	"storeArr":[{
+						"storeName": "111111"
+					},{
+						"storeName": "111111"
+					}]
+        }
+    ]
+}

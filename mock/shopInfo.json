@@ -1,0 +1,15 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+        	"uploadUser":"上传用户",
+        	"uploadFiles":"上传文件",
+            "uploadTime": "上传时间",
+            "fileSize": "文件大小",
+            "lineNumber": "处理行数",
+            "processStatus": "处理状态",
+            "processDate":"处理完成时间",
+            "returnMsg":"返回消息"
+        }
+    ]
+}

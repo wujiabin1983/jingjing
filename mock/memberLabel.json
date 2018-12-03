@@ -1,0 +1,10 @@
+{
+    "returnCode": "0",
+    "returnMsg": [
+        {
+			"labelCode": "标签编码",
+			"labelName": "标签名",
+			"labelValue":"标签值"
+        }
+    ]
+}

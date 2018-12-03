@@ -1,0 +1,52 @@
+{
+    "messageType": "SUCCESS",
+    "messageContent": "json：显示成功！",
+    "valueObj": [
+        {
+            "id": "1",
+            "name": "头像",
+            "isRequired": true
+        },
+        {
+            "id": "2",
+            "name": "姓名",
+            "isRequired": false
+        },
+        {
+            "id": "3",
+            "name": "性别",
+            "isRequired": false
+        },
+        {
+            "id": "4",
+            "name": "生日",
+            "isRequired": false
+        },
+        {
+            "id": "5",
+            "name": "手机",
+            "isRequired": false
+        },
+        {
+            "id": "6",
+            "name": "所在地址",
+            "isRequired": false
+        },
+        {
+            "id": "7",
+            "name": "学历",
+            "isRequired": false
+        },
+        {
+            "id": "8",
+            "name": "身高",
+            "isRequired": false
+        },
+        {
+            "id": "9",
+            "name": "婚姻状况",
+            "isRequired": false
+        }
+    ],
+    "redirectUrl": ""
+}

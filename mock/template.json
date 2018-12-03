@@ -1,0 +1,27 @@
+{
+	"count": 2,
+    "code": 0,
+	"data": [
+		{
+			"id": "1",
+			"version": "1",
+			"groupName": "分组名称",
+			"templateName": "模板名称",
+			"activiteType": "活动类型11",
+			"templateDesc": "模板简介",
+			"createdBy": "创建人",
+			"createdOn": "创建日期",
+			"status": "状态"
+		},{
+			"id": "1",
+			"version": "1",
+			"groupName": "分组名称",
+			"templateName": "模板名称2",
+			"activiteType": "活动类型2",
+			"templateDesc": "模板简介2",
+			"createdBy": "创建人2",
+			"createdOn": "创建日期",
+			"status": "状态2"
+		}
+	]
+}
