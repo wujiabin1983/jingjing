@@ -1,14 +1,14 @@
 // 会员分组 - 我的分组 - 分组卡片组件
 <template>
-    <div class="card" :style="cardHeaderBg">
-        <div class="card-box card-top ">
-            <div class="group-name left-box">{{childData.groupName}}</div>
-            <div class="icon-setting right-box">
+    <div class="card">
+        <div class="card-header" :style="cardHeaderBg">
+            <img class="icon" :src="setImg" alt="">
+            <span class="name">{{childData.groupName}}</span>
+            <span class="icon-setting">
                 <el-checkbox v-if="childPageName == '分组查看'" v-model="childData.selected" @change="handleCheckbox"></el-checkbox>
                 <el-dropdown trigger="click" @command="handleCommand" v-if="childPageName != '分组查看'">
                     <span class="el-dropdown-link">
-                       <!-- <i class="el-icon-tickets"></i> -->
-                       <img class="icon" :src="require('@/assets/membershipgrouping_more.png')" alt="">
+                       <img :src="img.shezhi" alt="">
                     </span>
                     <el-dropdown-menu slot="dropdown" >
                         <el-dropdown-item command="查看分组信息">查看分组信息</el-dropdown-item>
@@ -20,22 +20,36 @@
                         <el-dropdown-item command="共享" v-if="childPageName != '所有分组' && childShare && (childData.groupType == '我的分组')">共享</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
+            </span>
+        </div>
+        <div class="card-container">
+            <span class="num">{{childData.appUserCount}}<i> 人</i></span>
+            <div class="app-radio-info">
+                <span class="app-radio">
+                    <i class="app-text" v-if="childData.isAppShow === '是' ? true : false">APP</i>
+                    <el-switch :width="43" v-model="childData.isAppShow" active-color="#13ce66" active-value="是" inactive-value="否" @change="handleSwitch" :disabled="childPageName == '分组查看' || childPageName == '所有分组' || childPageName == '预置分组' || childPageName == '共享分组'"></el-switch>
+                </span>
+                <span class="app-info">
+                    <el-tooltip effect="dark" placement="bottom" popper-class="app-popper">
+                        <groupCardDetailInfo :childData="childData" slot="content"></groupCardDetailInfo>
+                        <!-- <div slot="content">
+                            <table>
+                                <tr>
+                                    <td>性别</td>
+                                    <td>男</td>
+                                </tr>
+                                <tr>
+                                    <td>最后一次</td>
+                                    <td>100</td>
+                                    <td>200</td>
+                                </tr>
+                            </table>
+                        </div> -->
+                        <span>分组条件</span>
+                    </el-tooltip>
+                </span>
             </div>
         </div>
-        <div class="card-box card-middle ">
-            <div class="num left-box">{{childData.appUserCount}}<i> 人</i></div>
-            <div class="app-radio right-box">
-                <i class="app-text" v-if="childData.isAppShow === '是' ? true : false">APP</i>
-                <el-switch :width="43" v-model="childData.isAppShow" active-color="#0fa1d3" inactive-color="#eee" active-value="是" inactive-value="否" @change="handleSwitch" :disabled="childPageName == '分组查看' || childPageName == '所有分组' || childPageName == '预置分组' || childPageName == '共享分组'"></el-switch>
-            </div>
-        </div>
-        <div class="card-box card-bottom">
-            <div class="time left-box">{{childData.createdOn}}</div>
-            <div class="right-box" >
-                <span class="text-blue" @click="toggleDetail">分组条件<i class="el-icon-caret-bottom"></i></span>
-            </div>
-        </div>
-        <groupCardDetailInfo :childData="childData" v-show="childData.isShowDetail"></groupCardDetailInfo>
     </div>
 </template>
 <script>
@@ -64,13 +78,11 @@ export default {
                 fenzu3: fenzu3,
                 shezhi: shezhi
             },
-            showDetail:false,
         }
     },
     components: { groupCardDetailInfo },
     props: {
         'childData': {}, 
-        allData:{},
         'childPageName': {}, 
         // 复制
         'childCopy': { 
@@ -99,16 +111,6 @@ export default {
         },
     },
     methods: {
-        toggleDetail(){
-            this.allData.map((v,i)=>{
-                if(v.id==this.childData.id){
-                    this.$set(this.childData,'isShowDetail',!this.childData.isShowDetail) 
-                }else{
-                    v.isShowDetail = false
-                }
-            })
-              
-        },
         // 方法
         // 用于群发消息，查看
         handleCheckbox(str) {
@@ -424,15 +426,15 @@ export default {
         cardHeaderBg () {
             if(this.childData.groupType == '所有分组' || this.childData.groupType == '预置分组') {
                 return {
-                    'border-color': '#00a0e9'
+                    'background': '#00a0e9'
                 }
             }else if (this.childData.groupType == '品牌分组') {
                 return {
-                    'border-color': '#22ac38'
+                    'background': '#22ac38'
                 }
             }else if (this.childData.groupType == '共享分组' || this.childData.groupType == '我的分组') {
                 return {
-                    'border-color': '#f39800'
+                    'background': '#f39800'
                 }
             }
 
@@ -442,9 +444,6 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/_function.scss";
-.text-blue{
-    color:#0fa1d3;
-}
 .el-card {
     width: 100%;
 }
@@ -454,63 +453,104 @@ export default {
     margin-left: rem(20px);
 }
 .card {
-    position: relative;
-    font-size:rem(14px);
     // width: rem(300px);
     background: #FFF;
-    border-top:7px solid #ccc;
     border-radius: rem(8px);
     margin-bottom: rem(42px);
-    padding:rem(15px);
-    height:150px;
     // overflow: hidden;
     box-shadow: rem(2px) rem(2px) rem(9px) rgba(0, 0, 0, 0.22);
-    // display: flex;
-    // justify-content: center;
-    .card-box{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        .left-box{
-            flex:1;
+    .card-header {
+        position: relative;
+        width: 100%;
+        height: rem(45px);
+        border-top-left-radius: rem(8px);
+        border-top-right-radius: rem(8px);
+        .icon {
+            position: absolute;
+            left: rem(15px);
+            top: rem(-2px);
+            width: rem(50px);
+            height: rem(50px);
         }
-        &+.card-box{
-            margin-top:rem(10px);
+        .name {
+            margin-left: rem(79px);
+            height: rem(45px);
+            line-height: rem(45px);
+            font-size: 16px;
+            color: #FFF;
         }
-        &.card-top{
-            .group-name{
-                font-size: rem(18px);
-                font-weight: 700;
+        .icon-setting {
+            position: absolute;
+            top: rem(11px);
+            right: rem(17px);
+            // width: rem(24px);
+            // height: rem(21px);
+            cursor: pointer;
+            img {
+                width: rem(24px);
+                height: rem(21px);
             }
-            .icon-setting{
-                .icon{
-                    width:rem(18px);
-                }
-            }
-        }
-        &.card-middle{
-            .num{
-                font-size: rem(22px);
-                font-weight: 700;
-                i{
-                    font-size: rem(14px);
-                    color:#666;
-                }
-            }
-        }
-        &.card-bottom{
-            .time{
-                color:#666;
-                font-size: rem(14px);
-            }
-            .right-box{
-                cursor: pointer;
-            }
-
         }
     }
-   
-   
+    .card-container {
+        display: flex;
+        justify-content: space-between;
+        height: rem(95px);
+        .num {
+            width: rem(218px);
+            height: rem(95px);
+            line-height: rem(95px);
+            margin-left: rem(15px);
+            font-size: rem(30px);
+            i {
+                font-style: normal;
+                font-size: rem(20px);
+            }
+        }
+        .app-radio-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: rem(80px);
+            height: rem(93px);
+            margin: rem(1px);
+            span {
+                display: inline-block;
+                background: #f6f6f6;
+            }
+            .app-radio {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                width: rem(80px);
+                height: rem(46px);
+                line-height: rem(46px);
+                text-align: center;
+                .app-text {
+                    position: absolute;
+                    left: rem(20px);
+                    font-size: rem(10px);
+                    z-index: 99;
+                    font-style: normal;
+                    color: #FFF;
+                }
+            }
+            .app-info {
+                width: rem(80px);
+                height: rem(46px);
+                line-height: rem(46px);
+                font-size: rem(14px);
+                color: #a0a0a0;
+                text-align: center;
+                cursor: pointer;
+                .app-info-card {
+                    max-height: rem(200px);
+                    overflow: scroll;
+                }
+            }
+        }
+    }
     .el-tooltip__popper[x-placement^="bottom"] .popper__arrow {
         border-bottom-color: rgba(0, 0, 0, 0.6)!important;
     }

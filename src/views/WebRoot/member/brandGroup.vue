@@ -5,14 +5,19 @@
             <el-card class="height55" v-if="roleBtn.addBrandGroupInfo || roleBtn.selectBrandGroupInfo">
                 <el-form :inline="true" :model="form" class="demo-form-inline">
                     <el-form-item v-if="roleBtn.addBrandGroupInfo">
-                        <el-button type="primary" @click="handleAdd">新建分组</el-button>
+                        <el-button type="primary" @click="handleAdd" size="small">
+                            <i class="el-icon-plus"></i>新建分组
+                        </el-button>
                     </el-form-item>
-                    <el-form-item v-if="roleBtn.selectBrandGroupInfo">
-                        <el-input v-model="form.searchContent" placeholder="请输入分组名称"></el-input>
-                    </el-form-item>
-                    <el-form-item v-if="roleBtn.selectBrandGroupInfo">
-                        <el-button type="primary" @click="handleSearch">查询</el-button>
-                    </el-form-item>
+                    <template v-if="roleBtn.selectBrandGroupInfo">
+                        <el-form-item class="float-right">
+                            <el-button type="primary" @click="handleSearch">查询</el-button>
+                        </el-form-item>
+                        <el-form-item class="float-right">
+                            <el-input v-model="form.searchContent" placeholder="请输入分组名称"></el-input>
+                        </el-form-item>
+                    </template>
+                    
                 </el-form>
             </el-card>
         </el-header>
@@ -20,7 +25,7 @@
             <!-- <el-card> -->
                 <el-row :gutter="16">
                     <el-col :span="6" v-for="item in data" :key="item.id">
-                        <groupCard :childData="item" :childPageName="groupName" :childRemove="roleBtn.removeBrandGroupInfo" :childIfShow="roleBtn.ifShowBrandGroupInfo" :childUpdate="roleBtn.updateBrandGroupInfo" @childReload='childReload'></groupCard>
+                        <groupCard :childData="item"  :allData="data" :childPageName="groupName" :childRemove="roleBtn.removeBrandGroupInfo" :childIfShow="roleBtn.ifShowBrandGroupInfo" :childUpdate="roleBtn.updateBrandGroupInfo" @childReload='childReload'></groupCard>
                     </el-col>
                 </el-row>
             <!-- </el-card> -->
@@ -126,6 +131,9 @@ export default {
                         this.noData=true;
                     }else {
                         this.noData=false;
+                        msg.map((v,i)=>{
+                            this.$set(v,'isShowDetail',false)
+                        })
                         this.data = msg;
                     }
             		this.dataLoading=false;

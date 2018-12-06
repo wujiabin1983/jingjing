@@ -25,56 +25,55 @@ export default {
   data() {
     return {
       activeIndex: '0',
-      computedTopNavData:[],
-    };
+      computedTopNavData: []
+    }
   },
   methods: {
     handleSelect(key, keyPath) {
-      this.activeIndex = key;
-      sessionStorage.setItem('topActiveIndex', key);
-      this.$emit('handleNavId', key);
-      let items = this.$refs.elMenu.$el.getElementsByClassName('el-menu-item');
+      this.activeIndex = key
+      sessionStorage.setItem('topActiveIndex', key)
+      this.$emit('handleNavId', key)
+      const items = this.$refs.elMenu.$el.getElementsByClassName('el-menu-item')
       // 点击顶部导航默认页面
       this.$router.push({
         name: 'Dashboard',
         query: {
           // nav: key,//保证每次点击路由的query项都是不一样的，确保会重新刷新view
-          time: +new Date() //保证每次点击路由的query项都是不一样的，确保会重新刷新view
+          time: +new Date() // 保证每次点击路由的query项都是不一样的，确保会重新刷新view
         },
         params: {
           topNav: key
         }
-      });
+      })
     }
   },
-  created () {
+  created() {
     if (sessionStorage.getItem('topActiveIndex')) {
-      this.activeIndex = sessionStorage.getItem('topActiveIndex');
-    }else {
-    	
-			if(!sessionStorage.getItem('loginType')){
-				this.activeIndex = !this.rolesTop[0] ? '' : this.rolesTop[0].name;
-			}
-      this.$emit('handleNavId', this.activeIndex);
+      this.activeIndex = sessionStorage.getItem('topActiveIndex')
+    } else {
+      if (!sessionStorage.getItem('loginType')) {
+        this.activeIndex = !this.rolesTop[0] ? '' : this.rolesTop[0].name
+      }
+      this.$emit('handleNavId', this.activeIndex)
     }
-		this.computedTopNav.forEach((val,index)=>{
-			this.computedTopNavData.push({
-				index:index,
-				...val
-			})
-		})
+    this.computedTopNav.forEach((val, index) => {
+      this.computedTopNavData.push({
+        index: index,
+        ...val
+      })
+    })
   },
   computed: {
       // 计算属性
-      ...mapGetters([
-          'userInfo',
-          'roles',
-          'rolesTop',
-          'router'
-      ]),
-      computedTopNav () {
-        return !this.rolesTop ? [] : this.rolesTop
-      }
+    ...mapGetters([
+      'userInfo',
+      'roles',
+      'rolesTop',
+      'router'
+    ]),
+    computedTopNav() {
+      return !this.rolesTop ? [] : this.rolesTop
+    }
   }
 }
 </script>

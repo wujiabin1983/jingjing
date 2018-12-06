@@ -34,7 +34,12 @@ a:hover {
   color: inherit;
   text-decoration: none;
 }
-
+.float-left{
+  float: left;
+}
+.float-right{
+  float: right;
+}
 .clearfix {
   &:after {
     visibility: hidden;
@@ -79,46 +84,58 @@ a:hover {
 }
 
 // 左侧导航
-// .el-menu-item.is-active {
-//   .svg-icon {
-//     color: #009ee2;
-//   }
-// }
+
 // 左侧导航
-.el-menu.sidebar-container {
-  $bg-sideBar: darken(#009ee2, 30%);
-  // background: $bg-sideBar;
-  background: transparent;
-  .el-menu-item {
-    background: $bg-sideBar;
-    padding-left: rem(50px)!important;
+.el-submenu .el-menu-item{
+  background-color: transparent !important;
+  padding-left: 40px!important;
+  &:hover{
+    background-color: #283847 !important;
   }
-  .router-link-active .el-menu-item {
-    background: #283847!important;
-    // background: darken(#009ee2, 25%) !important;
-    .svg-icon {
-      color: #009ee2;
+  &.is-active {
+    background-color: #fff!important;
+    border-left: 5px solid #0fa1d3;
+  }
+
+}
+.el-menu.sidebar-container {
+  background-color:transparent!important;
+  .el-menu{
+    background-color: transparent!important;
+    .el-submenu .el-menu{
+      .el-menu-item{
+        padding-left: 60px!important;
+      }
+    }
+    li{
+      .el-menu{
+        li{
+          padding-left:60px !important;
+          background: transparent!important;
+          &.el-menu-item{
+            background-color: transparent !important;
+            padding-left: 40px!important;
+            &:hover{
+              background-color: #283847 !important;
+            }
+            &.is-active {
+              background-color: #fff!important;
+              border-left: 5px solid #0fa1d3;
+            }
+          }
+        }
+      }
     }
   }
-  .router-link-active .el-menu-item:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    width: 4px;
-    height: 50px;
-    background: #18a98c;
-  }
-  & > div > a > .el-menu-item {
-    padding-left: rem(20px)!important;
-  } 
-  .el-submenu__title:hover, .el-menu-item:hover {
-    background: #283847!important;
-    // background: darken(#009ee2, 25%) !important;
-    color: #FFF;
-  }
+  
   .el-submenu__title {
-    background: darken(#009ee2, 30%);
+    background: transparent!important;
+    &:hover {
+      background: #283847!important;
+      color: #FFF;
+    }
   }
+ 
 }
 
 // 用于标题
@@ -133,4 +150,27 @@ h4 {
 .pagination {
   margin-top: 10px;
 }
-
+//分组-详情
+.group-card-detail-wrap{
+  .el-table {
+    color:#111;
+    font-size: 16px;
+    thead{
+      color:#666;
+      font-size: 16px;
+      font-weight: 400;
+    }
+  }
+  .group-card-detail-cell{
+    &:nth-child(2){
+      text-align: right;
+    }
+   
+  }
+  .el-table .el-table__body-wrapper tr:nth-child(2n-1),
+  .el-table tr,
+  .el-table--enable-row-hover .el-table__body tr:hover > td{
+    background-color: #eee!important;
+  }
+  
+}

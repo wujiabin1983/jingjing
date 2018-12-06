@@ -4,11 +4,11 @@
         <el-header>
             <el-card class="height55" v-if="roleBtn.selectAllGroupInfo">
                 <el-form :inline="true" :model="form" class="demo-form-inline">
-                    <el-form-item>
-                        <el-input v-model="form.searchContent" placeholder="请输入分组名称"></el-input>
-                    </el-form-item>
-                    <el-form-item>
+                    <el-form-item class="float-right">
                         <el-button type="primary" @click="handleSearch">查询</el-button>
+                    </el-form-item>
+                    <el-form-item class="float-right">
+                        <el-input v-model="form.searchContent" placeholder="请输入分组名称"></el-input>
                     </el-form-item>
                 </el-form>
             </el-card>
@@ -16,8 +16,8 @@
         <el-main class="main-container" v-loading="tableLoading">
             <!-- <el-card> -->
                 <el-row :gutter="16">
-                    <el-col :span="6" v-for="(item, index) in data" :key="item.id">
-                        <groupCard :childData="item" :childPageName="groupName" childType="所有分组" :childCopy="roleBtn.selectAllGroupInfo" @childReload="childReload"></groupCard>
+                    <el-col :span="6" v-for="item in data" :key="item.id">
+                        <groupCard :childData="item" :allData="data" :childPageName="groupName" childType="所有分组" :childCopy="roleBtn.selectAllGroupInfo" @childReload="childReload"></groupCard>
                         <!-- <groupCard :childData="item" :childPageName="groupName" childType="共享分组" :childCopy="roleBtn.copyShareGroupInfo"></groupCard> -->
                     </el-col>
                 </el-row>
@@ -144,6 +144,9 @@ export default {
                 	this.count = count;
                 	this.data=[];
                     if(count > 0) {
+                        msg.map((v,i)=>{
+                            this.$set(v,'isShowDetail',false)
+                        })
                         this.data = msg;
                     	this.noData=false;
                     }else{

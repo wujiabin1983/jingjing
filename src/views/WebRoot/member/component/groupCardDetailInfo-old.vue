@@ -1,22 +1,19 @@
 // 会员分组 - 我的分组 - 分组卡片组件
 <template>
-    <div class="group-card-detail-wrap">
+    <div>
         <el-table
             :data="tableData"
             size="mini"
-            header-cell-class-name="group-card-detail-cell"
-            cell-class-name="group-card-detail-cell"
-            row-class-name="group-card-detail-row"
             class="miniTable">
             <el-table-column
                 prop="name"
                 label="条件名称"
-               >
+                width="180">
             </el-table-column>
             <el-table-column
                 prop="value"
                 label="数值"
-                >
+                width="180">
             </el-table-column>
         </el-table>
     </div>
@@ -164,24 +161,6 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/_function.scss";
-@import "src/styles/mixin.scss";
-
-.el-table tr{
-  background: #eee;
-}
-.group-card-detail-wrap{
-  padding:0 rem(10px);
-  position: absolute;
-  z-index: 1;
-  bottom:-75px;
-  left:50%;
-  width:98%;
-  transform: translateX(-50%);
-  background-color: #eee;
-  @include boxShadow(0,4px,15px,rgba(0, 0, 0, 0.2));
-  @include borderRadius(6px);
-  
-}
 .app-info-card {
     height: rem(200px);
     overflow: hidden;

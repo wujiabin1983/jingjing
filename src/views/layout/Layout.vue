@@ -1,9 +1,11 @@
 <template>
     <div class="app-wrapper" :class="{hideSidebar:!sidebar.opened}">
-        <div class="heade-wrapperr">
+        <!-- <div class="heade-wrapperr">
             <div class="logo"><img :src="logo"/></div>
             <navbar @handleNavId="handleNavId" @handleSwitch="handleSwitch"></navbar>
-            <el-dialog
+           
+        </div> -->
+         <el-dialog
                 class="dialogOne"
                 title="账号管理"
                 :visible.sync="dialogVisible"
@@ -81,12 +83,36 @@
                     <el-button type="primary" @click="dialogVisible3 = false">确 定</el-button>
                 </div>
             </el-dialog>
-        </div>
-        <div class="sidebar-wrapper" v-if="isSidebar">
-            <sidebar class="sidebar-container" :handleNavId="navId"></sidebar>
-            <div class="sidebar-bg">
-                <img :src="sidebarBg" alt="">
+        <div class="sidebar-wrapper">
+            <div class="siderbar-user-wrap">
+                <div class="user-info">
+                    <div class="avatar-box">
+                        <img class="user-avatar" src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80">
+                    </div>
+                    <div class="user-name">
+                        {{!userInfo.userCode ? username : userInfo.userCode}}
+                    </div>
+                </div>
+                <el-dropdown trigger="click" @command="handleCommand">
+                    <span class="el-dropdown-link">
+                        <img class="icon" :src="require('@/assets/membershipgrouping_more.png')" alt="">
+                        <!-- <i class="el-icon-arrow-down el-icon-tickets"></i> -->
+                    </span>
+                    <el-dropdown-menu slot="dropdown" >
+                        <el-dropdown-item command="首页">
+                            <router-link class='inlineBlock' to="/">主页</router-link>
+                        </el-dropdown-item>
+                         <el-dropdown-item command="个人信息" v-if="userInfo.userType == 'EMPLOYEE' && userInfo.userCode != ''">个人信息</el-dropdown-item>
+                        <el-dropdown-item v-if="userInfo.userType == 'EMPLOYEE'||userInfo.userType == 'SELLER' && userInfo.userCode != ''" command="切换账号">切换账号</el-dropdown-item>
+                        <el-dropdown-item command="修改密码">修改密码</el-dropdown-item>
+                        <el-dropdown-item divided command="退出">退出</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
             </div>
+            <sidebar class="sidebar-container" :handleNavId="navId"></sidebar>
+            <!-- <div class="sidebar-bg">
+                <img :src="sidebarBg" alt="">
+            </div> -->
         </div>
         <div class="main-container">
             <!-- <navbar></navbar>  main-container1-->
@@ -322,6 +348,14 @@ export default {
 	            this.$data.navId = navId;
           	})
         },
+        handleCommand(command) {
+            if(command == '退出') {
+                this.logout();
+                return
+            }
+            this.handleSwitch(command)
+            
+        },
         handleSwitch(str) {
             let that = this;
             if(str == '切换账号') {
@@ -539,14 +573,14 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
     @import "src/styles/mixin.scss";
     @import "src/styles/_function.scss";
-    $sideWidth: 180px;
+    $sideWidth: 200px;
     $top: 49px;
     .app-wrapper {
         @include clearfix;
         position: relative;
         height: 100%;
         width: 100%;
-
+        
         &.hideSidebar {
             .sidebar-wrapper {
                 transform: translate(-140px, 0);
@@ -600,15 +634,55 @@ export default {
                 }
             }
         }
+        // jj
+        
+        .siderbar-user-wrap{
+            height:154px;
+            text-align: center;
+            position: relative;
+            // background-image: linear-gradient(#28292a, #28292a), linear-gradient(#ffffff, #ffffff);
+            .user-info{
+                position:absolute;
+                top:50%;
+                left:50%;
+                transform: translate(-50%,-50%)
+            }
+            .avatar-box{
+                width:50px;
+        
+                margin:0 auto;
+                overflow: hidden;
+                img{
+                    width:100%;
+                    border-radius: 50%;
+                }
+            }
+            .user-name{
+                color: #0fa1d3;
+                margin-top: 10px;
+            }
+            .el-dropdown{
+                position: absolute;
+                right:10px;
+                bottom: 20px;
+                .el-icon-arrow-down{
+                    color:#fff;
+                    font-size: 20px;
+                }
+            }
+
+        }
         .sidebar-wrapper {
             width: $sideWidth;
+            height:100%;
             position: fixed;
-            top: $top;
+            top: 0;
             bottom: 0;
             left: 0;
             z-index: 1001;
             overflow: hidden;
             transition: all .28s ease-out;
+            background:url('../../assets/nav_bg.png') 50% 50%/cover no-repeat;
             .sidebarBg {
                 position: absolute;
                 left: 0;
@@ -618,18 +692,17 @@ export default {
         }
         .sidebar-container {
             transition: all .28s ease-out;
-            position: absolute;
+            height: calc(100% - 154px);
             top: 0;
             bottom: 0;
             left: 0;
             right: - rem(17px);
-            // right: 0;
             overflow-y: scroll;
             overflow-x: hidden;
             z-index: 20;
         }
         .main-container {
-            margin-top: $top;
+            // margin-top: $top;
             min-height: 100%;
             transition: all .28s ease-out;
             margin-left: $sideWidth;

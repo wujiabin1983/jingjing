@@ -10,6 +10,9 @@ import router from './router'
 import store from './store'
 import '@/icons' // icon
 import '@/permission' // 权限
+
+import lodash from 'lodash';
+
 import $ from 'jquery'
 // import QRCode from 'qrcodejs2' // 二维码生成器
 
@@ -31,6 +34,8 @@ Vue.use(VueQuillEditor, /* { default global options } */)
 Vue.use(ElementUI, { size: 'small' })
 
 Vue.config.productionTip = false
+
+Vue.prototype.$Lodash = lodash;
 
 new Vue({
   el: '#app',

@@ -4,11 +4,11 @@
         <el-header>
             <el-card class="height55" v-if="roleBtn.selectInitGroupInfo">
                 <el-form :inline="true" :model="form" class="demo-form-inline">
-                    <el-form-item>
-                        <el-input v-model="form.searchContent" placeholder="请输入分组名称"></el-input>
-                    </el-form-item>
-                    <el-form-item>
+                    <el-form-item class="float-right">
                         <el-button type="primary" @click="handleSearch">查询</el-button>
+                    </el-form-item>
+                    <el-form-item class="float-right">
+                        <el-input v-model="form.searchContent" placeholder="请输入分组名称"></el-input>
                     </el-form-item>
                 </el-form>
             </el-card>
@@ -17,7 +17,7 @@
             <!-- <el-card> -->
             <el-row :gutter="16">
                 <el-col :span="6" v-for="item in data" :key="item.id">
-                    <groupCard :childData="item" :childPageName="groupName" :childCopy="roleBtn.copyInitGroupInfo"></groupCard>
+                    <groupCard :childData="item" :allData="data" :childPageName="groupName" :childCopy="roleBtn.copyInitGroupInfo"></groupCard>
                 </el-col>
             </el-row>
             <p class="noData" v-if="noData">暂无数据</p>
@@ -102,12 +102,12 @@ export default {
                     if(msg.length == 0) {
                     	this.noData=true;
                     }else {
-                    	this.noData=false;
-                    	msg.forEach((value,index)=>{
-                    		this.data.push({
-                    			...value
-                    		})
-                    	})
+                        this.noData=false;
+                        msg.map((v,i)=>{
+                            this.$set(v,'isShowDetail',false)
+                        })
+                        this.data = this.$Lodash.cloneDeep(msg)
+                    	
                     }
                 })
         }
