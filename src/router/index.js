@@ -131,7 +131,27 @@ export const constantRouterMap = [
     name: 'Dashboard',
     hidden: true,
     children: [{ path: 'dashboard', component: _import('dashboard/index') }]
-  }
+  },
+  {
+    "id": "work",
+    "path": "/work",
+    "component": Layout,
+    "icon": "",
+    "redirect": "",
+    "noDropdown": true,
+    "meta": {
+      "roleBtn": [ "addMemberReturnTask","updateMemberReturnTask", "forbiddenMemberReturnTask", "deleteMemberReturnTask"]
+    },
+    "children": [{
+      "path": "work-memberReturnVisit",
+      "name": "会员回访",
+      "component": _import('WebRoot/work/memberReturnVisit/memberReturnVisit')
+    },{
+      "path": "work-addMemberReturnTask",
+      "name": "会员回访",
+      "component": _import('WebRoot/work/memberReturnVisit/addMemberReturnTask')
+    }]
+  },
 ]
 export const asyncRouterMap = [
 //{

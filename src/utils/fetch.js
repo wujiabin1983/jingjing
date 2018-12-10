@@ -16,8 +16,8 @@ let baseUrl = ''
 // baseUrl = 'http://192.168.1.96' // 本地
 // baseUrl = 'http://localhost:9999' // 本地打包 - 张婉
 // baseUrl = 'http://localhost/scrm' // 本地打包 - 丁佳佳
-// baseUrl = 'http://dk.qipai.com.cn/scrm'
-baseUrl = 'http://dsh.nat200.top/scrm'
+baseUrl = 'http://dk.qipai.com.cn/scrm'
+// baseUrl = 'http://dsh.nat200.top/scrm'
 
 
 // baseUrl = 'http://webapp.natapp4.cc' // 测试权限

@@ -3,7 +3,8 @@
     <template v-for="(nav,navIndex) in navList" >
       <el-submenu :index="nav.name" :key="navIndex">
         <template slot="title">
-          <icon-svg :icon-class="nav.iconCls" />{{nav.menu}}
+          <i class="iconfont" :class="`icon-${nav.name}`"></i>
+        {{nav.menu}}
         </template>
         <sidebar-item :routes="nav.children" :navId="handleNavId" ></sidebar-item>
       </el-submenu>
@@ -87,7 +88,6 @@ import { mapGetters } from 'vuex'
 
           this.$set(v,'children',child)
         })
-        console.log(this.navList)
       },
       handleOpen(index, indexPath) {
         // console.log('open', index, indexPath);

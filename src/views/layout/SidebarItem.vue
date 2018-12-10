@@ -37,7 +37,6 @@ export default {
     navId: {}
   },
   mounted() {
-    console.log(this.navList)
   },
   methods: {
       scrollTop() {
