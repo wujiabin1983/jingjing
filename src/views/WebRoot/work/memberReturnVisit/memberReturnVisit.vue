@@ -1,3 +1,4 @@
+<!--回访任务列表-->
 <template>
   <el-container class="app-container">
 		<el-header>
@@ -10,8 +11,12 @@
 				<el-table ref="tableData" v-loading="this.tableLoading" :data="tableData">
 					<el-table-column prop="operationDate"  label="创建时间"></el-table-column>
 					<el-table-column prop="taskName"  label="回访标题"></el-table-column>
-					<el-table-column prop="storeGroupId" label="操作者"></el-table-column>
-					<el-table-column prop="taskDate" label="回访时间"></el-table-column>
+					<el-table-column prop="createdBy" label="操作者"></el-table-column>
+					<el-table-column prop="taskDate" label="回访时间">
+            <template  slot-scope="scope">
+              {{scope.row.taskDate.taskDateBegin}}-{{scope.row.taskDate.taskDateEnd}}
+            </template>
+          </el-table-column>
 					<el-table-column prop="visitedQty" label="回访人数">
             <template slot-scope="scope">
               {{scope.row.visitedQty}}/{{scope.row.ttlVisitedQty}}
@@ -23,13 +28,13 @@
 							<el-tooltip class="item" content="查看" placement="top">
 								<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="viewTask(scope.row)" />
 							</el-tooltip>
-							<el-tooltip class="item" content="修改" placement="top" v-if="roleBtn.updateStoreGroupInfo && !scope.row.isEdit">
+							<el-tooltip class="item" content="修改" placement="top" v-if="roleBtn.updateMemberReturnTask ">
 								<icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="updateTask(scope.row)" />
 							</el-tooltip>
-							<el-tooltip class="item" content="确认" placement="top" v-if="roleBtn.forbiddenMemberReturnTask && scope.row.isEdit">
-								<icon-svg icon-class="queren" id="icon-queren" @click.native.prevent="forbiddenTask(scope.row)" />
+							<el-tooltip class="item" content="确认" placement="top" v-if="roleBtn.forbiddenMemberReturnTask">
+								<icon-svg icon-class="queren" id="icon-queren" @click.native.prevent="changeTaskStatus(scope.row)" />
 							</el-tooltip>
-							<el-tooltip class="item" content="删除" placement="top" v-if="roleBtn.deleteStoreGroupInfo">
+							<el-tooltip class="item" content="删除" placement="top" v-if="roleBtn.deleteMemberReturnTask">
 								<icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="deleteTask(scope.row)" />
 							</el-tooltip>
 						</template>
@@ -37,8 +42,9 @@
 				</el-table>
 				<!-- 分页 -->
 				<el-footer v-if="count != 0">
-					<el-pagination background  class="pagination" layout="count, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" :page-size="search.limit" :total="count" @current-change="handleCurrentChange">
-					</el-pagination>
+          <el-pagination background class="pagination" layout="prev, pager, next, jumper" :page-size="search.limit" :total="count" @current-change="handleCurrentChange">
+          </el-pagination>
+         
 				</el-footer>
 			</el-card>
 		</el-main>
@@ -47,7 +53,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { permission } from '@/utils'
-import { getMemberReturnVisitList } from '@/api/work/memberReturnVisit.js'
+import { getMemberReturnVisitList,deleteMemberReturnTask,startMemberReturnTask,stopMemberReturnTask } from '@/api/work/memberReturnVisit.js'
 export default {
   data(){
     return{
@@ -86,23 +92,18 @@ export default {
       this.tableLoading = true;
       // 查询接口
       getMemberReturnVisitList(params).then((res)=> {
-        let data = JSON.parse(Base64.decode(res.data));
-        let result = [];
-        if(data.messageType=='SUCCESS') {
-          data.data.forEach((val, index) => {
-            result.push({
-              isEdit: false,
-              ...val
-            });
-          })
-          this.count = data.count;
-          this.tableData = result;
-        } else {
-          this.$message({
-            message: data.messageContent,
-            type: 'warning'
-          });
-        }
+        let result = JSON.parse(Base64.decode(res.data));
+        console.log(result)
+        // if(data.messageType=='SUCCESS') {
+
+          this.count = result.count;
+          this.tableData = result.data;
+        // } else {
+        //   this.$message({
+        //     message: result.messageContent,
+        //     type: 'warning'
+        //   });
+        // }
         this.tableLoading = false;
       }).catch((err)=> {
         console.log(err);
@@ -122,25 +123,95 @@ export default {
       })
     },
     // 图标 - 查看
-    viewTask(index, row) {
-      var data = JSON.stringify(row);
+    viewTask(row) {
+      console.log(row)
       this.$router.push({
-        name: '门店管理店组管理查询',
-        params: {
-          pageType: '查看',
-          formData: data
-        }
+        path: `work-memberReturnDetails/${row.id}`
       });
     },
-    updateTask(index, row) {
+    updateTask(row) {
       var data = JSON.stringify(row);
-      
     },
-    forbiddenTask(index,row){
-
+    changeTaskStatus(row){
+      let taskStatus = row.taskStatus
+      let params = {
+        userId:this.userInfo.userCode,
+        id:row.id,
+        version:row.version
+      }
+      if(taskStatus==0){ //禁止
+        this.stopTask(params)
+      }else{
+        this.startTask(params)
+      }
     },
-    deleteTask(index,row){
-
+    stopTask(){
+      stopMemberReturnTask(params).then((res)=> {
+        let result = JSON.parse(Base64.decode(res.data));
+        console.log(result)
+        if(data.messageType=='SUCCESS') {
+          this.$message({
+            message: '停止成功',
+            type: 'success'
+          });
+        } else {
+          this.$message({
+            message: result.messageContent,
+            type: 'warning'
+          });
+        }
+        this.tableLoading = false;
+      }).catch((err)=> {
+        console.log(err);
+        this.tableLoading = false;
+      });
+    },
+    startTask(){
+      startMemberReturnTask(params).then((res)=> {
+        let result = JSON.parse(Base64.decode(res.data));
+        console.log(result)
+        if(data.messageType=='SUCCESS') {
+          this.$message({
+            message: '开启成功',
+            type: 'success'
+          });
+        } else {
+          this.$message({
+            message: result.messageContent,
+            type: 'warning'
+          });
+        }
+        this.tableLoading = false;
+      }).catch((err)=> {
+        console.log(err);
+        this.tableLoading = false;
+      });
+    },
+    deleteTask(row){
+      let params={
+        userId:this.userInfo.userCode,
+        id:row.id,
+        taskName:row.taskName
+      }
+      deleteMemberReturnTask(params).then((res)=> {
+        let result = JSON.parse(Base64.decode(res.data));
+        console.log(result)
+        if(data.messageType=='SUCCESS') {
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          });
+        } else {
+          this.$message({
+            message: result.messageContent,
+            type: 'warning'
+          });
+        }
+        this.tableLoading = false;
+      }).catch((err)=> {
+        console.log(err);
+        this.tableLoading = false;
+      });
     },
   },
   watch:{

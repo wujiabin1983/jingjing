@@ -3,11 +3,10 @@
     <div class="group-card-detail-wrap">
         <el-table
             :data="tableData"
-            size="mini"
             header-cell-class-name="group-card-detail-cell"
             cell-class-name="group-card-detail-cell"
             row-class-name="group-card-detail-row"
-            class="miniTable">
+            max-height="250">
             <el-table-column
                 prop="name"
                 label="条件名称"
@@ -173,7 +172,7 @@ export default {
   padding:0 rem(10px);
   position: absolute;
   z-index: 1;
-  bottom:-75px;
+  top:rem(150px);
   left:50%;
   width:98%;
   transform: translateX(-50%);
@@ -186,9 +185,9 @@ export default {
     height: rem(200px);
     overflow: hidden;
 }
-.miniTable{
-    max-height: rem(215px);
-    overflow-y: auto;
-    overflow-x: hidden;
-}
+// .miniTable{
+//     max-height: rem(215px);
+//     overflow-y: auto;
+//     overflow-x: hidden;
+// }
 </style>

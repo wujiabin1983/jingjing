@@ -462,7 +462,7 @@ export default {
     border-radius: rem(8px);
     margin-bottom: rem(42px);
     padding:rem(15px);
-    height:150px;
+    height:rem(150px);
     // overflow: hidden;
     box-shadow: rem(2px) rem(2px) rem(9px) rgba(0, 0, 0, 0.22);
     // display: flex;

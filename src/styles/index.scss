@@ -1,6 +1,6 @@
 @import './element-ui.scss';
 @import './mixin.scss';
-
+// @import "./_function.scss";
 body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -164,12 +164,24 @@ h4 {
     &:nth-child(2){
       text-align: right;
     }
-   
+    border:none;
   }
   .el-table .el-table__body-wrapper tr:nth-child(2n-1),
   .el-table tr,
   .el-table--enable-row-hover .el-table__body tr:hover > td{
     background-color: #eee!important;
   }
+  .el-table .el-table__body-wrapper tr:nth-child(2n){
+      background-color: #eee !important;
+  }
   
+}
+
+//table
+.scrm-table-wrap{
+  .scrm-table-wrap__table{}
+  .scrm-table-wrap__page{
+    padding:rem(20px) 0 ;
+    text-align: center;
+  }
 }

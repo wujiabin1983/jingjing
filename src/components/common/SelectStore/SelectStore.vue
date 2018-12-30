@@ -1,5 +1,5 @@
 <template >
-  <el-dialog :visible.sync="isShowDialog" :before-close="close" @open="open" class="transfer">
+  <el-dialog  title="选择组织" :visible.sync="isShowDialog" :before-close="close" @open="open"  width="800">
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="门店" name="first">
         <div class="search">

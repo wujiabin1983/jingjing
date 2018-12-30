@@ -148,8 +148,13 @@ export const constantRouterMap = [
       "component": _import('WebRoot/work/memberReturnVisit/memberReturnVisit')
     },{
       "path": "work-addMemberReturnTask",
-      "name": "会员回访",
+      "name": "会员回访-新增任务",
       "component": _import('WebRoot/work/memberReturnVisit/addMemberReturnTask')
+    },
+    {
+      "path": "work-memberReturnTaskDetails/:id",
+      "name": "会员回访-任务详情",
+      "component": _import('WebRoot/work/memberReturnVisit/memberReturnTaskDetails')
     }]
   },
 ]

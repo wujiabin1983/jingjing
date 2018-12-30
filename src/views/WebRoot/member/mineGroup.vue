@@ -5,7 +5,7 @@
             <el-card class="height55" v-if="roleBtn.addBrandGroupInfo || roleBtn.selectBrandGroupInfo">
                 <el-form :inline="true" :model="form" class="demo-form-inline">
                     <el-form-item v-if="roleBtn.addBrandGroupInfo">
-                         <i class="el-icon-plus"></i><el-button type="primary" @click="handleAdd">新建分组</el-button>
+                        <el-button type="primary" @click="handleAdd"> <i class="el-icon-plus"></i>新建分组</el-button>
                     </el-form-item>
                     <template v-if="roleBtn.selectBrandGroupInfo">
                         <el-form-item class="float-right">
