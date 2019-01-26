@@ -5,8 +5,7 @@
 			<el-card>
 				<h4>素材管理</h4>
 				<el-tabs v-model="activeName" @tab-click="handleClick" class="dsh-user">
-					<el-tab-pane label="回复图文" name="first" v-if="roleBtn['mobile-4-1']"></el-tab-pane>
-					<el-tab-pane label="微信图文" name="five" v-if="roleBtn['mobile-4-5']"></el-tab-pane>
+					<el-tab-pane label="图文消息" name="first" v-if="roleBtn['mobile-4-1']"></el-tab-pane>
 					<el-tab-pane label="图片" name="second" v-if="roleBtn['mobile-4-2']"></el-tab-pane>
 					<el-tab-pane label="语音" name="third" v-if="roleBtn['mobile-4-3']"></el-tab-pane>
 					<el-tab-pane label="视频" name="fourth" v-if="roleBtn['mobile-4-4']"></el-tab-pane>
@@ -14,10 +13,9 @@
 			</el-card>
 		</el-header>
 		<el-main>
-			<el-card v-if="roleBtn['mobile-4-1'] || roleBtn['mobile-4-5'] || roleBtn['mobile-4-2'] || roleBtn['mobile-4-3'] || roleBtn['mobile-4-4']">
+			<el-card v-if="roleBtn['mobile-4-1'] || roleBtn['mobile-4-2'] || roleBtn['mobile-4-3'] || roleBtn['mobile-4-4']">
 				<div>
 					<graphicMaterialFirst v-if="this.activeName == 'first' && roleBtn['mobile-4-1']"></graphicMaterialFirst>
-					<graphicMaterialFive v-if="this.activeName == 'five' && roleBtn['mobile-4-5']"></graphicMaterialFive>
 					<graphicMaterialSecond v-if="this.activeName == 'second' && roleBtn['mobile-4-2']"></graphicMaterialSecond>
 					<graphicMaterialThird v-if="this.activeName == 'third' && roleBtn['mobile-4-3']"></graphicMaterialThird>
 					<graphicMaterialFourth v-if="this.activeName == 'fourth' && roleBtn['mobile-4-4']"></graphicMaterialFourth>
@@ -29,7 +27,7 @@
 <script>
 	import { permission } from '@/utils'
 	// import { selectUserGroupInfo, addUserGroupInfo, updateUserGroupInfo, deleteUserGroupInfo } from '@/api/platform/userGroup'
-	import { graphicMaterialFirst, graphicMaterialFive, graphicMaterialSecond, graphicMaterialThird, graphicMaterialFourth } from '@/views/WebRoot/mobile'
+	import { graphicMaterialFirst, graphicMaterialSecond, graphicMaterialThird, graphicMaterialFourth } from '@/views/WebRoot/mobile'
 	import { mapGetters } from 'vuex'
 	export default {
 		data() {
@@ -37,7 +35,6 @@
 				// 数据
 				roleBtn: {
 					'mobile-4-1': false,
-					'mobile-4-5': false,
 					'mobile-4-2': false,
 					'mobile-4-3': false,
 					'mobile-4-4': false
@@ -50,7 +47,6 @@
 		},
 		components: {
 			graphicMaterialFirst,
-			graphicMaterialFive,
 			graphicMaterialSecond,
 			graphicMaterialThird,
 			graphicMaterialFourth
@@ -58,7 +54,7 @@
 		methods: {
 			// 方法
 			handleClick(tab, event) { // 选项卡
-				 //console.log(tab, event);
+				// console.log(tab, event);
 			},
 			handleSearch() { // 搜索
 				this.$router.push({

@@ -1,4 +1,4 @@
-// 图文素材 - 新建图文素材 - 显示图文列表
+// 图文素材 - 微信图文素材 - 显示图文列表
 <template>
 	<el-container class="app-container">
 		<el-main>
@@ -34,7 +34,7 @@
 </template>
 <script>
 	import { permission } from '@/utils'
-	import { MaterialLibraryFirstDelete } from '@/api/mobile/graphicMaterial'
+	import { MaterialLibraryFiveDelete } from '@/api/mobile/graphicMaterial'
 	import { mapGetters } from 'vuex'
 	export default {
 		data() {
@@ -81,7 +81,7 @@
 			// 方法
 			handleEdit(masterId) {
 				this.$router.push({
-					name: '图文素材图文素材新增',
+					name: '图文素材微信图文新增',
 					params: {
 						pageType: '修改',
 						masterId: masterId
@@ -99,7 +99,7 @@
 					cancelButtonText: '取消',
 					type: 'warning'
 				}).then(() => {
-					MaterialLibraryFirstDelete(params)
+					MaterialLibraryFiveDelete(params)
 						.then((res) => {
 							// console.log(res);return false;
 							let data = JSON.parse(Base64.decode(res.data)),

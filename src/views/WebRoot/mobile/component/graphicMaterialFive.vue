@@ -1,7 +1,7 @@
-<!-- 素材管理 - 回复图文 -->
+<!-- 图文素材 - 微信图文 -->
 <template>
 	<el-container>
-		<el-header class="header" v-if="roleBtn.selectImageTextMaterialInfo">
+		<el-header class="header" v-if="roleBtn.selectWechatImageTextMaterialInfo">
 			<el-form :inline="true" :model="form" class="demo-form-inline formBox">
 				<el-form-item label="">
 					<el-input v-model="form.searchInfo" placeholder="请输入标题"></el-input>
@@ -11,7 +11,7 @@
 				</el-form-item>
 			</el-form>
 			<div class="btnBox">
-				<el-button type="primary" class="marginLeft10" @click="handleAddGraphicMaterial" v-if="roleBtn.addImageTextMaterialInfo">
+				<el-button type="primary" class="marginLeft10" @click="handleAddGraphicMaterial" v-if="roleBtn.addWechatImageTextMaterialInfo">
 					新建图文素材
 				</el-button>
 				<span class="titleBox">图文消息(共<span>{{count}}</span>条)</span>
@@ -39,17 +39,18 @@
 <script>
 	import { permission } from '@/utils'
 	// import { selectUserGroupInfo, addUserGroupInfo, updateUserGroupInfo, deleteUserGroupInfo } from '@/api/platform/userGroup'
-	import graphicListShow from '@/views/WebRoot/mobile/component/graphicListShow'
+	import graphicWechatListShow from '@/views/WebRoot/mobile/component/graphicWechatListShow'
 	import { mapGetters } from 'vuex'
-	import { MaterialLibraryFirstShow } from '@/api/mobile/graphicMaterial'
+	import { Message } from 'element-ui'
+	import { MaterialLibraryFiveShow } from '@/api/mobile/graphicMaterial'
 	export default {
 		data() {
 			return {
 				// 数据
 				roleBtn: {
-					selectImageTextMaterialInfo: false,
-					addImageTextMaterialInfo: false,
-					previewImageTextMaterialInfo: false
+					selectWechatImageTextMaterialInfo: false,
+					addWechatImageTextMaterialInfo: false,
+					previewWechatImageTextMaterialInfo: false
 				},
 				form: {
 					searchInfo: ''
@@ -92,9 +93,9 @@
 					"masterId": "" // 主信息Id
 				}
 //				console.log(params);
-				MaterialLibraryFirstShow(params)
+				MaterialLibraryFiveShow(params)
 					.then((res) => {
-						//                  console.log(res);
+						                  //console.log(res);
 						let data = JSON.parse(Base64.decode(res.data)),
 							// code = data.returnCode,
 							// msg = data.returnMsg;
@@ -106,7 +107,7 @@
 						msg.forEach((val, index) => {
 							that.items.push({
 								'id': length++,
-								'component': 'graphic-list-show'
+								'component': 'graphic-wechat-list-show'
 							});
 						});
 						that.elMainLoading = false;
@@ -117,7 +118,7 @@
 			},
 			handleAddGraphicMaterial() { // 新建图文素材
 				this.$router.push({
-					name: '图文素材图文素材新增',
+					name: '图文素材微信图文新增',
 					params: {
 						pageType: '添加',
 						masterId:''
@@ -129,7 +130,7 @@
 			}
 		},
 		components: {
-			graphicListShow
+			graphicWechatListShow
 		},
 		created() {
 			// 权限

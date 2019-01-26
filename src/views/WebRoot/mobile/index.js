@@ -2,6 +2,8 @@ export { default as customMenu } from './component/customMenu' // 会员卡
 
 export { default as graphicMaterialFirst } from './component/graphicMaterialFirst' // 图文素材 - 用户管理
 
+export { default as graphicMaterialFive } from './component/graphicMaterialFive' // 图文素材 - 用户管理
+
 export { default as graphicMaterialSecond } from './component/graphicMaterialSecond' // 图文素材 - 用户管理
 
 export { default as graphicMaterialThird } from './component/graphicMaterialThird' // 图文素材 - 用户管理

@@ -1,7 +1,7 @@
 import fetch from '@/utils/fetch'
 
 /** 
- * 图文素材 - 图文信息
+ * 素材管理 - 回复图文
  */
 // 分组列表 - 显示
 export function MaterialLibraryFirstShow(data) {
@@ -47,10 +47,52 @@ export function MaterialLibraryFirstDelete(data) {
 }
 
 
+/*
+ *素材管理 - 微信图文
+ */
+// 分组列表 - 显示
+export function MaterialLibraryFiveShow(data) {
+  const result = Base64.encode(JSON.stringify(data))
+  // console.log(result);
+  return fetch({
+    url: '/I_SCRM_INTERFACE_1040.action',
+    method: 'post',
+    data: result
+  })
+}
 
+// 分组列表 - 添加
+export function MaterialLibraryFiveAdd(data) {
+  const result = Base64.encode(JSON.stringify(data))
+  // console.log(result, 'result');
+  return fetch({
+    url: '/I_SCRM_INTERFACE_1041.action',
+    method: 'post',
+    data: result
+  })
+}
 
+// 分组列表 - 修改
+export function MaterialLibraryFiveEdit(data) {
+  const result = Base64.encode(JSON.stringify(data))
+  // console.log(result, 'result');
+  return fetch({
+    url: '/I_SCRM_INTERFACE_1042.action',
+    method: 'post',
+    data: result
+  })
+}
 
-
+// 分组列表 - 修改
+export function MaterialLibraryFiveDelete(data) {
+  const result = Base64.encode(JSON.stringify(data))
+//console.log(result, 'result');
+  return fetch({
+    url: '/I_SCRM_INTERFACE_1043.action',
+    method: 'post',
+    data: result
+  })
+}
 
 
 /**
