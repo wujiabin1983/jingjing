@@ -15,8 +15,8 @@ let baseUrl = ''
 // baseUrl = '../../mock/' // mock 前后端分离测试
 // baseUrl = 'http://172.18.10.52:8080/scrm' // 本地
 // baseUrl = 'http://localhost:9999' // 本地打包 - 张婉
-// baseUrl = 'http://192.168.10.163/scrm' // 本地打包 - 丁佳佳
-baseUrl = 'http://dk.qipai.com.cn/scrm'
+ baseUrl = 'http://192.168.10.163/scrm' // 本地打包 - 丁佳佳
+// baseUrl = 'http://dk.qipai.com.cn/scrm'
 // baseUrl = 'http://dsh.nat200.top/scrm'
 
 

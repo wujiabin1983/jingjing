@@ -131,7 +131,7 @@
 						});
 					this.articleData01[0].summaryShow = false
 				}
-				//console.log(this.articleData01)
+				console.log(this.articleData01)
 			},
 			handleClickUp(index) {
 				if(index == 0) {
@@ -304,15 +304,14 @@
 					});
 			},
 			handleDelete(index) {
+				//判断单图文或多图文的标题显示方式
 				debugger
-				 console.log(index)
-				if(this.articleData01.length = 1){
-					this.articleData01[0].summaryShow = true;
-				}
 				let that = this;
-				 //console.log(this.articleData01);
 				this.$nextTick(function() {
 					that.articleData01.splice(index, 1);
+					if(this.articleData01.length == 1){
+						this.articleData01[0].summaryShow = true;
+					}
 					//console.log(that.articleData01);
 				});
 				// return false;
@@ -380,35 +379,36 @@
 		position: relative;
 		width: 100%;
 		height: 140px;
-
-	}
-	
-	.list-image {
 		cursor: pointer;
+		border-bottom:1px solid #ccc;
 	}
-	
+
 	.listImg-title {
 		width: 100%;
 		color: #000;
 		line-height: 14px;
 		padding:8px 8px;
-		font-size:14px;
+		font-size: 14px;
 	}
 
 	.listImg-title-summary {
+		border: none;
 		width: 100%;
 		color: #C0C0C0;
 		line-height: 14px;
 		padding:0px 8px 8px 8px;
-		font-size:12px;
+		font-size: 12px;
 	}
 
 	.list-title {
 		position: relative;
+		border:1px solid #ccc;
+		border-right-width: 0px;
+    	border-left-width: 0px;
+		margin-top: -1px;
 		// display: flex;
 		// justify-content: space-between;  
 		padding: 10px;
-		border: 1px solid #CCC;
 		height: 60px;
 		p {
 			margin: 0;
@@ -472,5 +472,7 @@
 		border: 1px solid #CCC;
 		font-size: 30px;
 		cursor: pointer;
+		border: none;
+
 	}
 </style>

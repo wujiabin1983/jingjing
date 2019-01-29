@@ -5,7 +5,7 @@
 			<el-row>
 				<el-col :span="7" class="el-col-container" v-loading="showLoading">
 					<el-header class="">
-						图文列表
+						图文列表-预览窗口
 					</el-header>
 					<el-main class="dsh-main">
 						<graphicWechatList ref="graphicWechatList" @cForm="handleShowInfo" :fileNameObj="fileNameObj" :checkedPic="checkedPic" :picObj="picObj"></graphicWechatList>
@@ -19,11 +19,11 @@
 						<el-form :model="form" ref="formMain" :rules="rulesForm" label-width="120px" class="demo-form">
 							<!-- 封面选择开始 -->
 							<el-form-item label="封面选择" prop="fieldUrl">
-							{{formDisabled}}
-								<el-row class="bgImage space-around" v-if="!formDisabled">
+								<el-row class="bgImage space-around">
 									<el-col :span="8">
-										<!-- fieldUrl 图片路径 -->
-										<el-input v-model="form.fieldUrl" v-show="false"></el-input>
+										<!-- fieldUrl 图片路径 预览图片显示地址 -->
+										<el-input v-model="form.fieldUrl" v-show="false" style="width:500px"></el-input>
+										<!-- <el-input v-model="form.mediaId" v-show="false" ></el-input> -->
 										<!-- 上传图片的样式 -->
 										<div class="icon-close" v-loading="imgLoading">
 											<img v-if="dialogImageUrl" :src="dialogImageUrl + '?x-oss-process=style/small'" @click="clickTest" class="avatar">
@@ -31,22 +31,14 @@
 											<i class="el-icon-circle-close" @click="handleUploadDelete"></i>
 										</div>
 
-										<!-- 上传本地文件组件 -->
-										<form :action="uploadAction" method="post" enctype="multipart/form-data" target="uploadFrame" v-show="true">
-											<input type="file" name="file" ref="uploadIpt" @change="handleSelectImg" />
-											<input type="submit" value="上传" ref="uploadSubmit" />
-										</form>
-										<!-- 上传本地文件组件 可以显示上传的地址阿里的地址 -->
-										<iframe name="uploadFrame" id="uploadFrame" v-show="true"></iframe>
-
 										<el-dialog :visible.sync="dialogVisible">
 											<img width="100%" :src="dialogImageUrl" alt="">
 										</el-dialog>
+
 										<el-dialog width="80%" :visible.sync="dialogVisiblePic" id="groupDialog">
 											<!-- 图片选择 -->
-											<!-- <div>dsaf</div> -->
 											<groupMaterialListPic v-show="dialogVisiblePic" @handleChecked="handleChecked"></groupMaterialListPic>
-											<!-- <groupMaterialList @parentMasterId="handleMasterId" ref="groupMaterialList"></groupMaterialList> -->
+
 											<span slot="footer" class="dialog-footer">
 												<el-button @click="dialogVisiblePic = false">取 消</el-button>
 												<el-button type="primary" @click="handleDialogSurePic">确 定</el-button>
@@ -57,11 +49,7 @@
 										<p class="advice">建议尺寸：900 * 500 像素</p>
 									</el-col>
 								</el-row>
-								<!-- formDisabled = false时 -->
-								<div v-else>
-									<el-input v-model="form.fieldUrl" placeholder="从图片库中选择" :disabled="formDisabled"></el-input>
-									<div class="form-item-msg">建议尺寸900*500</div>
-								</div>
+
 							</el-form-item>
 							<!-- 封面选择结束 -->
 							<el-form-item label="标题" prop="imageTextTitle">
@@ -108,14 +96,9 @@
 									</el-form-item>
 								</el-tab-pane>
 							</el-tabs>
-							<div class="formLabel" v-if="!formDisabled">
-								
-							</div>
+
 						</el-form>
-						<form :action="uploadAction" method="post" enctype="multipart/form-data" target="uploadFrame" v-show="false">
-							<input type="file" name="file" ref="uploadIpt1" @change="handleSelectImg1" />
-							<input type="submit" value="上传" ref="uploadSubmit" />
-						</form>
+
 					</el-main>
 				</el-col>
 			</el-row>
@@ -164,19 +147,18 @@
 	// 引入富文本
 	import { quillEditor } from 'vue-quill-editor'
 	import groupMaterialListPic from '@/views/WebRoot/mobile/component/groupMaterialListPic' // 图片素材
-	import { uploadImg, uploadImgQuill } from '@/api/base/brandInfo' // 上传图片接口
 	import Cookie from 'js-cookie'
 	import QRCode from 'qrcodejs2' // 二维码生成器
 	export default {
 		data() {
 			return {
 				saveLoading:false,
-				dialogVisiblePic:false,
+				//dialogVisiblePic:false,
 				dialogVisibleVideo:false,
 				dialogVisibleAudio:false,
 				videoUrl:'',
 				audioUrl:'',
-				checkedPic :[],
+				//checkedPic :[],
 				imageType:'',
 				// 图片选择
 				dialogVisiblePic: false,
@@ -185,19 +167,15 @@
 				form: {
 					imageTextTitle: '', // 标题
 					author: '', // 作者
-					coverUrl: '', // mediaId
+					coverUrl: '', //图片地址
+					mediaId: '', // mediaId
 					fieldUrl: '', // 封面图片
 					summary: '', // 摘要 abstrac,
 					mainBody: {
 						"mb01":"", // 阿里图片
 						"mb02":"" // 微信图片
 					}, // 正文
-					linkAddress: '', // 链接地址
-					"label": {
-						"read": [], //阅读
-						"share": [], // 分享
-						"collect": [] // 收藏
-					},
+					linkAddress: '' // 链接地址
 				},
 				rulesForm: {
 					imageTextTitle: [{
@@ -349,6 +327,7 @@
 			},
 			// 图片选择
 			handleChecked(str) {
+				debugger
 				this.checkedPic[0] = str.id
 			},
 			//弹出确认
@@ -356,86 +335,13 @@
 				this.dialogVisiblePic=true;
 				this.imageType="editor";
 			},
-			//选择标签
-			labelClick(val){
-				if(!val.target.parentNode.attributes[1].value){
-					return false;
-				}
-				let labelName=val.target.parentNode.attributes[1].value;
-				let labelValue=val.target.parentNode.attributes[2].value;
-				let labelCode=val.target.parentNode.attributes[3].value;
-//				console.log(labelId)
-//				console.log(labelName)
-//				console.log(labelCode)
-				if(this.labelGroupSelect.length>0){
-					let flag=0;
-					this.labelGroupSelect.forEach((val,index)=>{
-//						console.log(labelName+val.name);
-						if(labelValue==val.labelValue){
-							flag--;
-						}else{
-							flag++;
-						}
-					})
-					if(flag==this.labelGroupSelect.length){
-						this.labelGroupSelect.push({
-							labelName:labelName,
-							type:'info',
-							labelCode:labelCode,
-							labelValue:labelValue
-						})
-					}
-				}else{
-					this.labelGroupSelect.push({
-						labelName:labelName,
-						type:'info',
-						labelCode:labelCode,
-						labelValue:labelValue
-					})
-				}
-				let array=[];
-				this.labelGroup.forEach((val,index)=>{
-					if(val.labelValue!=labelValue){
-						array.push(val);
-					}
-				})
-				this.labelGroup=array;
-//				this.form.label.read =[];
-//				this.form.label.share =[];
-//				this.form.label.collect =[];
-//				console.log(JSON.stringify(this.labelGroupSelect))
-//				console.log(JSON.stringify(this.form.label.share)+"0")
-			},
-			//弹窗标签下拉监听
-			lableSelect(val) {
-				this.labelForm.labelName = this.labelName[val].labelName;
-//				this.form.levalId = this.levalInfo[val].value;
-				let array=[];
-				let str =this.labelName[val].value;
-				if(str.indexOf(',')>0){
-					array = str.split(",");
-				}else if(str.indexOf('，')>0){
-					array = str.split("，");
-				}else{
-					array = str.split(",");
-				}
-				this.labelGroup=[];
-				array.forEach((data,index)=>{
-					this.labelGroup.push({
-						labelName:this.labelForm.labelName,
-						labelCode:this.labelName[val].code,
-						labelValue:data,
-						type:'success'
-					})
-				})
-//				console.log(JSON.stringify(this.form.label.share)+"1")
-			},
 
 			// 图片选择
 			handleChecked(obj) {
-//				console.log(JSON.stringify(obj));
-				let mediaId = obj.mediaId;
+				//console.log(JSON.stringify(obj));
+				//let mediaId = obj.mediaId;
 				let fieldUrl = obj.coverUrl;
+				this.form.mediaId = obj.mediaId;
 				this.checkedPic[0] = fieldUrl;
 				this.picObj[fieldUrl] = fieldUrl;
 			},
@@ -483,6 +389,7 @@
 							...val,
 							fieldUrl: val.fieldUrl,
 							coverUrl: val.fieldUrl,
+							//mediaId: val.mediaId,
 							mainBody: {
 								mb01: val.mainBody.mb01,
 								mb02: val.mainBody.mb01	
@@ -512,57 +419,6 @@
 						.catch((err) => {
 	//						console.log(err);
 						})
-				}
-			},
-			handleSelectImg1(file) { // 上传图片
-				let that = this;
-				let files = file.target.files[0];
-				if(!files) {
-					return false;
-				}else {
-					// console.log(files)
-					// 音频限制大小2M
-					let fSize = 1024 * 1024 *1;
-					if (files.size >= fSize) {
-						this.$message({
-							message: "图片大小必须在1M以下",
-							duration: 2000
-						}) 
-						return false; 
-					}
-					//判断file的类型是不是图片类型。 
-					if (!/(png|jpg)$/.test(files.type)) { 
-						this.$message({
-							message: "图片类型仅支持png/jpg格式,不支持jpeg等其他格式",
-							duration: 2000
-						}) 
-						return false; 
-					}
-					var reader = new FileReader();
-					reader.readAsDataURL(files); //调用readAsDataURL方法来读取选中的图像文件 
-					//最后在onload事件中，获取到成功读取的文件内容，并以插入一个img节点的方式显示选中的图片 
-					reader.onload = function(e) {
-						// that.form.brandLogo = e.target.result; // 图片回填 - 本地图片
-						// that.$refs.uploadSubmit.dispatchEvent(new MouseEvent('click')); // 上传图片
-						let formData = new FormData(); // 可以增加表单数据
-						formData.append("userId", that.userInfo.userCode);
-						formData.append("file", files); // 文件对象
-						uploadImgQuill(formData)
-							.then((res) => {
-								let data = JSON.parse(Base64.decode(res.data)),
-									code = data.messageType,
-									msg = data.messageContent;
-								let fileName01 = msg.fileName01;
-								let fileName02 = msg.fileName02;
-								that.fileNameObj[fileName01] = fileName02;
-								that.$refs.newEditor.quill.insertEmbed(that.$refs.newEditor.quill.getSelection().index, 'image', fileName01)  
-								that.$message.success('上传成功');
-	//	                        console.log(msg.fileName);
-							})
-							.catch((err) => {
-								// console.log(err);
-							})
-					}
 				}
 			},
 			// 方法
@@ -639,51 +495,11 @@
 							}
 						}
 						this.saveLoading=true;
-						this.$refs.graphicWechatList.handleSave();
+						this.$refs.graphicWechatList.handleSave(); //另一页面保存
 					}
 				})
 			},
 
-			handleSelectImg(file) { // 上传图片
-				let that = this;
-				let files = file.target.files[0];
-				// console.log(files);return false;
-				if(!files) {
-					return false;
-				}else {
-					//判断file的类型是不是图片类型。 
-					if(!/image\/\w+/.test(files.type)) {
-						this.$message("请上传一张图片");
-						return false;
-					}
-					var reader = new FileReader();
-					reader.readAsDataURL(files); //调用readAsDataURL方法来读取选中的图像文件 
-					//最后在onload事件中，获取到成功读取的文件内容，并以插入一个img节点的方式显示选中的图片 
-					reader.onload = function(e) {
-						that.imgLoading = true;
-						// that.form.brandLogo = e.target.result; // 图片回填 - 本地图片
-						// that.$refs.uploadSubmit.dispatchEvent(new MouseEvent('click')); // 上传图片
-						let formData = new FormData(); // 可以增加表单数据
-						formData.append("file", files); // 文件对象
-						uploadImg(formData)
-							.then((res) => {
-								let data = JSON.parse(Base64.decode(res.data)),
-									code = data.messageType,
-									msg = data.messageContent;
-								//                          console.log(msg.fileName)
-								that.form.fieldUrl = msg.fileName; // 图片赋值
-								// that.form.coverUrl = e.target.result; // 图片回填 - 本地图片
-								that.dialogImageUrl = msg.fileName; // 图片回填 - 本地图片
-								that.imgLoading = false;
-								that.$message.success('上传成功');
-							})
-							.catch((err) => {
-								that.imgLoading = false;
-								// console.log(err);
-							})
-					}
-				}
-			},
 			clickTest() {
 				// 点击测试
 				// if(!this.$refs.uploadIpt) {
@@ -700,7 +516,8 @@
 			handleUploadDelete() { // 删除图片
 				this.dialogImageUrl = '';
 				this.form.brandLogo = '';
-				this.$refs.uploadIpt.value = '';
+				this.form.fieldUrl = '';
+				//this.$refs.uploadIpt.value = '';
 			},
 
 			showDataInfo(){
@@ -747,24 +564,6 @@
 				userId: this.userInfo.userCode
 			}
 			let that = this;
-			selectLabelData(params) //请求标签列表
-				.then(function(res) {
-					let data = JSON.parse(Base64.decode(res.data));
-//                  console.log(JSON.stringify(data)+"标签列表");
-                    data.messageContent.forEach((val,index)=>{
-                    	that.labelName.push({
-                    		index:index,
-                    		labelName:val.labelName,
-                    		value:val.labelValue,
-                    		code:val.labelCode
-                    	})
-                    })
-					that.tableLoading = false;
-				})
-				.catch(function(err) {
-//					console.log(err);
-					that.tableLoading = false;
-				});
 			getCustomLinksConstCustomize(params).then((res) => {
 				let data = JSON.parse(Base64.decode(res.data)),
 					code = data.messageType,
