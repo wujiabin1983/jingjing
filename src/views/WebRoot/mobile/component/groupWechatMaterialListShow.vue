@@ -15,7 +15,7 @@
 					</div>
 				</div>
 				<!-- 图文列表 -->
-				<div class="list-title" v-for="(item, index) in childDataLists" v-if="index>0" :key="item">
+				<div class="list-title" v-for="(item, index) in childDataLists" v-if="index>0" :key="index">
 					<p>{{item.imageTextTitle}}</p>
 					<img :src="item.coverUrl" alt="">
 				</div>
@@ -24,7 +24,7 @@
 	</el-container>
 </template>
 <script>
-	import { MaterialLibraryFiveDelete } from '@/api/mobile/graphicMaterial'
+	import { MaterialLibraryFirstDelete } from '@/api/mobile/graphicMaterial'
 	import { mapGetters } from 'vuex'
 	export default {
 		data() {
@@ -82,7 +82,7 @@
 					'userId': this.userInfo.userCode,
 					'masterId': masterId
 				}
-				MaterialLibraryFiveDelete(params)
+				MaterialLibraryFirstDelete(params)
 					.then((res) => {
 						// console.log(res);return false;
 						let data = JSON.parse(Base64.decode(res.data)),

@@ -72,7 +72,7 @@
 						<el-form :model="form" ref="form" label-width="80px" class="demo-form">
 							<el-tabs v-model="activeName" @tab-click="handleClick">
 								<el-tab-pane label="编辑正文" name="first">
-									<quill-editor ref="newEditor" v-if="!formDisabled" :content="form.mainBody.mb01" :options="editorOption" @change="onEditorChange($event)">
+									<quill-editor class="quill-editor" ref="newEditor" v-if="!formDisabled" :content="form.mainBody.mb01" :options="editorOption" @change="onEditorChange($event)">
 									</quill-editor>
 									<div v-else>
 										<!-- formDisabled  mainBody -->
@@ -81,22 +81,19 @@
 										</el-form-item>
 									</div>
 								</el-tab-pane>
-								<el-tab-pane label="阅读原文链接" name="second">
-									<el-form-item label="链接地址">
-										<el-input placeholder="请输入链接地址" v-model="form.linkAddress" :readonly="true">
-										</el-input>
-										<el-dropdown @command="handleCommand" >
-											<span class="el-dropdown-link">
-                                                    选择链接地址<i class="el-icon-arrow-down el-icon--right"></i>
-                                                </span>
-											<el-dropdown-menu slot="dropdown" class="dsh-dropdown-menu">
-												<el-dropdown-item v-for="item in customLink" :key="item.name" :command="item.url">{{item.name}}</el-dropdown-item>
-											</el-dropdown-menu>
-										</el-dropdown>
-									</el-form-item>
-								</el-tab-pane>
 							</el-tabs>
-
+							<el-form-item label="阅读原文" class="readtext">
+								<el-input placeholder="请输入链接地址" v-model="form.linkAddress" :readonly="false">
+								</el-input>
+								<el-dropdown @command="handleCommand" >
+									<span class="el-dropdown-link">
+                                            选择链接地址<i class="el-icon-arrow-down el-icon--right"></i>
+                                        </span>
+									<el-dropdown-menu slot="dropdown" class="dsh-dropdown-menu">
+										<el-dropdown-item v-for="item in customLink" :key="item.name" :command="item.url">{{item.name}}</el-dropdown-item>
+									</el-dropdown-menu>
+								</el-dropdown>
+							</el-form-item>
 						</el-form>
 
 					</el-main>
@@ -731,7 +728,7 @@
 		font-size: 28px;
 		color: #8c939d;
 		border: 1px dashed #d9d9d9;
-		border-radius: 8px;
+		border-radius: 3px;
 		width: 100%;
 		height: 100px;
 		line-height: 100px;
@@ -809,12 +806,17 @@
 		height:200px;
 		overflow: auto;
 	}
-	.formLabel{
-		border-top: 1px solid #d2d2d2; 
+	.readtext{
 		padding-top: 10px;
 		margin-top: 10px;
 	}
 	.width300{
 		width: 300px;
+	}
+	.quill-editor{
+		height:200px;
+		margin-bottom:68px;
+		mragin-left:50px;
+		mragin-right:50px;
 	}
 </style>

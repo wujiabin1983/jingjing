@@ -36,7 +36,7 @@
 				<el-button @click="handleBack" class="marginLeft10">返回</el-button>
 				<div>
 					<div class="component" v-for="(item, index) in checked" :key="items.id">
-						<groupMaterialListShow :childDataLists="item" :isCheckBox="false" ref="groupMaterialListShow" class="groupMaterialList"></groupMaterialListShow>
+						<groupWechatMaterialListShow :childDataLists="item" :isCheckBox="false" ref="groupWechatMaterialListShow" class="groupWechatMaterialList"></groupWechatMaterialListShow>
 					</div>
 				</div>
 			</el-card>
@@ -51,7 +51,7 @@
 		<el-button type="primary" class="sendButton" @click="handleCommit" v-if="roleBtn.sendCustomizeMenuInfo">发送</el-button>
 		<el-dialog width="80%" :visible.sync="dialogVisible">
 			<!-- 素材选择 -->
-			<groupMaterialList ref="groupMaterialList" @parentMasterId="handleMasterId"></groupMaterialList>
+			<groupWechatMaterialList ref="groupWechatMaterialList" @parentMasterId="handleMasterId"></groupWechatMaterialList>
 			<span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="enterMaster">确 定</el-button>
@@ -166,8 +166,8 @@
 	import { permission } from '@/utils'
 	import { mapGetters } from 'vuex'
 	import logo from '@/assets/images/000247589.jpg'
-	import groupMaterialList from '@/views/WebRoot/mobile/component/groupMaterialList' // 图文素材
-	import groupMaterialListShow from '@/views/WebRoot/mobile/component/groupMaterialListShow'
+	import groupWechatMaterialList from '@/views/WebRoot/mobile/component/groupWechatMaterialList' // 图文素材
+	import groupWechatMaterialListShow from '@/views/WebRoot/mobile/component/groupWechatMaterialListShow'
 	import { groupMsgMasterAdd, groupMsgMasterEdit, groupMsgMasterNum, selectInfo, I_SCRM_INTERFACE_842 } from '@/api/mobile/groupMsgMaster'
 	import { selectGroupAll } from '@/api/member/group'
 //	import { quillEditor } from 'vue-quill-editor'
@@ -282,8 +282,8 @@
 		props: ['childData'],
 		components: {
 //			quillEditor, // 富文本
-			groupMaterialList,
-			groupMaterialListShow,
+			groupWechatMaterialList,
+			groupWechatMaterialListShow,
 			groupCard
 		},
 		methods: {
@@ -658,7 +658,7 @@
 			handleSucaiku() {
 				this.dialogVisible = true;
 				this.$nextTick(function(){
-					this.$refs.groupMaterialList.handleShow(this.page,this.limit,'');
+					this.$refs.groupWechatMaterialList.handleShow(this.page,this.limit,'');
 				})
 //				this.form.content.type = '素材库';
 			},
@@ -1163,7 +1163,7 @@
 		text-align: center;
 		font-size: 16px;
 	}
-	.groupMaterialList{
+	.groupWechatMaterialList{
 		width: 250px;
 	}
 </style>

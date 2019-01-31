@@ -4,7 +4,7 @@
 		<el-main>
 			<el-card class="card cardGraphicListShow">
 				<!-- 主标题图片 -->
-				<div class="list-image" @click.stop="handleClickCard(0)">
+				<div class="list-image" :class="[indexclass == 0 ? listborder : '' ]" @click.stop="handleClickCard(0)">
 					<img :src="!articleData01[0].fieldUrl ? '' : articleData01[0].fieldUrl" alt="" class="image">
 					<div class="listImg-operate-title" v-show="!articleData01[0].summaryShow">
 						{{ !articleData01[0].imageTextTitle ? '' : articleData01[0].imageTextTitle }}
@@ -17,7 +17,7 @@
 					{{ !articleData01[0].summary ? '' : articleData01[0].summary }}
 				</div>
 				<!-- 图文列表 -->
-				<div class="list-title" @mouseover="handleTitleShow(index)" @mouseout="handleTitleHide(index)" @click.stop="handleClickCard(index)" v-for="(item, index) in articleData01" v-if="index > 0" :key="index">
+				<div class="list-title" :class="[indexclass==index ? listborder : '' ]" @mouseover="handleTitleShow(index)" @mouseout="handleTitleHide(index)" @click.stop="handleClickCard(index)" v-for="(item, index) in articleData01" v-if="index > 0" :key="index">
 					<p>{{ !item.imageTextTitle ? '' : item.imageTextTitle }}</p>
 					<img :src="!item.fieldUrl ? '' : item.fieldUrl" alt="">
 					<div class="listImg-operate" v-show="!item.titleShow ? '' : item.titleShow">
@@ -73,7 +73,9 @@
 					// }
 				],
 				articleData02: [],
-				clickIndex: 0
+				clickIndex: 0,
+				listborder:"list-border",
+				indexclass:-1
 			}
 		},
 		props: ['pTitle', 'fileNameObj', 'picObj'],
@@ -88,6 +90,7 @@
 			},
 			handleClickCard(clickIndex) {
 				this.$emit('cForm', this.articleData01[clickIndex]);
+				this.indexclass = clickIndex;
 			},
 
 			handleShow(start, limit, masterId) { // 显示数据信息
@@ -131,7 +134,7 @@
 						});
 					this.articleData01[0].summaryShow = false
 				}
-				console.log(this.articleData01)
+				//console.log(this.articleData01)
 			},
 			handleClickUp(index) {
 				if(index == 0) {
@@ -305,7 +308,6 @@
 			},
 			handleDelete(index) {
 				//判断单图文或多图文的标题显示方式
-				debugger
 				let that = this;
 				this.$nextTick(function() {
 					that.articleData01.splice(index, 1);
@@ -474,5 +476,10 @@
 		cursor: pointer;
 		border: none;
 
+	}
+
+	.list-border {
+		border:1px dashed #009ee2;
+		z-index:999;
 	}
 </style>

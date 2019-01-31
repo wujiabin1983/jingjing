@@ -76,7 +76,7 @@
 				checked: [], // 素材项目选择 el-checkbox-group
 				checkedIdList: [], // 被选中的卡片id
 				checkedAll: false, // 是否全选 多选
-				isIndeterminate: false, // 
+				isIndeterminate: false, //
 				cardItems: [],
 					// {
 					//     fileType: '',
