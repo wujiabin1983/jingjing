@@ -9,6 +9,7 @@ import './styles/scrm-fonts/iconfont.css'
 import App from './App'
 import router from './router'
 import store from './store'
+import fun from './utils/fun'
 import '@/icons' // icon
 import '@/permission' // 权限
 
@@ -37,7 +38,7 @@ Vue.use(ElementUI, { size: 'small' })
 Vue.config.productionTip = false
 
 Vue.prototype.$Lodash = lodash;
-
+Vue.prototype.$Fun = fun;
 new Vue({
   el: '#app',
   router,

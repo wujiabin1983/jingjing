@@ -1,42 +1,30 @@
-<!--回访任务列表-->
+<!--问卷列表-->
 <template>
   <el-container class="app-container">
 		<el-header>
-			<el-card v-if="roleBtn.addMemberReturnTask">
-        <el-button type="primary" @click="addTask" v-if="roleBtn.addMemberReturnTask">新建任务</el-button>
+			<el-card v-if="roleBtn.addQuestionnaireTemplate">
+        <el-button type="primary" @click="addTask" v-if="roleBtn.addQuestionnaireTemplate">新建模版</el-button>
 			</el-card>
 		</el-header>
 		<el-main>
 			<el-card>
 				<el-table ref="tableData" v-loading="this.tableLoading" :data="tableData">
 					<el-table-column prop="createOn"  label="创建时间"></el-table-column>
-					<el-table-column prop="taskName"  label="回访标题"></el-table-column>
-					<el-table-column prop="createdBy" label="操作者"></el-table-column>
-					<el-table-column prop="taskDate" label="回访时间">
-            <template  slot-scope="scope">
-              {{scope.row.taskDate.taskDateBegin}}-{{scope.row.taskDate.taskDateEnd}}
-            </template>
-          </el-table-column>
-					<el-table-column prop="visitedQty" label="回访人数">
-            <template slot-scope="scope">
-              {{scope.row.visitedQty}}/{{scope.row.ttlVisitedQty}}
-            </template>
-          </el-table-column>
-					<el-table-column prop="taskStatus" label="任务状态"></el-table-column>
+					<el-table-column prop="templateName"  label="模版名称"></el-table-column>
+					<el-table-column prop="createdBy" label="创建人"></el-table-column>
+					<el-table-column prop="templateDesc" label="模版说明"></el-table-column>
 					<el-table-column prop="action" label="操作">
 						<template slot-scope="scope">
 							<el-tooltip class="item" content="查看" placement="top">
 								<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="viewTask(scope.row)" />
 							</el-tooltip>
-							<el-tooltip class="item" content="修改" placement="top" v-if="roleBtn.updateMemberReturnTask ">
+							<el-tooltip class="item" content="修改" placement="top" v-if="roleBtn.updateQuestionnaireTemplate">
 								<icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="updateTask(scope.row)" />
 							</el-tooltip>
-              <!-- 正在执行/已结束/已停止/待执行 -->
-
-							<el-tooltip class="item" content="启用/禁用" placement="top" v-if="roleBtn.forbiddenMemberReturnTask && scope.row.taskStatus!='已结束'">
+							<el-tooltip class="item" content="确认" placement="top" v-if="roleBtn.forbiddenQuestionnaireTemplate">
 								<icon-svg icon-class="queren" id="icon-queren" @click.native.prevent="changeTaskStatus(scope.row)" />
 							</el-tooltip>
-							<el-tooltip class="item" content="删除" placement="top" v-if="roleBtn.deleteMemberReturnTask">
+							<el-tooltip class="item" content="删除" placement="top" v-if="roleBtn.apiDeleteQuestionnaireTemplate">
 								<icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="deleteTask(scope.row)" />
 							</el-tooltip>
 						</template>
@@ -46,7 +34,6 @@
 				<el-footer v-if="count != 0">
           <el-pagination background class="pagination" layout="prev, pager, next, jumper" :page-size="search.limit" :total="count" @current-change="handleCurrentChange">
           </el-pagination>
-         
 				</el-footer>
 			</el-card>
 		</el-main>
@@ -55,7 +42,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { permission } from '@/utils'
-import { apiGetMemberReturnVisitList,apiDeleteMemberReturnTask,apiStartMemberReturnTask,apiStopMemberReturnTask } from '@/api/work/memberReturnVisit.js'
+import { apiAddQuestionnaireTemplate,apiDeleteQuestionnaireTemplate,apiStartQuestionnaireTemplate,apiStopQuestionnaireTemplate } from '@/api/work/memberReturnVisit.js'
 export default {
   data(){
     return{
@@ -67,10 +54,10 @@ export default {
       count:0,
       // 权限
       roleBtn: {
-        addMemberReturnTask: true,
-        updateMemberReturnTask: true,
-        forbiddenMemberReturnTask: true,
-        deleteMemberReturnTask: true,
+        addQuestionnaireTemplate: true,
+        updateQuestionnaireTemplate: true,
+        forbiddenQuestionnaireTemplate: true,
+        apiDeleteQuestionnaireTemplate: true,
       },
       tableLoading:false,
       // 表格数据
@@ -93,7 +80,7 @@ export default {
       let params = this.$Lodash.cloneDeep(this.search)
       this.tableLoading = true;
       // 查询接口
-      apiGetMemberReturnVisitList(params).then((res)=> {
+      apiAddQuestionnaireTemplate(params).then((res)=> {
         let result = JSON.parse(Base64.decode(res.data));
         console.log(result)
         // if(data.messageType=='SUCCESS') {
@@ -121,37 +108,35 @@ export default {
     },
     addTask(){
       this.$router.push({
-        path:'work-addUpdateMemberReturnTask'
+        path:'/work/work-memberReturnVisit/addUpdateQuestionnaireTemplate'
       })
     },
     // 图标 - 查看
     viewTask(row) {
-      console.log(row)
-      this.$router.push({
-        path: `work-memberReturnTaskDetails/${row.id}`
-      });
+      
     },
     updateTask(row) {
       var data = JSON.stringify(row);
+      this.$router.push({
+        path:`/work/work-memberReturnVisit/addUpdateQuestionnaireTemplate/${row.id}`
+      })
     },
     changeTaskStatus(row){
-      // 正在执行/已结束/已停止/待执行
       let taskStatus = row.taskStatus
-      if(taskStatus == '已结束') return
-
       let params = {
         userId:this.userInfo.userCode,
         id:row.id,
+        templateName:row.templateName,
         version:row.version
       }
-      if(taskStatus=='正在执行'){ //禁止
+      if(taskStatus==0){ //禁止
         this.stopTask(params)
       }else{
         this.startTask(params)
       }
     },
-    stopTask(params){
-      apiStopMemberReturnTask(params).then((res)=> {
+    stopTask(){
+      apiStopQuestionnaireTemplate(params).then((res)=> {
         let result = JSON.parse(Base64.decode(res.data));
         console.log(result)
         if(data.messageType=='SUCCESS') {
@@ -171,8 +156,8 @@ export default {
         this.tableLoading = false;
       });
     },
-    startTask(params){
-      apiStartMemberReturnTask(params).then((res)=> {
+    startTask(){
+      apiStartQuestionnaireTemplate(params).then((res)=> {
         let result = JSON.parse(Base64.decode(res.data));
         console.log(result)
         if(data.messageType=='SUCCESS') {
@@ -196,9 +181,9 @@ export default {
       let params={
         userId:this.userInfo.userCode,
         id:row.id,
-        taskName:row.taskName
+        templateName:row.templateName
       }
-      apiDeleteMemberReturnTask(params).then((res)=> {
+      apiDeleteQuestionnaireTemplate(params).then((res)=> {
         let result = JSON.parse(Base64.decode(res.data));
         console.log(result)
         if(data.messageType=='SUCCESS') {
