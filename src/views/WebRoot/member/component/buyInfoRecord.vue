@@ -34,7 +34,7 @@
                 		<div class="page"><img :src="scope.row.goodUrl"/></div>
                 	</template>
 				</el-table-column>
-				<el-table-column prop="goodInfo" width="200" label="商品信息"></el-table-column>
+				<el-table-column prop="goodInfo" width="300" label="商品信息"></el-table-column>
 				<el-table-column prop="goodColor" label="颜色"></el-table-column>
 				<el-table-column prop="goodSize" label="尺码"></el-table-column>
 				<el-table-column prop="qty" label="数量"></el-table-column>

@@ -102,7 +102,7 @@
 	                </el-footer>
 	            </el-card>
 			</el-tab-pane>
-			<el-tab-pane label="审核列表" name="second">
+			<el-tab-pane label="审核列表" name="second" v-if="roleBtn.checkActivityManagementInfo">
 				<el-header>
 		            <el-card>
 						<el-form :inline="true" :model="formTab" class="demo-form-inline">
@@ -202,7 +202,8 @@ export default {
 				"deleteActivityManagementInfo":false,
 				"disableActivityManagementInfo":false,
 				"enableActivityManagementInfo":false,
-				"createActiveTemplateInfo":false
+				"createActiveTemplateInfo":false,
+				"checkActivityManagementInfo":false
 			},
         	handleStoreDialog:false,//驳回弹窗
         	activeName: 'first',

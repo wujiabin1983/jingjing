@@ -146,6 +146,7 @@ import logo from '@/assets/logo.png'
 import Cookies from 'js-cookie'
 // vuex
 import { mapGetters } from 'vuex'
+import router from '@/router'
 const isMobiles = (rule, value, callback) => {
 	if(!validateMobile(value)) {
 		callback(new Error('请输入正确的手机号码'))
@@ -350,11 +351,22 @@ export default {
         },
         handleCommand(command) {
             if(command == '退出') {
-                this.logout();
-                return
+                //this.logout();
+                //return
+                sessionStorage.removeItem('loginRadio')
+                sessionStorage.removeItem('roles')
+                sessionStorage.removeItem('router')
+                sessionStorage.removeItem('userAccount')
+                sessionStorage.removeItem('GetEmplayeeNum')
+                sessionStorage.removeItem('userId')
+                sessionStorage.removeItem('userToken')
+                sessionStorage.removeItem('userType')
+                router.push({
+                    path: '/login'
+                });
             }
             this.handleSwitch(command)
-            
+
         },
         handleSwitch(str) {
             let that = this;

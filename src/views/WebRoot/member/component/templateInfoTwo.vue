@@ -91,8 +91,10 @@
 						</el-radio-group>
 					</el-form-item>
 					<el-form-item label="会员等级" prop="levalName">
-						<el-input v-model="customConditionForm.levalName" :disabled="true" placeholder="请输入会员等级" v-if="this.getPageType=='查看'" class="width220"></el-input>
-						<el-select v-model="customConditionForm.levalName" placeholder="请选择" v-else @change="levalSelect" class="width220">
+						<!-- <el-input v-model="customConditionForm.levalName" :disabled="true" placeholder="请输入会员等级" v-if="this.getPageType=='查看'" class="width220"></el-input> -->
+						<el-input v-model="memberLevelStr" multiple :disabled="true" placeholder="请输入会员等级" v-if="this.getPageType=='查看'" class="width220"></el-input>
+						<!-- <el-select v-model="customConditionForm.levalName" placeholder="请选择" v-else @change="levalSelect" class="width220">  -->
+						<el-select v-model="memberLevel" multiple placeholder="请选择" v-else @change="memLevel" class="width220">
 							<el-option v-for="item in levalInfo" :key="item.key" :label="item.key" :value="item.index">
 							</el-option>
 						</el-select>
@@ -298,6 +300,8 @@
 				searchContent: '', //门店名称或编码
 				storeArr: '',
 				levalInfo: [], //会员等级
+				memberLevel:[], //等级容器
+				memberLevelStr:'', //查看等级
 				tableLoading: '', // 等待框
 				activeObject: '预置分组', // 活动对象
 				// form表单数据
@@ -357,6 +361,7 @@
 					sex: '不限', // 性别
 					levalName: '', // 会员等级
 					levalId: '', // 会员等级
+					memLevalList: '',//等级多选未实现
 					memberConsume: '',
 					langTime: '', // 入会时长
 					birthdayDay: '否', // 生日当天会员
@@ -809,6 +814,19 @@
 				this.customConditionForm.levalId = this.levalInfo[val].value;
 				this.customConditionForm.levalName = this.levalInfo[val].key;
 			},
+			//等级多选
+			memLevel(val) {
+		  		let str = '';
+		  		this.customConditionForm.memLevalList=[];
+		  		val.forEach((value,index)=>{
+		  			this.customConditionForm.memLevalList.push({
+		  				code:this.levalInfo[value].value,
+		  				name:this.levalInfo[value].key
+		  			})
+		  		})
+		  		this.customConditionForm.memLevalList=JSON.stringify(this.customConditionForm.memLevalList);
+		  		//console.log(JSON.stringify(this.customConditionForm.memLevalList))
+			},
 			// 单选
 			radioActiveObjectHandle(str) {
 				//          console.log(str);
@@ -1207,6 +1225,17 @@
 						this.memberConsume1 =this.customConditionForm.memberConsume;
 					}
 				}
+
+				//debugger查看等级回写
+				if(res.customConditions.memLevalList!=""){
+					let memLevalList = res.customConditions.memLevalList;
+					memLevalList.forEach((val,index)=>{
+						that.memberLevelStr = that.memberLevelStr + val.name + ','
+					})
+					//that.memberLevel=JSON.stringify(that.memberLevel);
+				}
+
+
 				if(res.chooseUser != "") {
 					this.activeObject = "选择用户";
 					this.radiusType = "选择用户";
@@ -1252,12 +1281,23 @@
 					this.activeObject = "会员分组";
 					this.radiusType = "会员分组";
 				}
+
 				if(res.customConditions != "") {
 					this.activeObject = "自定义条件";
 					this.radiusType = "自定义条件";
 					let msg = res.customConditions;
 					this.customConditionForm=msg
 					this.consumption = this.customConditionForm.memberConsume.type;
+					//debugger
+					if(this.customConditionForm.memLevalList!=""){//等级回显
+						this.customConditionForm.memLevalList.forEach((val,index)=>{
+							that.levalInfo.forEach((v,i)=>{
+								if(val.code==v.value){
+									that.memberLevel.push(v.index);
+								}
+							})
+						})
+					}
 					if(this.consumption == "单笔消费") {
 						this.compareDisabled1=false;
 						this.compareDisabled2=true;
