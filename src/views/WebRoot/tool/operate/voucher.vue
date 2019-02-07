@@ -445,7 +445,6 @@
 			//消费者等级consumerGrade
 			leavelChange(data) {
 				let str = '';
-				//				console.log(val)
 				data.forEach((val, index) => {
 					str += val + ",";
 				})
@@ -1261,6 +1260,7 @@
 				// console.log(this.form.couponType.coupName)
 				this.storeArr = this.form.useObject.nameArray;
 				this.leavel = this.form.consumerGrade.split(",");
+				//console.log(this.leavel)
 				//兑换持续时间
 				if(this.form.exchangeDate != "长期") {
 					this.timeRangeArr.push(res.exchangeDate.exchangeDateBegin);
