@@ -1,8 +1,6 @@
-<!--旧页面-->
 <template>
   <el-card class="centerInfo add-member-return-task-wrap">
     <el-form :model="form" v-loading="loading" :rules="rules" ref="form" label-width="120px" class="from-wrap">
-  
       <el-form-item label="回访标题" prop="taskName">
         <el-input v-model="form.taskName" placeholder="请输入回访标题"></el-input>
       </el-form-item>
@@ -15,13 +13,13 @@
       <!-- 回访对象 -->
       <h2>回访对象</h2>
       <el-form-item label="会员分组" prop="storeGroupName">
-        <el-input v-model="selectGroupInfo.groupName" placeholder="请输入内容"></el-input>
+        <el-input v-model="selectGroupInfo.groupName" placeholder="请选择" :disabled="true"></el-input>
         <el-button type="primary" @click="openSelectGroup">选择分组</el-button>
       </el-form-item>
       <el-form-item label="组织选择" prop="storeGroupDesc">
         <!-- 门店 -->
         {{selectStoreInfo}}
-        <el-input v-model="selectStoreInfo.nameArray" :disabled="false" placeholder="请输入内容"></el-input>
+        <el-input v-model="selectStoreInfo.nameArray" :disabled="true" placeholder="请选择"></el-input>
         <el-button type="primary" @click="openStore">选择门店</el-button>
       </el-form-item>
       <el-form-item label="性别" prop="sex">
@@ -102,7 +100,7 @@
 </template>
 
 <script>
-import { apiAddMemberReturnTask } from '@/api/work/memberReturnVisit.js'
+import { apiAddMemberReturnTask, apiUpdateMemberReturnTask, apiGetMemberReturnTaskDetails } from '@/api/work/memberReturnVisit.js'
   import SelectGroup from '@/components/common/SelectGroup/SelectGroup.vue'
   import SelectStore from '@/components/common/SelectStore/SelectStore.vue'
   import {
@@ -223,6 +221,7 @@ import { apiAddMemberReturnTask } from '@/api/work/memberReturnVisit.js'
     },
     mounted() {
       this.getLevalData()
+      this.getDetails()
     },
     methods: {
       initForm() {
@@ -235,13 +234,32 @@ import { apiAddMemberReturnTask } from '@/api/work/memberReturnVisit.js'
           desc: ''
         }
       },
-      
-      handleBack() {
-  
-      },
       reset() {
         this.initForm()
       },
+      getDetails(){
+        apiGetMemberReturnTaskDetails({
+          userId: this.userInfo.userCode,
+          id: this.currentId
+        }).then((res) => {
+          let { messageType, messageContent} = JSON.parse(Base64.decode(res.data));
+          if (messageType == 'SUCCESS') {
+            this.from = messageContent
+          } else {
+            this.$message({
+              message: '系统错误',
+              type: 'warning'
+            });
+          }
+          this.loading = false;
+        }).catch((err) => {
+          this.loading = false;
+        });
+      },
+      handleBack() {
+  
+      },
+      
       openSelectGroup() {
         this.isShowSelectGroup = true
       },
@@ -323,32 +341,67 @@ import { apiAddMemberReturnTask } from '@/api/work/memberReturnVisit.js'
         this.$refs.form.validate((valid) => {
           if (!valid) return
           this.loading = true;
-          this.form.memberGroup  = this.selectGroupInfo
-          this.form.relationObj = this.selectStoreInfo
-
-          apiAddMemberReturnTask(this.form).then((res) => {
-            this.loading = false;
-            
-            let data = JSON.parse(Base64.decode(res.data));
-            let result = [];
-            if(data.messageType=='SUCCESS') {
-              this.$message.success("新增成功");
-            // this.$router.push('work-memberReturnVisit')
-            } else {
-              this.$message({
-                message: data.messageContent,
-                type: 'warning'
-              });
-            }
-            this.tableLoading = false;
-          }).catch((err) => {
-            this.loading = false;
-            this.$message({
-                message: err,
-                type: 'warning'
-              });
-          });
+          if(this.currentId) this.update()
+          this.add()
         })
+
+        // this.form.userId = this.userInfo.userCode
+        // console.log(this.form)
+        // this.$refs.form.validate((valid) => {
+        //   if (!valid) return
+        //   this.loading = true;
+        //   this.form.memberGroup  = this.selectGroupInfo
+        //   this.form.relationObj = this.selectStoreInfo
+
+        // })
+      },
+      add(){
+        apiAddMemberReturnTask(this.form).then((res) => {
+          this.loading = false;
+          
+          let data = JSON.parse(Base64.decode(res.data));
+          let result = [];
+          if(data.messageType=='SUCCESS') {
+            this.$message.success("新增成功");
+          // this.$router.push('work-memberReturnVisit')
+          } else {
+            this.$message({
+              message: data.messageContent,
+              type: 'warning'
+            });
+          }
+          this.tableLoading = false;
+        }).catch((err) => {
+          this.loading = false;
+          this.$message({
+              message: err,
+              type: 'warning'
+            });
+        });
+      },
+      update(){
+        apiUpdateMemberReturnTask(this.form).then((res) => {
+          this.loading = false;
+          
+          let data = JSON.parse(Base64.decode(res.data));
+          let result = [];
+          if(data.messageType=='SUCCESS') {
+            this.$message.success("新增成功");
+          // this.$router.push('work-memberReturnVisit')
+          } else {
+            this.$message({
+              message: data.messageContent,
+              type: 'warning'
+            });
+          }
+          this.tableLoading = false;
+        }).catch((err) => {
+          this.loading = false;
+          this.$message({
+              message: err,
+              type: 'warning'
+            });
+        });
       }
     },
   }

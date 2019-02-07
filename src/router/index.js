@@ -146,15 +146,24 @@ export const constantRouterMap = [
       "path": "work-memberReturnVisit",
       "name": "会员回访",
       "component": _import('WebRoot/work/memberReturnVisit/memberReturnVisit')
-    },{
-      "path": "work-addMemberReturnTask",
-      "name": "会员回访-新增任务",
-      "component": _import('WebRoot/work/memberReturnVisit/addMemberReturnTask')
+    },
+    {
+      "path": "work-addUpdateMemberReturnTask",
+      "name": "会员回访-新增/编辑回访任务",
+      "component": _import('WebRoot/work/memberReturnVisit/addUpdateMemberReturnTask')
     },
     {
       "path": "work-memberReturnTaskDetails/:id",
       "name": "会员回访-任务详情",
       "component": _import('WebRoot/work/memberReturnVisit/memberReturnTaskDetails')
+    },{
+      "path": "work-memberReturnVisit/questionnaireTemplate",
+      "name": "会员回访-问卷模版",
+      "component": _import('WebRoot/work/memberReturnVisit/questionnaireTemplate')
+    },{
+      "path": "work-memberReturnVisit/addUpdateQuestionnaireTemplate/:id?",
+      "name": "会员回访-新增/编辑问卷模版",
+      "component": _import('WebRoot/work/memberReturnVisit/addUpdateQuestionnaireTemplate')
     }]
   },
 ]
