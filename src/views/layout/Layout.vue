@@ -83,7 +83,7 @@
                     <el-button type="primary" @click="dialogVisible3 = false">确 定</el-button>
                 </div>
             </el-dialog>
-        <div class="sidebar-wrapper">
+        <div class="sidebar-wrapper" :style="{backgroundImage: 'url(' + nav_bg + ')'  }">
             <div class="siderbar-user-wrap">
                 <div class="user-info">
                     <div class="avatar-box">
@@ -140,6 +140,7 @@ import { Navbar, Sidebar, AppMain } from '@/views/layout'
 import { isvalidUsername, validateMobile,validatePassword } from '@/utils/validate';
 import sidebarBg from '@/assets/pictures.png'
 import sidebarBg2 from '@/assets/585f884.jpg'
+import nav_bg from '@/assets/nav_bg.png'
 import { importStaffManagement } from '@/api/base/staffManagement.js'
 import logo from '@/assets/logo.png'
 // cookies
@@ -192,6 +193,7 @@ export default {
         //   图片
         sidebarBg,
         sidebarBg2,
+        nav_bg: nav_bg,
         sidebarBgStyle: {
             'background-image': 'url(' + sidebarBg + ')',
             'background-repeat': 'no-repeat'
@@ -694,7 +696,10 @@ export default {
             z-index: 1001;
             overflow: hidden;
             transition: all .28s ease-out;
-            background:url('../../assets/nav_bg.png') 50% 50%/cover no-repeat;
+            //background:url('../../assets/nav_bg.png') 50% 50%/cover no-repeat;
+            //background-position: 50% 50%; 　
+　　        //background-size: cover;
+            //background-repeat: repeat-y;
             .sidebarBg {
                 position: absolute;
                 left: 0;

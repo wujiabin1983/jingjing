@@ -95,7 +95,7 @@ export function apiGetMemberReturnRecord(data) {
 export function apiGetQuestionnaireTemplateList(data) {
   let result = Base64.encode(JSON.stringify(data))
   return fetch({
-    url: '/I_SCRM_INTERFACE_1008',
+    url: '/I_SCRM_INTERFACE_1008.action',
     method: 'post',
     data: result
   })
