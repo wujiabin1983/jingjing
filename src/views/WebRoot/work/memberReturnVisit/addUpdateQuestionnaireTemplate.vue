@@ -37,10 +37,10 @@
         </el-input>
       </el-form-item>
       <div class="return-item-wrap">
-        <div class="item" v-for="(item,index) in form.patrolShopTaskTempDtl" :key="index">
+        <div class="item" v-for="(item,index) in form.revisitTaskTempDtl" :key="index">
           <div class="item-header">
             回访项{{index+1}}
-            <el-button type="primary" class="right del-btn" @click="deleteItem(item,index)">删除</el-button>
+            <el-button type="primary" class="right del-btn" v-if="index!=0" @click="deleteItem(item,index)">删除</el-button>
           </div>
           
           <el-form-item label="回访项" prop="taskName">
@@ -84,17 +84,18 @@ import { mapGetters } from 'vuex'
       return {
         loading: false,
         currentId:null,
+        originalData:null,
         form: {
           userId: null, 
           templateName: '',
           templateDesc: "",
-          isEval: "",
+          isEval: "是",
           evalVal: {
             lowVal:'',
             highVal:''
           },
           evalDesc: "",
-          patrolShopTaskTempDtl : [{
+          revisitTaskTempDtl : [{
             returnVisitItem:'',
             returnVisitItemDesc:'',
           }]
@@ -102,14 +103,25 @@ import { mapGetters } from 'vuex'
         rules: {
           templateName: [{
             required: true,
+            message: '必填',
             trigger: 'blur'
           }],
           templateDesc: [{
             required: true,
             max: 140,
-            message: 'Length should be less 140',
+            message: '必填，字数小于140',
             trigger: 'blur'
-          }]
+          }],
+          isEval: [{
+            required: true,
+            message: '必填',
+            trigger: 'blur'
+          }],
+          evalDesc: [{
+            required: true,
+            message: '必填',
+            trigger: 'blur'
+          }],
         },
       }
     },
@@ -128,26 +140,39 @@ import { mapGetters } from 'vuex'
           userId: null, 
           templateName: '',
           templateDesc: "",
-          isEval: "",
+          isEval: "是",
           evalVal: {
             lowVal:'',
             highVal:''
           },
           evalDesc: "",
-          patrolShopTaskTempDtl : [{
+          revisitTaskTempDtl : [{
             returnVisitItem:'',
             returnVisitItemDesc:'',
           }]
         }
       },
       getDetails(){
+
         apiGetQuestionnaireTemplateDetails({
           userId: this.userInfo.userCode,
           id: this.currentId
         }).then((res) => {
           let { messageType, messageContent} = JSON.parse(Base64.decode(res.data));
+          // console.log(messageContent)
+              
           if (messageType == 'SUCCESS') {
-            this.form = messageContent
+            this.originalData = messageContent
+            let { templateName,templateDesc,isEval,evalVal,evalDesc }= this.originalData.revisiTaskTemp
+            this.form = {
+              userId: this.userInfo.userCode, 
+              templateName,
+              templateDesc,
+              isEval,
+              evalVal:evalVal,
+              evalDesc,
+              revisitTaskTempDtl:messageContent.revisitTaskTempDtl
+            }
           } else {
             this.$message({
               message: '系统错误',
@@ -164,10 +189,10 @@ import { mapGetters } from 'vuex'
           returnVisitItem: "",
           returnVisitItemDesc: ""
         }
-        this.form.patrolShopTaskTempDtl.push(obj)
+        this.form.revisitTaskTempDtl.push(obj)
       },
       deleteItem(item,index){
-        this.form.patrolShopTaskTempDtl.splice(index,1);
+        this.form.revisitTaskTempDtl.splice(index,1);
       },
       handleBack() {
   
@@ -177,11 +202,11 @@ import { mapGetters } from 'vuex'
       },
       submit() {
         this.form.userId = this.userInfo.userCode
-        console.log(this.form)
+        // console.log(this.form)
         this.$refs.form.validate((valid) => {
           if (!valid) return
           this.loading = true;
-          if(this.currentId) this.update()
+          if(this.currentId) return this.update()
           this.add()
         })
       },
@@ -191,7 +216,7 @@ import { mapGetters } from 'vuex'
           let data = JSON.parse(Base64.decode(res.data));
           if(data.messageType=='SUCCESS') {
             this.$message.success("新增成功");
-            this.$router.push('work-memberReturnVisit/questionnaireTemplate')
+            this.$router.push('/work/work-memberReturnVisit/questionnaireTemplate')
           } else {
             this.$message({
               message: data.messageContent,
@@ -208,12 +233,23 @@ import { mapGetters } from 'vuex'
         });
       },
       update(){
-        apiUpdateQuestionnaireTemplate(this.form).then((res) => {
+        let parmas = {
+          revisiTaskTemp:Object.assign({}, this.originalData.revisiTaskTemp,this.form),
+          revisitTaskTempDtl:this.form.revisitTaskTempDtl
+        }
+        
+        let test = {
+          ...parmas,
+          userId:this.userInfo.userCode,
+          status:this.originalData.revisiTaskTemp.status
+        }
+        console.log(test)
+        apiUpdateQuestionnaireTemplate(test).then((res) => {
           this.loading = false;
           let data = JSON.parse(Base64.decode(res.data));
           if(data.messageType=='SUCCESS') {
             this.$message.success("编辑成功");
-            this.$router.push('work-memberReturnVisit/questionnaireTemplate')
+            this.$router.push('/work/work-memberReturnVisit/questionnaireTemplate')
           } else {
             this.$message({
               message: data.messageContent,

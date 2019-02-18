@@ -341,7 +341,7 @@ import { apiAddMemberReturnTask, apiUpdateMemberReturnTask, apiGetMemberReturnTa
         this.$refs.form.validate((valid) => {
           if (!valid) return
           this.loading = true;
-          if(this.currentId) this.update()
+          if(this.currentId) return this.update()
           this.add()
         })
 
@@ -363,7 +363,7 @@ import { apiAddMemberReturnTask, apiUpdateMemberReturnTask, apiGetMemberReturnTa
           let result = [];
           if(data.messageType=='SUCCESS') {
             this.$message.success("新增成功");
-          // this.$router.push('work-memberReturnVisit')
+          // this.$router.push('/work/work-memberReturnVisit')
           } else {
             this.$message({
               message: data.messageContent,
@@ -387,7 +387,7 @@ import { apiAddMemberReturnTask, apiUpdateMemberReturnTask, apiGetMemberReturnTa
           let result = [];
           if(data.messageType=='SUCCESS') {
             this.$message.success("新增成功");
-          // this.$router.push('work-memberReturnVisit')
+          this.$router.push('/work/work-memberReturnVisit')
           } else {
             this.$message({
               message: data.messageContent,

@@ -9,7 +9,7 @@
 		<el-main>
 			<el-card>
 				<el-table ref="tableData" v-loading="this.tableLoading" :data="tableData">
-					<el-table-column prop="createOn"  label="创建时间"></el-table-column>
+					<el-table-column prop="createdOn"  label="创建时间"></el-table-column>
 					<el-table-column prop="taskName"  label="回访标题"></el-table-column>
 					<el-table-column prop="createdBy" label="操作者"></el-table-column>
 					<el-table-column prop="taskDate" label="回访时间">
@@ -33,7 +33,7 @@
 							</el-tooltip>
               <!-- 正在执行/已结束/已停止/待执行 -->
 
-							<el-tooltip class="item" content="启用/禁用" placement="top" v-if="roleBtn.forbiddenMemberReturnTask && scope.row.taskStatus!='已结束'">
+							<el-tooltip class="item" :content="scope.row.taskStatus=='正在执行'?'禁用':'启用'" placement="top" v-if="roleBtn.forbiddenMemberReturnTask && scope.row.taskStatus!='已结束'">
 								<icon-svg icon-class="queren" id="icon-queren" @click.native.prevent="changeTaskStatus(scope.row)" />
 							</el-tooltip>
 							<el-tooltip class="item" content="删除" placement="top" v-if="roleBtn.deleteMemberReturnTask">
@@ -154,7 +154,7 @@ export default {
       apiStopMemberReturnTask(params).then((res)=> {
         let result = JSON.parse(Base64.decode(res.data));
         console.log(result)
-        if(data.messageType=='SUCCESS') {
+        if(result.messageType=='SUCCESS') {
           this.$message({
             message: '停止成功',
             type: 'success'
@@ -175,7 +175,7 @@ export default {
       apiStartMemberReturnTask(params).then((res)=> {
         let result = JSON.parse(Base64.decode(res.data));
         console.log(result)
-        if(data.messageType=='SUCCESS') {
+        if(result.messageType=='SUCCESS') {
           this.$message({
             message: '开启成功',
             type: 'success'
@@ -201,7 +201,7 @@ export default {
       apiDeleteMemberReturnTask(params).then((res)=> {
         let result = JSON.parse(Base64.decode(res.data));
         console.log(result)
-        if(data.messageType=='SUCCESS') {
+        if(result.messageType=='SUCCESS') {
           this.$message({
             message: '删除成功',
             type: 'success'
