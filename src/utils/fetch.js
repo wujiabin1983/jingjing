@@ -26,13 +26,13 @@ baseUrl = 'http://dk.qipai.com.cn/scrm'
 // baseUrl = 'http://220.160.104.37/scrm' // 外网
 // baseUrl = 'http://192.168.10.162/scrm' // 内网
 
-// if (isInnerIPFn()) {
-//   // 内网
-//   baseUrl = 'http://192.168.10.163:80/scrm'
-// } else {
-//   // 外网
-//   baseUrl = 'http://dk.qipai.com.cn:80/scrm'
-// }
+ if (isInnerIPFn()) {
+   // 内网
+   baseUrl = 'http://192.168.10.163:80/scrm'
+ } else {
+   // 外网
+   baseUrl = 'http://dk.qipai.com.cn:80/scrm'
+ }
 // 创建axios实例
 const service = axios.create({
   baseURL: baseUrl,

@@ -3,6 +3,7 @@
 	<el-form :model="form" :rules="nav==='event'&&this.getPageType!='查看' ? eventRules : this.getPageType=='查看' ? norules : rules" ref="form1" label-width="120px" class="demo-form">
 		<el-form-item label="活动类型" prop="activityType">
 			<el-input v-model="form.activityType" :disabled="disabled" v-if="this.getPageType=='查看'" placeholder="请输入活动名称"></el-input>
+			<el-input v-model="form.activityType" :disabled="editdisabled" v-else-if="this.getPageType=='修改'" placeholder="请输入活动名称"></el-input>
 			<el-select v-model="form.activityType" placeholder="请选择活动类型" @change="activityTypeChange" v-else>
 				<el-option v-for="item in activityTypeSelInfo" :key="item.value" :label="item.label" :value="item.value"></el-option>
 			</el-select>
@@ -63,9 +64,10 @@
 		          	disabledDate(time) {
 		            	return time.getTime() < Date.now() - 8.64e7;
 		          	}
-		        },  
+		        },
 				levelOption:[],
 				disabled: false,
+				editdisabled: false,
 				nav: '',
 				timeRangeArr: [],
 				type: '',
@@ -291,11 +293,13 @@
 			}
 		},
 		created() {
+			//console.log(this.$route.params.pageData)
 			if(this.getPageData){
 				sessionStorage.setItem("memberSelect",this.getPageData);
 			}
 //			console.log(this.getType);
 			//等级
+			//debugger
 			var params = {
 				userId: this.userInfo.userCode
 			}
@@ -303,7 +307,7 @@
 			selectLevalInfo(params)	
 				.then((res) => {
 					let data = JSON.parse(Base64.decode(res.data));
-//					console.log(JSON.stringify(data) + "等级")
+					sessionStorage.setItem("levelOption",JSON.stringify(data))
 					if(data != "") {
 						data.data.forEach((val,index)=>{
 							this.levelOption.push({
@@ -367,6 +371,7 @@
 				this.reclaimRemark = res.marketingActivitie.reclaimRemark;
 			} else if(this.getPageType == '修改') {
 //				console.log('修改')
+				this.editdisabled = true;
 				let res = '';
 				if(!sessionStorage.getItem("dataOne")) {
 					res = JSON.parse(this.getFormData);
