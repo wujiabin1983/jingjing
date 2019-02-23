@@ -3,11 +3,11 @@
   <el-container class="app-container">
     <el-header>
       <el-button type="primary">
-        <router-link :to="'/work/work-memberReturnVisit'">
+        <router-link to="/work/work-memberReturnVisit">
           返回
         </router-link>
       </el-button>
-      <div class="task-name">{{tableData ? tableData[0].taskName : ''}}</div>
+      <div class="task-name">{{tableData && tableData.length>0 ? tableData[0].taskName : ''}}</div>
     </el-header>
     <!-- 筛选条件 -->
     <el-card class="mt20">
@@ -44,12 +44,12 @@
           <el-table-column prop="visitedBy" label="回访人"></el-table-column>
           <el-table-column prop="visitedDate" label="回访时间"></el-table-column>
           <el-table-column prop="communicationMode" label="沟通方式"></el-table-column>
-          <el-table-column prop="totalScore" label="总评分"></el-table-column>
+          <el-table-column prop="totalScode" label="总评分"></el-table-column>
           <el-table-column prop="action" label="操作">
             <template slot-scope="scope">
-  							<el-tooltip class="item" content="查看" placement="top">
-  								<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="viewTask(scope.row)" />
-  							</el-tooltip>
+              <el-tooltip class="item" content="查看" placement="top">
+                <i class="iconfont icon-view"  @click="viewTask(scope.row)"></i>
+              </el-tooltip>
             </template>
 					</el-table-column>
 				</el-table>
@@ -105,7 +105,7 @@
         tableLoading: false,
         
         // 表格数据
-        tableData: null,
+        tableData: [],
         currentMemberReturn: null,
         isShowDetailsModal: false,
   

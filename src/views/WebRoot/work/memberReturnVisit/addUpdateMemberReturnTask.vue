@@ -127,6 +127,7 @@
     },
     data() {
       return {
+        currentId:null,
         loading: false,
         isShowSelectGroup: false,
         isShowSelectStore: false,
