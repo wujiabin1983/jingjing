@@ -416,7 +416,7 @@
           let result = [];
           if (data.messageType == 'SUCCESS') {
             this.$message.success("新增成功");
-            this.$router.push('/work/work-memberReturnVisit')
+            this.$router.push('/work/work-3-1')
           } else {
             this.$message({
               message: data.messageContent,
@@ -446,7 +446,7 @@
           let result = [];
           if (data.messageType == 'SUCCESS') {
             this.$message.success("编辑成功");
-            this.$router.push('/work/work-memberReturnVisit')
+            this.$router.push('/work/work-3-1')
           } else {
             this.$message({
               message: data.messageContent,

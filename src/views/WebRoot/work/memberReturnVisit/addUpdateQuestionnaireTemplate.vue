@@ -230,7 +230,7 @@ import { mapGetters } from 'vuex'
           let data = JSON.parse(Base64.decode(res.data));
           if(data.messageType=='SUCCESS') {
             this.$message.success("新增成功");
-            this.$router.push('/work/work-memberReturnVisit/questionnaireTemplate')
+            this.$router.push('/work/work-3-2')
           } else {
             this.$message({
               message: data.messageContent,
@@ -263,7 +263,7 @@ import { mapGetters } from 'vuex'
           let data = JSON.parse(Base64.decode(res.data));
           if(data.messageType=='SUCCESS') {
             this.$message.success("编辑成功");
-            this.$router.push('/work/work-memberReturnVisit/questionnaireTemplate')
+            this.$router.push('/work/work-3-2')
           } else {
             this.$message({
               message: data.messageContent,

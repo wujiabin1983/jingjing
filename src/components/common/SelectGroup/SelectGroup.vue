@@ -114,14 +114,11 @@ import { selectMemberGroup } from '@/api/member/group'
         }
         selectMemberGroup(params).then((res) => {
             let {data,count} = JSON.parse(Base64.decode(res.data));
-            console.log(data)
-            // data.map((v,i)=>{
-            //   v.selection = false
-            // })
+            // console.log(data)
             this.groupList = data;
             this.countGroup = count;
             this.loading = false;
-            if(this.groupList && this.groupList.length>0) {
+            if(this.groupList && this.groupList.length>0 && this.selectGroupInfo && this.selectGroupInfo.id) {
               this.defaultSelectGroup()
             }
           }).catch((err) => {

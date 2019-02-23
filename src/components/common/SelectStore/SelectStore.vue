@@ -93,7 +93,7 @@ export default {
       selectProCityArea(params)
         .then((res) => {
           let data = JSON.parse(Base64.decode(res.data));
-          //	        		console.log(JSON.stringify(data));
+          // console.log(JSON.stringify(data));
           this.optionsProCityAreaPop=[];
           data.forEach((val, index) => {
             if(val.label == "未知") {

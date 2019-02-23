@@ -109,7 +109,10 @@
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
-            <sidebar class="sidebar-container" :handleNavId="navId"></sidebar>
+            <div class="sidebar-container">
+                <sidebar  :handleNavId="navId"></sidebar>
+            </div>
+            
             <!-- <div class="sidebar-bg">
                 <img :src="sidebarBg" alt="">
             </div> -->
@@ -570,14 +573,14 @@ export default {
             that.$store.dispatch('RolesTop', JSON.parse(rolesTop));
         }
 		this.$nextTick(function() {
-			if(sessionStorage.getItem('loginType')){
-				this.isSidebar=false;
-				sessionStorage.removeItem('loginType');
-				document.querySelector(".main-container").setAttribute("class","main-container main-container1");
-			}else{
-				this.isSidebar=true;
+			// if(sessionStorage.getItem('loginType')){
+			// 	this.isSidebar=false;
+			// 	sessionStorage.removeItem('loginType');
+            //     document.querySelector(".main-container").setAttribute("class","main-container main-container1");
+			// }else{
+                this.isSidebar=true;
 				document.querySelector(".main-container").setAttribute("class","main-container");
-			}
+			// }
 		})
 
   }
@@ -717,6 +720,9 @@ export default {
             overflow-y: scroll;
             overflow-x: hidden;
             z-index: 20;
+            &::-webkit-scrollbar {
+                display: none;
+            }
         }
         .main-container {
             // margin-top: $top;
