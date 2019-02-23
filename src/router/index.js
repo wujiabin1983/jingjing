@@ -148,7 +148,7 @@ export const constantRouterMap = [
       "component": _import('WebRoot/work/memberReturnVisit/memberReturnVisit')
     },
     {
-      "path": "work-addUpdateMemberReturnTask",
+      "path": "work-addUpdateMemberReturnTask/:id?",
       "name": "会员回访-新增/编辑回访任务",
       "component": _import('WebRoot/work/memberReturnVisit/addUpdateMemberReturnTask')
     },

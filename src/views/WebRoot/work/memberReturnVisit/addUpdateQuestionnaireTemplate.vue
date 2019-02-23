@@ -16,26 +16,31 @@
         </el-input>
       </el-form-item>
       <el-form-item label="是否需要打分" prop="isEval">
-        <el-radio v-model="form.isEval" label="是">是</el-radio>
-        <el-radio v-model="form.isEval" label="否">否</el-radio>
+        <el-radio-group v-model="form.isEval" @change="handleChangeIsEval">
+          <el-radio label="是">是</el-radio>
+          <el-radio label="否">否</el-radio>
+        </el-radio-group>
       </el-form-item>
-      <el-form-item label="分值">
-        <el-col :span="8">
-          <el-input-number size="small" v-model="form.evalVal.lowVal"></el-input-number>
-        </el-col>
-        <el-col class="line" :span="2">至</el-col>
-        <el-col :span="8">
-          <el-input-number size="small" v-model="form.evalVal.highVal"></el-input-number>
-        </el-col>
-      </el-form-item>
-      <el-form-item label="评分标准" prop="evalDesc">
-        <el-input
-          type="textarea"
-          :rows="2"
-          placeholder="请输入内容"
-          v-model="form.evalDesc">
-        </el-input>
-      </el-form-item>
+      <template v-if='form.isEval=="是"'>
+        <el-form-item label="分值">
+          <el-col :span="8">
+            <el-input-number size="small" v-model="form.evalVal.lowVal"></el-input-number>
+          </el-col>
+          <el-col class="line" :span="2">至</el-col>
+          <el-col :span="8">
+            <el-input-number size="small" v-model="form.evalVal.highVal"></el-input-number>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="评分标准" prop="evalDesc">
+          <el-input
+            type="textarea"
+            :rows="2"
+            placeholder="请输入内容"
+            v-model="form.evalDesc">
+          </el-input>
+        </el-form-item>
+      </template>
+      
       <div class="return-item-wrap">
         <div class="item" v-for="(item,index) in form.revisitTaskTempDtl" :key="index">
           <div class="item-header">
@@ -117,11 +122,11 @@ import { mapGetters } from 'vuex'
             message: '必填',
             trigger: 'blur'
           }],
-          evalDesc: [{
-            required: true,
-            message: '必填',
-            trigger: 'blur'
-          }],
+          // evalDesc: [{
+          //   required: true,
+          //   message: '必填',
+          //   trigger: 'blur'
+          // }],
         },
       }
     },
@@ -183,6 +188,15 @@ import { mapGetters } from 'vuex'
         }).catch((err) => {
           this.loading = false;
         });
+      },
+      handleChangeIsEval(val){
+        if(val=="否"){
+          this.form.evalVal= {
+            lowVal:'',
+            highVal:''
+          }
+          this.form.evalDesc = ""
+        }
       },
       addItem(){
         let obj = {

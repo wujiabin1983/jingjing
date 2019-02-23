@@ -26,7 +26,7 @@ export function apiAddMemberReturnTask(data) {
 export function apiUpdateMemberReturnTask(data) {
   let result = Base64.encode(JSON.stringify(data))
   return fetch({
-    url: '/I_SCRM_INTERFACE_1019.action',
+    url: '/I_SCRM_INTERFACE_1004.action',
     method: 'post',
     data: result
   })

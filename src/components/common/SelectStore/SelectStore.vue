@@ -71,6 +71,8 @@ export default {
 				'userInfo',
 			]),
   },
+  mounted() {
+  },
   methods:{
     close(){
       this.$emit('update:isShowDialog', false)
@@ -298,9 +300,9 @@ export default {
         let data = JSON.parse(Base64.decode(res.data));
         this.allData = [];
         if(data=='') return
-  
+        let info = data.data
         if(this.tabType == "门店") {
-          data.data.forEach((val, index) => {
+          info.forEach((val, index) => {
             this.allData.push({
               index: index,
               storeName: val.storeName,
@@ -309,7 +311,7 @@ export default {
           })
         }
         if(this.tabType == "店组") {
-          data.data.forEach((val, index) => {
+          info.forEach((val, index) => {
             this.allData.push({
               index: index,
               storeName: val.storeGroupName,
@@ -318,20 +320,29 @@ export default {
           })
         }
         if(this.tabType == "区域") {
-          data.data.forEach((val, index) => {
+          info.forEach((val, index) => {
             this.allData.push({
               index: index,
               storeName: val.storeAreaName,
               storeId: val.storeAreaId
             });
           })
-        }				
-        
+        }
+        //设置默认值
+        this.defaultSelectStore()
         
       }).catch((err) => {
         // console.log(err)
       })
     },
+    defaultSelectStore(){
+      let storeType='门店' //prop
+      this.tabType = storeType
+      this.selectValueList = []
+      if(!this.selectStoreInfo) return
+      let idArray = this.selectStoreInfo.idArray.split(',')
+      this.selectValueList = idArray
+    }
   }
 }
 </script>

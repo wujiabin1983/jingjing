@@ -17,16 +17,16 @@
 					<el-table-column prop="action" label="操作">
 						<template slot-scope="scope">
 							<el-tooltip class="item" content="查看" placement="top">
-								<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="viewTask(scope.row)" />
+                <i class="iconfont icon-view"  @click="viewTask(scope.row)"></i>
 							</el-tooltip>
 							<el-tooltip class="item" content="修改" placement="top" v-if="roleBtn.updateQuestionnaireTemplate">
-								<icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="updateTask(scope.row)" />
+                <i class="iconfont icon-edit"  @click="updateTask(scope.row)"></i>
 							</el-tooltip>
 							<el-tooltip class="item" :content="scope.row.stauts=='启用'?'禁用':'启用'" placement="top" v-if="roleBtn.forbiddenQuestionnaireTemplate">
-								<icon-svg icon-class="queren" id="icon-queren" @click.native.prevent="changeTaskStatus(scope.row)" />
+                <i class="iconfont icon-forbidden"  @click="changeTaskStatus(scope.row)"></i>
 							</el-tooltip>
 							<el-tooltip class="item" content="删除" placement="top" v-if="roleBtn.apiDeleteQuestionnaireTemplate">
-								<icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="deleteTask(scope.row)" />
+                <i class="iconfont icon-delete"  @click="deleteTask(scope.row)"></i>
 							</el-tooltip>
 						</template>
 					</el-table-column>
@@ -148,13 +148,13 @@ export default {
             message: '停止成功',
             type: 'success'
           });
+          this.getTableData()
         } else {
           this.$message({
             message: result.messageContent,
             type: 'warning'
           });
         }
-        this.getTableData()
       }).catch((err)=> {
         console.log(err);
       });
@@ -168,13 +168,13 @@ export default {
             message: '开启成功',
             type: 'success'
           });
+          this.getTableData()
         } else {
           this.$message({
             message: result.messageContent,
             type: 'warning'
           });
         }
-        this.getTableData()
       }).catch((err)=> {
         console.log(err);
       });
