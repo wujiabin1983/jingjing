@@ -16,31 +16,36 @@
         </el-input>
       </el-form-item>
       <el-form-item label="是否需要打分" prop="isEval">
-        <el-radio v-model="form.isEval" label="是">是</el-radio>
-        <el-radio v-model="form.isEval" label="否">否</el-radio>
+        <el-radio-group v-model="form.isEval" @change="handleChangeIsEval">
+          <el-radio label="是">是</el-radio>
+          <el-radio label="否">否</el-radio>
+        </el-radio-group>
       </el-form-item>
-      <el-form-item label="分值">
-        <el-col :span="8">
-          <el-input-number size="small" v-model="form.evalVal.lowVal"></el-input-number>
-        </el-col>
-        <el-col class="line" :span="2">至</el-col>
-        <el-col :span="8">
-          <el-input-number size="small" v-model="form.evalVal.highVal"></el-input-number>
-        </el-col>
-      </el-form-item>
-      <el-form-item label="评分标准" prop="evalDesc">
-        <el-input
-          type="textarea"
-          :rows="2"
-          placeholder="请输入内容"
-          v-model="form.evalDesc">
-        </el-input>
-      </el-form-item>
+      <template v-if='form.isEval=="是"'>
+        <el-form-item label="分值">
+          <el-col :span="8">
+            <el-input-number size="small" v-model="form.evalVal.lowVal"></el-input-number>
+          </el-col>
+          <el-col class="line" :span="2">至</el-col>
+          <el-col :span="8">
+            <el-input-number size="small" v-model="form.evalVal.highVal"></el-input-number>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="评分标准" prop="evalDesc">
+          <el-input
+            type="textarea"
+            :rows="2"
+            placeholder="请输入内容"
+            v-model="form.evalDesc">
+          </el-input>
+        </el-form-item>
+      </template>
+      
       <div class="return-item-wrap">
-        <div class="item" v-for="(item,index) in form.patrolShopTaskTempDtl" :key="index">
+        <div class="item" v-for="(item,index) in form.revisitTaskTempDtl" :key="index">
           <div class="item-header">
             回访项{{index+1}}
-            <el-button type="primary" class="right del-btn" @click="deleteItem(item,index)">删除</el-button>
+            <el-button type="primary" class="right del-btn" v-if="index!=0" @click="deleteItem(item,index)">删除</el-button>
           </div>
           
           <el-form-item label="回访项" prop="taskName">
@@ -84,17 +89,18 @@ import { mapGetters } from 'vuex'
       return {
         loading: false,
         currentId:null,
+        originalData:null,
         form: {
           userId: null, 
           templateName: '',
           templateDesc: "",
-          isEval: "",
+          isEval: "是",
           evalVal: {
             lowVal:'',
             highVal:''
           },
           evalDesc: "",
-          patrolShopTaskTempDtl : [{
+          revisitTaskTempDtl : [{
             returnVisitItem:'',
             returnVisitItemDesc:'',
           }]
@@ -102,14 +108,25 @@ import { mapGetters } from 'vuex'
         rules: {
           templateName: [{
             required: true,
+            message: '必填',
             trigger: 'blur'
           }],
           templateDesc: [{
             required: true,
             max: 140,
-            message: 'Length should be less 140',
+            message: '必填，字数小于140',
             trigger: 'blur'
-          }]
+          }],
+          isEval: [{
+            required: true,
+            message: '必填',
+            trigger: 'blur'
+          }],
+          // evalDesc: [{
+          //   required: true,
+          //   message: '必填',
+          //   trigger: 'blur'
+          // }],
         },
       }
     },
@@ -128,26 +145,39 @@ import { mapGetters } from 'vuex'
           userId: null, 
           templateName: '',
           templateDesc: "",
-          isEval: "",
+          isEval: "是",
           evalVal: {
             lowVal:'',
             highVal:''
           },
           evalDesc: "",
-          patrolShopTaskTempDtl : [{
+          revisitTaskTempDtl : [{
             returnVisitItem:'',
             returnVisitItemDesc:'',
           }]
         }
       },
       getDetails(){
+
         apiGetQuestionnaireTemplateDetails({
           userId: this.userInfo.userCode,
           id: this.currentId
         }).then((res) => {
           let { messageType, messageContent} = JSON.parse(Base64.decode(res.data));
+          // console.log(messageContent)
+              
           if (messageType == 'SUCCESS') {
-            this.form = messageContent
+            this.originalData = messageContent
+            let { templateName,templateDesc,isEval,evalVal,evalDesc }= this.originalData.revisiTaskTemp
+            this.form = {
+              userId: this.userInfo.userCode, 
+              templateName,
+              templateDesc,
+              isEval,
+              evalVal:evalVal,
+              evalDesc,
+              revisitTaskTempDtl:messageContent.revisitTaskTempDtl
+            }
           } else {
             this.$message({
               message: '系统错误',
@@ -159,15 +189,24 @@ import { mapGetters } from 'vuex'
           this.loading = false;
         });
       },
+      handleChangeIsEval(val){
+        if(val=="否"){
+          this.form.evalVal= {
+            lowVal:'',
+            highVal:''
+          }
+          this.form.evalDesc = ""
+        }
+      },
       addItem(){
         let obj = {
           returnVisitItem: "",
           returnVisitItemDesc: ""
         }
-        this.form.patrolShopTaskTempDtl.push(obj)
+        this.form.revisitTaskTempDtl.push(obj)
       },
       deleteItem(item,index){
-        this.form.patrolShopTaskTempDtl.splice(index,1);
+        this.form.revisitTaskTempDtl.splice(index,1);
       },
       handleBack() {
   
@@ -177,11 +216,11 @@ import { mapGetters } from 'vuex'
       },
       submit() {
         this.form.userId = this.userInfo.userCode
-        console.log(this.form)
+        // console.log(this.form)
         this.$refs.form.validate((valid) => {
           if (!valid) return
           this.loading = true;
-          if(this.currentId) this.update()
+          if(this.currentId) return this.update()
           this.add()
         })
       },
@@ -191,7 +230,7 @@ import { mapGetters } from 'vuex'
           let data = JSON.parse(Base64.decode(res.data));
           if(data.messageType=='SUCCESS') {
             this.$message.success("新增成功");
-            this.$router.push('work-memberReturnVisit/questionnaireTemplate')
+            this.$router.push('/work/work-3-2')
           } else {
             this.$message({
               message: data.messageContent,
@@ -208,12 +247,23 @@ import { mapGetters } from 'vuex'
         });
       },
       update(){
-        apiUpdateQuestionnaireTemplate(this.form).then((res) => {
+        let parmas = {
+          revisiTaskTemp:Object.assign({}, this.originalData.revisiTaskTemp,this.form),
+          revisitTaskTempDtl:this.form.revisitTaskTempDtl
+        }
+        
+        let test = {
+          ...parmas,
+          userId:this.userInfo.userCode,
+          status:this.originalData.revisiTaskTemp.status
+        }
+        console.log(test)
+        apiUpdateQuestionnaireTemplate(test).then((res) => {
           this.loading = false;
           let data = JSON.parse(Base64.decode(res.data));
           if(data.messageType=='SUCCESS') {
             this.$message.success("编辑成功");
-            this.$router.push('work-memberReturnVisit/questionnaireTemplate')
+            this.$router.push('/work/work-3-2')
           } else {
             this.$message({
               message: data.messageContent,

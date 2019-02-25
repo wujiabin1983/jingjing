@@ -12,9 +12,9 @@
     </div>
     <!-- 表格 -->
     <div class="scrm-table-wrap">
-      <el-table class="scrm-table-wrap__table" ref="table" :data="groupList" v-loading="loading" border @selection-change="handleSelectionChange">
-        <el-table-column type="index" width="50" label="序号"></el-table-column>
-        <el-table-column type="selection" width="50" label="选择"></el-table-column>
+      <el-table class="scrm-table-wrap__table" ref="table" :data="groupList" v-loading="loading" border @selection-change="handleSelectionChange" >
+        <el-table-column type="index" width="50" label="序号" ></el-table-column>
+        <el-table-column type="selection" width="50" label="选择" :selectable="handleSelectable"></el-table-column>
         <el-table-column prop="groupName" label="分组名称"></el-table-column>
       </el-table>
       <!-- 分页 -->
@@ -24,7 +24,6 @@
       </div>
     </div>
    
-  
     <div slot="footer" class="dialog-footer">
       <el-button size="medium" @click="close()">取 消</el-button>
       <el-button size="medium" type="primary" @click="submit()">确 定</el-button>
@@ -72,19 +71,33 @@ import { selectMemberGroup } from '@/api/member/group'
       },
       open() {
         this.getGroupList()
-        this.defaultSelectGroup()
+      },
+      handleSelectable(row, index){
+        console.log('row.id='+row.id)
+        if(this.selectedGroup &&this.selectedGroup.length>0){
+          return row.id==this.selectedGroup[0].id 
+        }
+        return true
       },
       defaultSelectGroup(){
-        // this.selectGroupInfo
-        // this.$refs.table.toggleRowSelection(row);
+        let selected = this.groupList.find((v,i)=>{
+          return v.id == this.selectGroupInfo.id
+        })
+        console.log(selected)
+        this.$nextTick(()=>{
+          this.$refs.table.toggleRowSelection(selected);
+        })
       },
       submit() {
         this.$emit('update:isShowDialog', false)
-        console.log(this.selectedGroup)
+        console.log(this.selectedGroup[0])
         this.$emit('update:selectGroupInfo', this.selectedGroup[0])
       },
       //会员分组选中的数据
       handleSelectionChange(val) {
+        // this.groupList.map((v,i)=>{
+        //   v.selection = val.id==v.id
+        // })
         this.selectedGroup = val;
       },
       getGroupList() {
@@ -100,11 +113,14 @@ import { selectMemberGroup } from '@/api/member/group'
           groupName
         }
         selectMemberGroup(params).then((res) => {
-            let data = JSON.parse(Base64.decode(res.data));
-            console.log(data.data)
-            this.groupList = data.data;
-            this.countGroup = data.count;
+            let {data,count} = JSON.parse(Base64.decode(res.data));
+            // console.log(data)
+            this.groupList = data;
+            this.countGroup = count;
             this.loading = false;
+            if(this.groupList && this.groupList.length>0 && this.selectGroupInfo && this.selectGroupInfo.id) {
+              this.defaultSelectGroup()
+            }
           }).catch((err) => {
             console.log(err);
           })

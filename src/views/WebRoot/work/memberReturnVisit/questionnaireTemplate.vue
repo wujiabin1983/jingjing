@@ -9,23 +9,24 @@
 		<el-main>
 			<el-card>
 				<el-table ref="tableData" v-loading="this.tableLoading" :data="tableData">
-					<el-table-column prop="createOn"  label="创建时间"></el-table-column>
+					<el-table-column prop="createdOn"  label="创建时间"></el-table-column>
 					<el-table-column prop="templateName"  label="模版名称"></el-table-column>
 					<el-table-column prop="createdBy" label="创建人"></el-table-column>
 					<el-table-column prop="templateDesc" label="模版说明"></el-table-column>
+          <el-table-column prop="stauts" label="状态"></el-table-column>
 					<el-table-column prop="action" label="操作">
 						<template slot-scope="scope">
 							<el-tooltip class="item" content="查看" placement="top">
-								<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="viewTask(scope.row)" />
+                <i class="iconfont icon-view"  @click="viewTask(scope.row)"></i>
 							</el-tooltip>
 							<el-tooltip class="item" content="修改" placement="top" v-if="roleBtn.updateQuestionnaireTemplate">
-								<icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="updateTask(scope.row)" />
+                <i class="iconfont icon-edit"  @click="updateTask(scope.row)"></i>
 							</el-tooltip>
-							<el-tooltip class="item" content="确认" placement="top" v-if="roleBtn.forbiddenQuestionnaireTemplate">
-								<icon-svg icon-class="queren" id="icon-queren" @click.native.prevent="changeTaskStatus(scope.row)" />
+							<el-tooltip class="item" :content="scope.row.stauts=='启用'?'禁用':'启用'" placement="top" v-if="roleBtn.forbiddenQuestionnaireTemplate">
+                <i class="iconfont icon-forbidden"  @click="changeTaskStatus(scope.row)"></i>
 							</el-tooltip>
 							<el-tooltip class="item" content="删除" placement="top" v-if="roleBtn.apiDeleteQuestionnaireTemplate">
-								<icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="deleteTask(scope.row)" />
+                <i class="iconfont icon-delete"  @click="deleteTask(scope.row)"></i>
 							</el-tooltip>
 						</template>
 					</el-table-column>
@@ -113,7 +114,10 @@ export default {
     },
     // 图标 - 查看
     viewTask(row) {
-      
+      var data = JSON.stringify(row);
+      this.$router.push({
+        path:`/work/work-memberReturnVisit/addUpdateQuestionnaireTemplate/${row.id}`
+      })
     },
     updateTask(row) {
       var data = JSON.stringify(row);
@@ -122,59 +126,57 @@ export default {
       })
     },
     changeTaskStatus(row){
-      let taskStatus = row.taskStatus
+      let stauts = row.stauts
       let params = {
         userId:this.userInfo.userCode,
         id:row.id,
         templateName:row.templateName,
         version:row.version
       }
-      if(taskStatus==0){ //禁止
+      if(stauts=='启用'){ //禁止
         this.stopTask(params)
       }else{
         this.startTask(params)
       }
     },
-    stopTask(){
+    stopTask(params){
       apiStopQuestionnaireTemplate(params).then((res)=> {
         let result = JSON.parse(Base64.decode(res.data));
         console.log(result)
-        if(data.messageType=='SUCCESS') {
+        if(result.messageType=='SUCCESS') {
           this.$message({
             message: '停止成功',
             type: 'success'
           });
+          this.getTableData()
         } else {
           this.$message({
             message: result.messageContent,
             type: 'warning'
           });
         }
-        this.tableLoading = false;
       }).catch((err)=> {
         console.log(err);
-        this.tableLoading = false;
       });
     },
-    startTask(){
+    startTask(params){
       apiStartQuestionnaireTemplate(params).then((res)=> {
         let result = JSON.parse(Base64.decode(res.data));
         console.log(result)
-        if(data.messageType=='SUCCESS') {
+        if(result.messageType=='SUCCESS') {
           this.$message({
             message: '开启成功',
             type: 'success'
           });
+          this.getTableData()
         } else {
           this.$message({
             message: result.messageContent,
             type: 'warning'
           });
         }
-        this.tableLoading = false;
       }).catch((err)=> {
         console.log(err);
-        this.tableLoading = false;
       });
     },
     deleteTask(row){
@@ -186,21 +188,20 @@ export default {
       apiDeleteQuestionnaireTemplate(params).then((res)=> {
         let result = JSON.parse(Base64.decode(res.data));
         console.log(result)
-        if(data.messageType=='SUCCESS') {
+        if(result.messageType=='SUCCESS') {
           this.$message({
             message: '删除成功',
             type: 'success'
           });
+          this.getTableData()
         } else {
           this.$message({
             message: result.messageContent,
             type: 'warning'
           });
         }
-        this.tableLoading = false;
       }).catch((err)=> {
         console.log(err);
-        this.tableLoading = false;
       });
     },
   },
