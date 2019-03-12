@@ -47,23 +47,28 @@
 							<template slot-scope="scope">
 							    <!-- 查看 -->
 	                        	<el-tooltip class="item" content="查看" placement="top">
-	                                <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakan(scope.$index, scope.row)"/>
+	                        		<i class="iconfont icon-view" @click.prevent="iconChakan(scope.$index, scope.row)" ></i>
+	                                <!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakan(scope.$index, scope.row)"/> -->
 	                            </el-tooltip>
 							    <!-- 复制 -->
 	                        	<el-tooltip class="item" content="复制" placement="top" v-if="roleBtn.copyCouponLibraryInfo">
-	                                <icon-svg icon-class="copy" id="icon-copy" @click.native.prevent="iconCopy(scope.$index, scope.row)"/>
+	                        		<i class="iconfont icon-icon_fuzhi" @click.prevent="iconCopy(scope.$index, scope.row)" ></i>
+	                                <!-- <icon-svg icon-class="copy" id="icon-copy" @click.native.prevent="iconCopy(scope.$index, scope.row)"/> -->
 	                            </el-tooltip>
 							    <!-- 修改 -->
 	                        	<el-tooltip class="item" content="修改" placement="top" v-if="scope.row.systemStatus=='未审核'&&roleBtn.enableCouponLibraryInfo||scope.row.systemStatus=='已驳回'">
-	                                <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconEdit(scope.$index, scope.row)"/>
+	                        		<i class="iconfont icon-edit" @click.prevent="iconEdit(scope.$index, scope.row)" ></i>
+	                                <!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconEdit(scope.$index, scope.row)"/> -->
 	                            </el-tooltip>
                                 <!-- 开启 -->
 	                            <el-tooltip class="item" content="开启" placement="top" v-if="scope.row.systemStatus == '已禁用'&&roleBtn.enableCouponLibraryInfo">
-	                                <icon-svg icon-class="qiyong" id="icon-qiyong" @click.native.prevent="iconBegin(scope.$index, tableData)"/>
+	                            	<i class="iconfont icon-shezhiqiyong" @click.prevent="iconBegin(scope.$index, tableData)" ></i>
+	                                <!-- <icon-svg icon-class="qiyong" id="icon-qiyong" @click.native.prevent="iconBegin(scope.$index, tableData)"/> -->
 	                            </el-tooltip>
                                 <!-- 停用 -->
 	                            <el-tooltip class="item" content="禁用" placement="top" v-if="scope.row.systemStatus == '已生效'&&roleBtn.disableCouponLibraryInfo">
-	                                <icon-svg icon-class="tingzhi" id="icon-tingzhi" @click.native.prevent="iconStop(scope.$index, tableData)"/>
+	                            	<i class="iconfont icon-forbidden" @click.prevent="iconStop(scope.$index, tableData)" ></i>
+	                                <!-- <icon-svg icon-class="tingzhi" id="icon-tingzhi" @click.native.prevent="iconStop(scope.$index, tableData)"/> -->
 	                            </el-tooltip>
 							</template>
 						</el-table-column>
@@ -91,18 +96,20 @@
 						<el-table-column prop="action" label="操作">
 							<template slot-scope="scope">
 								<!-- 功能图标 -->
+								<!-- 查看详情 -->
+								<el-tooltip class="item" content="查看详情" placement="top">
+									<i class="iconfont icon-view" @click.prevent="iconInfo(scope.$index, scope.row)" ></i>
+									<!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconInfo(scope.$index, scope.row)" /> -->
+								</el-tooltip>
 								<!-- 通过 -->
 								<el-tooltip class="item" content="通过" placement="top">
-									<icon-svg icon-class="audioYes" id="icon-audioYes" @click.native.prevent="iconAudioYes(scope.$index, scope.row)" />
+									<i class="iconfont icon-shenhetongguo" @click.prevent="iconAudioYes(scope.$index, scope.row)" ></i>
+									<!-- <icon-svg icon-class="audioYes" id="icon-audioYes" @click.native.prevent="iconAudioYes(scope.$index, scope.row)" /> -->
 								</el-tooltip>
 								<!-- 驳回 -->
 								<!--<el-tooltip class="item" content="驳回" placement="top">
 									<icon-svg icon-class="audioNo" id="icon-audioNo" @click.native.prevent="iconAudioNo(scope.$index, scope.row)" />
 								</el-tooltip>-->
-								<!-- 查看详情 -->
-								<el-tooltip class="item" content="查看详情" placement="top">
-									<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconInfo(scope.$index, scope.row)" />
-								</el-tooltip>
 							</template>
 						</el-table-column>
 					</el-table>

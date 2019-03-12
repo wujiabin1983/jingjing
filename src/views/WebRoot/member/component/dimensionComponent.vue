@@ -65,7 +65,7 @@
 	import { dimensionSettingShow } from '@/api/base/dataDefine'
 	import { selectProCityArea } from '@/api/public'
 	export default {
-		props: ['dimensionItems', 'type', 'dateBrand', 'memIndex', 'fixedBrandMulti', 'fixedBrandRadio', 'memBrand', 'defineJson1'],
+		props: ['dimensionItems', 'type', 'dateBrand', 'memLabel', 'memIndex', 'fixedBrandMulti', 'fixedBrandRadio', 'memBrand', 'defineJson1'],
 		data() {
 			return {
 				show: false, // 基础维度折叠面板
@@ -98,11 +98,12 @@
 					dateBrand: JSON.parse(JSON.stringify(this.dateBrand)),
 					memBrand: this.memBrand,
 					memIndex: this.memIndex,
+					memLabel: this.memLabel,
 					fixedBrandMulti: this.fixedBrandMulti,
 					fixedBrandRadio: this.fixedBrandRadio,
 					defineJson1: this.defineJson1
 				}
-//				 console.log(params);
+				console.log(params);
 				this.$emit('commitParams', params);
 				return false;
 			},

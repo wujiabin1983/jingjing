@@ -77,19 +77,23 @@
 							<!-- 功能图标 -->
 							<el-tooltip class="item" content="查看" placement="top">
 								<!-- 查看 -->
-								<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakan(scope.$index, scope.row)" />
+								<i class="iconfont icon-view" @click.prevent="iconChakan(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakan(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<el-tooltip class="item" content="修改" placement="top" v-if="roleBtn.updateEmployeeInfo&&scope.row.userType!='商户用户'">
 								<!-- 修改 -->
-								<icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugai(scope.$index, scope.row)" />
+								<i class="iconfont icon-edit" @click.prevent="iconXiugai(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugai(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<el-tooltip class="item" content="登录变更" placement="top" v-if="roleBtn.uploginEmployeeInfo">
 								<!-- 登录变更 -->
-								<icon-svg icon-class="qiehuan" id="icon-qiehuan" @click.native.prevent="iconQueren(scope.$index, scope.row)" />
+								<i class="iconfont icon-member" @click.prevent="iconQueren(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="qiehuan" id="icon-qiehuan" @click.native.prevent="iconQueren(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<el-tooltip class="item" content="删除" placement="top" v-if="roleBtn.deleteEmployeeInfo&&scope.row.userType!='商户用户'	">
 								<!-- 删除 -->
-								<icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconShanchu(scope.$index, scope.row)" />
+								<i class="iconfont icon-delete" @click.prevent="iconShanchu(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconShanchu(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 						</template>
 					</el-table-column>

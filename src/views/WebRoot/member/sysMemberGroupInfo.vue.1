@@ -1,0 +1,1271 @@
+<!--会员分组 - 所有分组 - 系统分析-->
+<template>
+	<el-container class="app-container">
+		<el-header>
+			<el-button @click="handleBack" class="mrgBottom10">返回</el-button>
+				<!-- 维度查询 -->
+			<el-card class="card-dimension" v-loading="cardLoading">
+				<el-collapse-transition name="el-zoom-in-top">
+					<div v-show="basicDimension">
+						<div v-for="item in componentItems">
+							<div 
+								:is="item.component" sysMemberGroupInfo
+								:dimensionItems="item.dimension" 
+								:type="item.type"  
+								:dateBrand="dateBrand" 
+								:memIndex="memIndex"
+								:fixedBrandMulti="fixedBrandMulti"
+								:fixedBrandRadio="fixedBrandRadio"
+								:defineJson1="defineJson1"
+								:memBrand="memBrand"
+								:memLabel="memLabel"
+								@commitParams="item.handle">
+							</div>
+						</div>
+					</div>
+				</el-collapse-transition>
+			</el-card>
+		</el-header>
+		<el-main>
+			<el-card class="main-card">
+				<div class="button-box">
+					<el-button v-if="getPageType != '新增'" type="primary" @click="handleSave">另存为</el-button>
+					<div class="float-right"> 
+						<el-button type="primary"  v-if="getPageType != '查看'"  @click="handleSearch('select')">查询</el-button>
+						<!-- <el-button>营销活动</el-button> -->
+					</div>
+				</div>
+			</el-card>
+			<el-card class="main-card">
+				
+				<el-tabs v-model="activeName" @tab-click="handleClick">
+					<el-tab-pane label="系统分析" name="first">
+						<el-row :gutter="20" class="eChartBox" v-loading="echartLoading">
+							<el-col :span="8">
+								<groupEchart childId="aa" ref="echartsAa" :childOption="optionAA" class="group-echart"></groupEchart>
+							</el-col>
+							<el-col :span="8">
+								<groupEchart childId="bb" ref="echartsBb" :childOption="optionBB" class="group-echart"></groupEchart>
+							</el-col>
+							<el-col :span="8">
+								<groupEchart childId="cc" ref="echartsCc" :childOption="optionCC" class="group-echart"></groupEchart>
+							</el-col>
+							<el-col :span="8">
+								<groupEchart childId="dd" ref="echartsDd" :childOption="optionDD" class="group-echart"></groupEchart>
+							</el-col>
+							<el-col :span="8">
+								<groupEchart childId="ee" ref="echartsEe" :childOption="optionEE" class="group-echart"></groupEchart>
+							</el-col>
+							<el-col :span="8">
+								<groupEchart childId="ff" ref="echartsFf" :childOption="optionFF" class="group-echart"></groupEchart>
+							</el-col>
+						</el-row>
+					</el-tab-pane>
+					<el-tab-pane label="用户列表" name="second">
+						<el-table ref="tableData" :data="tableData" v-loading="tableLoading" border>
+							<!-- <el-table-column type="index" width="50" label="序号"></el-table-column> -->
+							<!-- <el-table-column type="selection" width="50" label="选择"></el-table-column> -->
+							<el-table-column prop="userName" label="姓名"></el-table-column>
+							<el-table-column prop="mobile" label="电话号码"></el-table-column>
+							<el-table-column prop="birthDate" label="生日"></el-table-column>
+							<el-table-column prop="registeDate" label="入会时间"></el-table-column>
+							<el-table-column prop="serviceStoreName" label="所属门店"></el-table-column>
+							<el-table-column prop="memberLevel" label="会员等级"></el-table-column>
+							<el-table-column prop="attribute1" label="累计消费"></el-table-column>
+							<el-table-column prop="attribute2" label="累计积分"></el-table-column>
+							<el-table-column prop="action" label="操作">
+								<template slot-scope="scope">
+									<!-- 查看 -->
+									<el-tooltip class="item" content="查看" placement="top">
+										<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakan(scope.$index, scope.row)" />
+									</el-tooltip>
+								</template>
+							</el-table-column>
+						</el-table>
+						<el-footer>
+							<el-pagination
+								background
+								class="pagination"
+								layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
+								:page-size="limit"
+								:total="count"
+								@current-change="handleCurrentChange">
+							</el-pagination>
+						</el-footer>
+					</el-tab-pane>
+				</el-tabs>
+
+				<div class="btn-save" v-if="getPageType != '查看'">
+					<el-button type="primary" @click="handleSave">保&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存</el-button>
+				</div>
+			</el-card>
+			
+			<el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
+				<el-form :inline="true" ref="formGroup" :rules="rulesGroup" :model="formGroup" class="demo-form-inline">
+					<el-form-item label="请输入分组名称" prop="groupName">
+						<el-input v-model="formGroup.groupName" class="width180" placeholder="请输入分组名称"></el-input>
+					</el-form-item>
+				</el-form>
+				<span slot="footer" class="dialog-footer">
+				   <el-button @click="dialogVisible = false">取 消</el-button>
+				   <el-button type="primary" @click="enterSubmit">确 定</el-button>
+				</span>
+			</el-dialog>
+		</el-main>
+		<!-- <iptTag name="sex" label="性别" :items="tagItemSex" @selectTags="handleSelect"></iptTag> -->
+	</el-container>
+</template>
+<script>import { selectProCityArea, selectLevalInfo} from '@/api/public'
+import { mapGetters } from 'vuex'
+// import iptTag from '@/components/common/iptTag'
+import { groupEchart, dimensionComponent } from '@/views/WebRoot/member'
+import { dimensionSettingShow } from '@/api/base/dataDefine'
+import {
+	selectGroupAll,
+	searchListGroupAll,
+	searchAnalyzeGroupAll,
+	selectGroupInit,
+	searchListGroupInit,
+	searchAnalyzeGroupInit,
+	selectGroupBrand,
+	searchListGroupBrand,
+	searchAnalyzeGroupBrand,
+	addGroupBrand,
+	editGroupBrand,
+	selectGroupShare,
+	searchListGroupShare,
+	searchAnalyzeGroupShare,
+	selectGroupMine,
+	searchListGroupMine,
+	searchAnalyzeGroupMine,
+	addGroupMine,
+	removeGroupMine,
+	shareGroupMine,
+	GroupCondition
+} from '@/api/member/group'
+// import { dimensionComponent } from '@/views/WebRoot/member';
+export default {
+	components: {
+		dimensionComponent,
+		groupEchart,
+		// iptTag
+	},
+	data() {
+		return {
+			dialogVisible: false,//输入分组名称弹窗
+			formGroup: {//分组名称
+				groupName: ''
+			},
+			tableLoading:false,
+			rulesGroup: {
+				groupName: [{
+						required: true,
+						message: '请输入分组名称',
+						trigger: 'change'
+					},
+					{
+						max: 100,
+						message: '最大长度不能超过100',
+						trigger: 'change'
+					}
+				]
+			},
+			groupId: '', //小组id查询用
+			// 卡片加载loading
+			cardLoading: false,
+			echartLoading:false,
+			componentItems: [],
+			// dimensionSetting: [],
+			// 分页
+			page: 0, // 当前页
+			count: 0, // 总条数
+			limit: this.GLOBAL.limit, // 条/页
+			// 表格
+			tableData: [
+				// {
+				// 	"userCode": "会员id",
+				// 	"userName":"会员姓名",
+				// 	"mobile":"电话号码",
+				// 	"birthDate":"生日",
+				// 	"registeDate":"入会时间",
+				// 	"storeName":"所属门店",
+				// 	"memberLevel":"会员等级",
+				// 	"orderRealpayAmount":"累计消费",
+				// 	"totalIntegral":"累计积分"
+				// }
+			],
+
+			message: '',
+			basicDimension: true, // 基础维度折叠面板
+			customDimension: false, // 自定义维度面板
+			searchParams: {//查询条件
+				dateBrand: {},
+				memBrand: {},
+				memLabel: {},
+				memIndex: {},
+				fixedBrandMulti: {},
+				fixedBrandRadio: {},
+				defineJson1:{}
+			},
+			dimensionSetting: {},
+
+			'dateBrand': { // 日期纬度（json字符串）查询值
+				"selectDateBegin": "", // 选择日期起
+				"selectDateEnd": "", // 选择日期止
+				"day": "", // 近?天
+				"orderDay": "" // 距离最后一次消费时间?天
+			},
+			'memBrand': { // 会员维度（json字符串） 查询值
+				"age": [], // 年龄 
+				"sex": [], // 性别
+				"area": [], // 地域 
+				"day": '', // 入会?天会员
+				"new": [], // 新老会员 
+				"source": [], // 入会来源
+				"liveness": [], // 会员活跃度
+				"memberLevel": [], // 会员等级 
+				"lable": [], // 会员标签 
+			},
+			'memLabel':{},//会员标签
+			'memIndex': { // 会员指标（json字符串） 查询值
+				"secondCycle": [], // 会员二次消费周期
+				"lastDay": [], // 最近一次消费时间
+				"orderFrequency": [], // 累计消费频次
+				"totalOrderMoney": [], // 累计消费金额
+				"avgOrderMoney": [], // 平均消费折扣
+				"orderCustomerPrice": [], // 消费客单价
+				"orderUnitPrice": [], // 消费件单价
+				"unitPrice": [], // 件单价
+				"orderNum": [], // 交易单数
+				"orderCount": [], // 销售数量
+				"availableIntegral": [] // 会员有效积分
+			},
+			'fixedBrandMulti': { // 固定纬度（多选）查询值
+				"noSecond": "", // 未及时二回会员(是/否)
+				"noOrder": "", // 入会未消费(是/否) 
+				"isFans": "", // 粉丝(是/否)
+				"noCard": "" // 未绑卡的会员(是/否)
+			},
+			'fixedBrandRadio': { // '固定纬度（单选)'查询值
+				"birthday": '', // 会员生日 
+				"anniversary": '' // 入会周年
+			},
+			'defineJson1':{},//自定义维度
+			dimensionDateItems: [{//日期维度
+					type: 'date',
+					innerText: '日期时间范围',
+					field: ['dateBrand.selectDateBegin', 'dateBrand.selectDateEnd'],
+					model: '',
+				},
+				{
+					type: 'input',
+					innerText: '日期时长',
+					text: ['近', '$', '天'],
+					field: 'dateBrand.day',
+					model: '',
+				},
+				{
+					type: 'input',
+					innerText: '最近消费日期时长',
+					text: ['距离最后一次消费时间', '$', '天'],
+					field: 'dateBrand.orderDay',
+					model: '',
+				}
+			],
+			dimensionMembershipItems: [{//会员维度
+					type: 'buttonM',
+					innerText: '年龄',
+					dimension: ['<30', '30-40', '40-44', '44-47'],
+					field: 'memBrand.age',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: '性别',
+					dimension: ['男', '女'],
+					field: 'memBrand.sex',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: '地域',
+					dimension: [],
+					field: 'memBrand.area',
+					model: '',
+				},
+				{
+					type: '	',
+					innerText: '入会时长',
+					text: ['入会', '$', '天会员'],
+					field: 'memBrand.day',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: '新老会员',
+					dimension: ['新会员', '老会员'],
+					field: 'memBrand.new',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: '入会来源',
+					dimension: ['微信', '门店', '淘宝'],
+					field: 'memBrand.source',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: '会员活跃度',
+					dimension: ['活跃会员', '沉寂会员', '睡眠会员', '预流失会员', '流失会员'],
+					field: 'memBrand.liveness',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: '会员等级',
+					dimension: [],
+					field: 'memBrand.memberLevel',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: '会员标签',
+					dimension: ['已婚', '有房', '有车', '企业家'],
+					field: 'memBrand.lable',
+					model: '',
+				}
+			],
+			dimensionMembershipLabel: [],//会员标签
+			dimensionMembershipIndicateItems: [{//会员指标
+					type: 'buttonM',
+					innerText: '二次消售周期',
+					dimension: [],
+					field: 'memIndex.secondCycle',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: 'RFM-最近一次消费时间（天）',
+					dimension: [],
+					field: 'memIndex.lastDay',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: 'RFM-累计消费频次（次）',
+					dimension: [],
+					field: 'memIndex.orderFrequency',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: 'RFM-累计消费金额（元）',
+					dimension: [],
+					field: 'memIndex.totalOrderMoney',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: '平均销售折扣',
+					dimension: [],
+					field: 'memIndex.avgOrderMoney',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: '消费客单价',
+					dimension: [],
+					field: 'memIndex.orderCustomerPrice',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: '消费客单件',
+					dimension: [],
+					field: 'memIndex.orderUnitPrice',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: '件单价',
+					dimension: [],
+					field: 'memIndex.unitPrice',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: '交易单数',
+					dimension: [],
+					field: 'memIndex.orderNum',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: '销售数量',
+					dimension: [],
+					field: 'memIndex.orderCount',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: '会员有效积分',
+					dimension: [],
+					field: 'memIndex.availableIntegral',
+					model: '',
+				},
+			],
+			dimensionFixedMultiItems: [{//固定维度（多选）
+					type: 'checkbox',
+					label: '未及时二回会员',
+					field: 'fixedBrandMulti.noSecond',
+					model: ''
+				},
+				{
+					type: 'checkbox',
+					label: '入会未消费',
+					field: 'fixedBrandMulti.noOrder',
+					model: ''
+				},
+				{
+					type: 'checkbox',
+					label: '粉丝',
+					field: 'fixedBrandMulti.isFans',
+					model: ''
+				},
+				{
+					type: 'checkbox',
+					label: '未绑卡的会员',
+					field: 'fixedBrandMulti.noCard',
+					model: ''
+				},
+			],
+			dimensionFixedRadioItems: [{//固定维度（单选）
+				type: 'buttonR',
+				innerText: '会员生日',
+				dimension: ['是', '否'],
+				field: 'fixedBrandRadio.birthday',
+				model: '',
+			}],
+			//自定义维度
+			dimensionCustomItems:[],
+			// 选项卡选择
+			activeName: 'first',
+			dialogVisible: false,
+
+			// 系统分析数据
+			//optionAA.legend.data
+			//optionAA.series[0].data
+			optionAA: {
+				title: [{text: '新老会员占比',x: 'center'}],
+				tooltip: {trigger: 'item',formatter: "{a} <br/>{b} : {c} ({d}%)"},
+				legend: {orient: 'vertical',itemWidth: 10,itemHeight: 10,x: 'right',data: []},
+				color:['#B6A2DE','#2EC7C9'],
+				series: [{name: '',type: 'pie',radius: ['50%', '70%'],center: ['50%', '60%'],
+					itemStyle: {normal: {label: {show: true},labelLine: {show: true,}},emphasis: {shadowBlur: 10,shadowOffsetX: 0,shadowColor: 'rgba(0, 0, 0, 0.5)'}},data: []
+				}]
+			},
+			//optionBB.yAxis.data
+			//optionBB.series[0].data
+			optionBB: {
+				title: [{text: '年龄分布',x: 'center'}],
+				tooltip: {trigger: 'axis',axisPointer: {type: 'shadow'}},
+				grid: {left: '3%',right: '4%',bottom: '3%',containLabel: true},
+				xAxis: {type: 'value',axisLine: {show: false},axisTick: {show: false}},
+				yAxis: {type: 'category',data: [],splitLine: {show: false},axisLine: {show: false},axisTick: {show: false},offset: 10,nameTextStyle: {fontSize: 15}},
+				color:['#2EC7C9','#B6A2DE','#5AB1EF','#FFB980','#D87A80','#8D98B3'],
+				series: [{name: '人数',type: 'bar',data: [],barWidth: 20,barGap: 10,smooth: true,label: {normal: {show: true,position: 'inside',textStyle: {color: '#fff',fontSize: 13}}},itemStyle: {emphasis: {barBorderRadius: 7},normal: {color: function(params) {var colorList = ['#F3C90E', '#FD625E', '#FFABA7', '#000000', '#02B7AA','#BFC5C5'];return colorList[params.dataIndex]},label: {show: true,position: 'top',formatter: '{c}'}}}}]
+			},
+
+			//optionCC.legend.data
+			//optionCC.series[0].data
+			optionCC: {
+				title: {text: '性别占比',x: 'center'},
+				tooltip: {trigger: 'item',formatter: "{a} <br/>{b} : {c} ({d}%)"},
+				legend: {type: 'scroll',orient: 'vertical',itemWidth: 10,itemHeight: 10,right: 10,top: 20,bottom: 20,data: []},
+				color:['#5AB1EF','#D87A80'],
+				series: [{name: '性别',type: 'pie',radius: '55%',center: ['40%', '50%'],data: [],itemStyle: {emphasis: {shadowBlur: 10,shadowOffsetX: 0,shadowColor: 'rgba(0, 0, 0, 0.5)'}}}]
+			},
+			//optionDD.legend.data
+			//optionDD.series[0].data
+			optionDD: {
+				title: [{text: '会员等级占比',x: 'center'}],
+				tooltip: {trigger: 'item',formatter: "{a} <br/>{b} : {c} ({d}%)"},
+				legend: {orient: 'vertical',itemWidth: 10,itemHeight: 10,x: 'right',data: []},
+				color:['#5AB1EF','#FFB980','#D87A80','#8D98B3'],
+				series: [{name: '会员等级',type: 'pie',radius: ['50%', '70%'],center: ['50%', '60%'],itemStyle: {normal: {label: {show: true},labelLine: {show: true,}},emphasis: {shadowBlur: 10,shadowOffsetX: 0,shadowColor: 'rgba(0, 0, 0, 0.5)'}},data: []}]
+			},
+			//optionEE.yAxis.data
+			//optionEE.series[0].data
+			optionEE: {
+				title: [{text: '入会时长',x: 'center'}],
+				tooltip: {trigger: 'axis',axisPointer: {type: 'shadow'}},
+				grid: {left: '3%',right: '4%',bottom: '3%',containLabel: true},
+				xAxis: {type: 'value',axisLine: {show: false},axisTick: {show: false}},
+				yAxis: {type: 'category',data: [],splitLine: {show: false},axisLine: {show: false},axisTick: {show: false},offset: 10,nameTextStyle: {fontSize: 15}},
+				series: [{name: '人数',type: 'bar',data: [],barWidth: 20,barGap: 10,smooth: true,label: {normal: {show: true,position: 'inside',textStyle: {color: '#fff',fontSize: 13}}},itemStyle: {emphasis: {barBorderRadius: 7},normal: {color: function(params) {var colorList = ['#F3C90E', '#FD625E', '#FFABA7', '#000000', '#02B7AA','#BFC5C5'];return colorList[params.dataIndex]},label: {show: true,position: 'top',formatter: '{c}'}}}}]
+			},
+			//optionEE.legend.data
+			//optionEE.series[0].data
+			optionFF: {
+				title: [{text: '会员活跃度占比',x: 'center'}],
+				tooltip: {trigger: 'item',formatter: "{a} <br/>{b} : {c} ({d}%)"},
+				legend: {orient: 'vertical',itemWidth: 10,itemHeight: 10,x: 'right',data: []},
+				color:['#5AB1EF','#FFB980','#D87A80','#8D98B3','#91C7AE'],
+				series: [{name: '会员活跃度',type: 'pie',radius: ['50%', '70%'],center: ['50%', '60%'],itemStyle: {normal: {label: {show: true},labelLine: {show: true,}},emphasis: {shadowBlur: 10,shadowOffsetX: 0,shadowColor: 'rgba(0, 0, 0, 0.5)'}},data: []}]
+			},
+		}
+	},
+	methods: {
+		handleSave() {
+			if(this.message != '') {
+				this.message.close();
+			}
+			if(this.getPageType === '编辑') {
+				// console.log(this.getFormData)
+				let formData = JSON.parse(this.getFormData);
+				if(this.getPageName == '品牌分组') {
+					let params = {
+						"userId": this.userInfo.userCode, //隐藏
+						"id": formData.id, //隐藏
+						"version": formData.version,
+						"groupId": !formData.groupId ? '' : formData.groupId,
+						"groupName": formData.groupName,
+						"dateBrand": !this.dateBrand ? this.searchParams.dateBrand : this.dateBrand, // "日期纬度（json字符串）"
+						"memBrand": !this.memBrand ? this.searchParams.memBrand : this.memBrand,
+						"memLabel": !this.memLabel ? this.searchParams.memLabel : this.memLabel,
+						"memIndex": !this.memIndex ? this.searchParams.memIndex : this.memIndex,
+						"fixedBrandMulti": !this.fixedBrandMulti ? this.searchParams.fixedBrandMulti : this.fixedBrandMulti,
+						"fixedBrandRadio": !this.fixedBrandRadio ? this.searchParams.fixedBrandRadio : this.fixedBrandRadio,
+						"defineJson1": !this.defineJson1 ? this.searchParams.defineJson1 : this.defineJson1,
+						// "levalExpDate": !formData.levalExpDate ? '' :formData.levalExpDate // "等级有效期(json格式)"					
+					}
+					// console.log(params);
+					editGroupBrand(params)
+						.then(res => {
+							let data = JSON.parse(Base64.decode(res.data)),
+								code = data.messageType,
+								msg = data.messageContent,
+								val = data.valueObj;
+							if(code == 'SUCCESS') {
+								this.$message.success(msg);
+								this.$router.push({
+									name: '品牌分组'
+								});
+							} else {
+								this.$message.warning(msg);
+							}
+						})
+						.catch();
+				}
+			} else {
+				this.dialogVisible = true;
+			}
+		},
+		enterSubmit() {
+			this.$refs['formGroup'].validate((valid) => {
+				if(valid) {
+					let params = {
+						"userId": this.userInfo.userCode,
+						"dateBrand": !this.dateBrand ? this.searchParams.dateBrand : this.dateBrand,
+						"memBrand": !this.memBrand ? this.searchParams.memBrand : this.memBrand,
+						"memLabel": !this.memLabel ? this.searchParams.memLabel : this.memLabel,
+						"memIndex": !this.memIndex ? this.searchParams.memIndex : this.memIndex,
+						"fixedBrandMulti": !this.fixedBrandMulti ? this.searchParams.fixedBrandMulti : this.fixedBrandMulti,
+						"fixedBrandRadio": !this.fixedBrandRadio ? this.searchParams.fixedBrandRadio : this.fixedBrandRadio,
+						"defineJson1": !this.defineJson1 ? this.searchParams.defineJson1 : this.defineJson1,
+						"groupName": this.formGroup.groupName
+					}
+					let count = 0;
+					for(var item in params) {
+						if(item != 'userId' && item != 'groupName') {
+							for(var items in params[item]) {
+								count++;
+								if(params[item][items].length == 0) {
+									count--;
+								}
+							}
+						}
+					}
+					if(count == 0) {
+						this.$message.warning('请输入分组条件！');
+						return false;
+					}
+					this.dimensionCustomItems.forEach((v,i)=>{
+						params.defineJson1[v.field.split(".")[1]+"Name"]=v.innerText;
+					})
+					//debugger
+					this.dimensionMembershipLabel.forEach((v,i)=>{
+						params.memLabel[v.field.split(".")[1]+"Name"]=v.innerText;
+					})
+//					console.log(JSON.stringify(this.dimensionCustomItems))
+//					console.log(JSON.stringify(params)+"入参");
+//					return false;
+					if(this.getPageName == '我的分组') {
+						addGroupMine(params)
+							.then((res) => {
+								let data = JSON.parse(Base64.decode(res.data)),
+									code = data.messageType,
+									msg = data.messageContent,
+									val = data.valueObj;
+								if(code == 'SUCCESS') {
+									this.$message.success(msg);
+									this.$router.push({
+										name: '我的分组'
+									});
+								} else {
+									this.$message.warning(msg);
+								}
+							})
+							.catch()
+					} else if(this.getPageName == '品牌分组') {
+						addGroupBrand(params)
+							.then(res => {
+								let data = JSON.parse(Base64.decode(res.data)),
+									code = data.messageType,
+									msg = data.messageContent,
+									val = data.valueObj;
+								if(code == 'SUCCESS') {
+									this.$message.success(msg);
+									this.$router.push({
+										name: '品牌分组'
+									});
+								} else {
+									this.$message.warning(msg);
+								}
+							})
+							.catch()
+					}
+				}
+			})
+		},
+		handleCurrentChange(val) {
+			this.page = val; // 获取当前页
+			let obj = {
+				'dateBrand': this.searchParams.dateBrand,
+				'memBrand': this.searchParams.memBrand,
+				'memLabel': this.searchParams.memLabel,
+				'memIndex': this.searchParams.memIndex,
+				'fixedBrandMulti': this.searchParams.fixedBrandMulti,
+				'fixedBrandRadio': this.searchParams.fixedBrandRadio,
+				'defineJson1': this.searchParams.defineJson1
+			}
+			this.handleSearch(obj);
+			// 根据当前页、每页条书、搜索条件 重新载入数据 - 该语句用于添加删除修改等操作之后，刷新数据
+		},
+		handleSizeChange(val) {
+			this.limit = val;
+			let obj = {
+				'dateBrand': this.searchParams.dateBrand,
+				'memBrand': this.searchParams.memBrand,
+				'memLabel': this.searchParams.memLabel,
+				'memIndex': this.searchParams.memIndex,
+				'fixedBrandMulti': this.searchParams.fixedBrandMulti,
+				'fixedBrandRadio': this.searchParams.fixedBrandRadio,
+				'defineJson1': this.searchParams.defineJson1
+			}
+			this.handleSearch(obj);
+		},
+		// 选项卡点击
+		handleClick(tab, event) {
+			// console.log(tab, event);
+		},
+		handleCommitBateBrand(str) {
+			this.searchParams.dateBrand = str.dateBrand;
+		},
+		handleCommitMemBrand(str) {
+			this.searchParams.memBrand = str.memBrand;
+		},
+		handleCommitLabel(str) {
+			this.searchParams.memLabel = str.memLabel;
+		},
+		handleCommitMemIndex(str) {
+			this.searchParams.memIndex = str.memIndex;
+		},
+		handleCommitFixedBrandMulti(str) {
+			this.searchParams.fixedBrandMulti = str.fixedBrandMulti;
+		},
+		handleCommitFixedBrandRadio(str) {
+			this.searchParams.fixedBrandRadio = str.fixedBrandRadio;
+		},
+		handleCommitCustom(str){
+			this.searchParams.defineJson1 = str.defineJson1;
+		},
+		//显示图标数据
+		showDataAnalyze(data) {
+//			console.log(JSON.stringify(data)+"系统分析返回值")
+			let code = data.messageType,
+				msg = data.messageContent;
+			if(code == 'SUCCESS') {
+				this.echartLoading=false;
+				//新老会员
+				if(JSON.stringify(msg.newOldMember) != "{}" && msg.newOldMember.labelData.length != 0) {
+					this.optionAA.legend.data = msg.newOldMember.labelData;
+					this.optionAA.series[0].data = msg.newOldMember.recordData;
+					//		 				console.log(JSON.stringify(this.optionAA))
+					this.optionAA.series[0].data.forEach((val,index)=>{
+						this.optionAA.color.push(this.randomColor());
+					})
+					this.$refs.echartsAa.initEcharts(this.optionAA, 'aa');
+				}
+				//年龄分布
+				if(JSON.stringify(msg.age) != "{}" && msg.age.labelData.length != 0) {
+					this.optionBB.yAxis.data = msg.age.labelData;
+					this.optionBB.series[0].data = msg.age.recordData;
+					this.$refs.echartsBb.initEcharts(this.optionBB, 'bb');
+				}
+				//性别占比
+				if(JSON.stringify(msg.gender) != "{}" && msg.gender.labelData.length != 0) {
+					this.optionCC.legend.data = msg.gender.labelData;
+					this.optionCC.series[0].data = msg.gender.recordData;
+					this.optionCC.series[0].data.forEach((val,index)=>{
+						this.optionCC.color.push(this.randomColor());
+					})
+					this.$refs.echartsCc.initEcharts(this.optionCC, 'cc');
+				}
+				//会员等级
+				if(JSON.stringify(msg.grade) != "{}" && msg.grade.labelData.length != 0) {
+					this.optionDD.legend.data = msg.grade.labelData;
+					this.optionDD.series[0].data = msg.grade.recordData;
+					this.optionDD.series[0].data.forEach((val,index)=>{
+						this.optionDD.color.push(this.randomColor());
+					})
+					this.$refs.echartsDd.initEcharts(this.optionDD, 'dd');
+				}
+				//入会时长
+				if(JSON.stringify(msg.registeTime) != "{}" && msg.registeTime.labelData.length != 0) {
+					this.optionEE.yAxis.data = msg.registeTime.labelData;
+					this.optionEE.series[0].data = msg.registeTime.recordData;
+					this.$refs.echartsEe.initEcharts(this.optionEE, 'ee');
+				}
+				//会员活跃度占比
+				if(JSON.stringify(msg.activityDegree) != "{}" && msg.activityDegree.labelData.length != 0) {
+					this.optionFF.legend.data = msg.activityDegree.labelData;
+					this.optionFF.series[0].data = msg.activityDegree.recordData;
+					this.optionFF.series[0].data.forEach((val,index)=>{
+						this.optionFF.color.push(this.randomColor());
+					})
+					this.$refs.echartsFf.initEcharts(this.optionFF, 'ff');
+				}
+			}else{
+				this.$message.warning(data.messageContent);
+			}
+		},
+		randomColor() {
+			let hex = Math.floor(Math.random() * 16777216).toString(16); //生成ffffff以内16进制数
+			while(hex.length < 6) { //while循环判断hex位数，少于6位前面加0凑够6位
+				hex = '0' + hex;
+			}
+			return '#' + hex; //返回‘#'开头16进制颜色
+		},
+		//显示表格数据
+		showDataAnalyzeTable(data) {
+//			console.log(JSON.stringify(data)+"用户列表返回值")
+			let count = data.count,
+				msg = data.data;
+			this.tableLoading=false;
+			if(count > 0) {
+				let result = [];
+				msg.forEach((val, index) => {
+					result.push({
+						...val
+					});
+				})
+				this.count = count;
+				this.tableData = result;
+			} else {
+				this.tableData = [];
+			}
+		},
+		handleSearch(obj) {
+//			console.log(JSON.stringify(obj)+"obj")
+			if(obj == 'select') {
+				obj = {
+					'dateBrand': this.dateBrand,
+					'memBrand': this.memBrand,
+					'memLabel': this.memLabel,
+					'memIndex': this.memIndex,
+					'fixedBrandMulti': this.fixedBrandMulti,
+					'fixedBrandRadio': this.fixedBrandRadio,
+					'defineJson1': this.defineJson1
+				}
+			}
+			let params = {
+				"userId": this.userInfo.userCode,
+				"groupId": this.groupId,
+				condition: {
+					'dateBrand': obj.dateBrand,
+					'memBrand': obj.memBrand,
+					'memLabel': obj.memLabel,
+					'memIndex': obj.memIndex,
+					'fixedBrandMulti': obj.fixedBrandMulti,
+					'fixedBrandRadio': obj.fixedBrandRadio,
+					'defineJson1': obj.defineJson1
+				}
+			}
+			this.dimensionCustomItems.forEach((v,i)=>{
+				params.condition.defineJson1[v.field.split(".")[1]+"Name"]=v.innerText;
+			})
+			//debugger
+			this.dimensionMembershipLabel.forEach((v,i)=>{
+				params.condition.memLabel[v.field.split(".")[1]+"Name"]=v.innerText;
+			})
+			let count = 0;
+			for(var item in params.condition) {
+				for(var items in params.condition[item]) {
+					count++;
+					if(params.condition[item][items].length == 0) {
+						count--;
+					}
+				}
+			}
+			if(count == 0) {
+				this.$message.warning('请输入分组条件！');
+				return false;
+			}
+			// 用户列表查询
+			let params2 = {
+				"userId": this.userInfo.userCode,
+				"groupId": this.groupId,
+				"page": this.page,
+				"limit": this.limit,
+				condition: {
+					'dateBrand': obj.dateBrand,
+					'memBrand': obj.memBrand,
+					'memLabel': obj.memLabel,
+					'memIndex': obj.memIndex,
+					'fixedBrandMulti': obj.fixedBrandMulti,
+					'fixedBrandRadio': obj.fixedBrandRadio,
+					'defineJson1': obj.defineJson1
+				}
+			}
+			this.dimensionCustomItems.forEach((v,i)=>{
+				params2.condition.defineJson1[v.field.split(".")[1]+"Name"]=v.innerText;
+			})
+			//debugger
+			this.dimensionMembershipLabel.forEach((v,i)=>{
+				params2.condition.memLabel[v.field.split(".")[1]+"Name"]=v.innerText;
+			})
+//							console.log(JSON.stringify(params)+"系统分析");
+			//				console.log(JSON.stringify(params2)+"用户列表");
+			//				return false;
+			let that = this;
+			this.echartLoading=true;
+			this.tableLoading=true;
+			if(this.getPageName == '所有分组') {
+				// 系统分析查询
+				searchAnalyzeGroupAll(params)
+					.then((res) => {
+						let data = JSON.parse(Base64.decode(res.data));
+						this.showDataAnalyze(data);
+					})
+					.catch((err) => {
+//						console.log(err);
+					})
+				// 用户列表查询
+				searchListGroupAll(params2)
+					.then((res) => {
+						let data = JSON.parse(Base64.decode(res.data));
+						this.showDataAnalyzeTable(data);
+					})
+			}
+			if(this.getPageName == '预置分组') {
+				// 预置分组系统分析查询
+				searchAnalyzeGroupInit(params)
+					.then((res) => {
+						let data = JSON.parse(Base64.decode(res.data));
+						this.showDataAnalyze(data);
+					})
+				// 预置分组用户列表查询
+				searchListGroupInit(params2)
+					.then((res) => {
+						let data = JSON.parse(Base64.decode(res.data));
+						this.showDataAnalyzeTable(data);
+					})
+			}
+			if(this.getPageName == '品牌分组') {
+				// 品牌分组系统分析查询
+				searchAnalyzeGroupBrand(params)
+					.then((res) => {
+						let data = JSON.parse(Base64.decode(res.data));
+						this.showDataAnalyze(data);
+					})
+				// 品牌分组用户列表查询
+				searchListGroupBrand(params2)
+					.then((res) => {
+						let data = JSON.parse(Base64.decode(res.data));
+						this.showDataAnalyzeTable(data);
+					})
+			}
+			if(this.getPageName == '共享分组') {
+				// 共享分组系统分析查询
+				searchAnalyzeGroupShare(params)
+					.then((res) => {
+						let data = JSON.parse(Base64.decode(res.data));
+						this.showDataAnalyze(data);
+					})
+				// 共享分组用户列表查询
+				searchListGroupShare(params2)
+					.then((res) => {
+						let data = JSON.parse(Base64.decode(res.data));
+						this.showDataAnalyzeTable(data);
+					})
+			}
+			if(this.getPageName == '我的分组') {
+				// 我的分组系统分析查询
+				searchAnalyzeGroupMine(params)
+					.then((res) => {
+						let data = JSON.parse(Base64.decode(res.data));
+						this.showDataAnalyze(data);
+					})
+				// 我的分组用户列表查询
+				searchListGroupMine(params2)
+					.then((res) => {
+						let data = JSON.parse(Base64.decode(res.data));
+						this.showDataAnalyzeTable(data);
+					})
+			}
+		},
+		// 用户列表 - 查看
+		iconChakan(index, row) {
+			this.$router.push({
+				name: '会员信息会员查询查看详情',
+				params: {
+					pageType: this.getPageType,
+					formData: row.userCode,
+					otherData: this.getFormData, //会员分组列表带过来的数据
+					getPageName: this.getPageName //页面名字 所有分组、品牌分组、预置分组、共享分组、我的分组
+				}
+			});
+		},
+		handleBasic() {
+			this.basicDimension = !this.basicDimension;
+		},
+
+		handleBack() {
+			this.$router.push({
+				name: this.getPageName
+			});
+		}
+	},
+	created() {
+		let that = this;
+		this.cardLoading = true;
+//		console.log(this.getPageType)
+		//查询数据 维度
+		dimensionSettingShow({
+				"userId": this.userInfo.userCode
+			})
+			.then((res) => {
+				let data = JSON.parse(Base64.decode(res.data)),
+					code = data.messageType,
+					msg = data.messageContent,
+					val = data.valueObj;
+//					console.log(JSON.stringify(data)+"查询维度")
+				if(code == "SUCCESS") {
+					let data = {};
+					this.dimensionCustomItems=[];
+					this.dimensionMembershipLabel=[];
+					msg.forEach((val, index) => {
+						data[val.subItemName] = val.subItem;
+						if(val.dimensionName=="自定义维度"){
+							if(!this.getFormData){
+								this.defineJson1[val.attribute1]=[];
+							}
+							this.dimensionCustomItems.push({
+								type: 'buttonM',
+								innerText: val.subItemName,
+								dimension: val.subItem,
+								field: "defineJson1."+val.attribute1,
+								model: '',
+							})
+						}
+						if(val.dimensionName=="会员标签"){
+							if(!this.getFormData){
+								this.memLabel[val.attribute1]=[];
+							}
+							this.dimensionMembershipLabel.push({
+								type: 'buttonM',
+								innerText: val.subItemName,
+								dimension: val.subItem,
+								field: "memLabel."+val.attribute1,
+								model: '',
+							})
+						}
+					});
+//                  console.log(JSON.stringify(this.dimensionCustomItems)+'---');
+					this.dimensionMembershipItems[0].dimension = data['年龄'];
+					this.dimensionMembershipIndicateItems[0].dimension = data['会员二次销售周期'];
+					this.dimensionMembershipIndicateItems[1].dimension = data['会员RFM-最近一次消费时间'];
+					this.dimensionMembershipIndicateItems[2].dimension = data['会员RFM-累计消费频次'];
+					this.dimensionMembershipIndicateItems[3].dimension = data['会员RFM-累计消费金额'];
+					this.dimensionMembershipIndicateItems[4].dimension = data['会员平均销售折扣'];
+					this.dimensionMembershipIndicateItems[5].dimension = data['客单价'];
+					this.dimensionMembershipIndicateItems[6].dimension = data['客单件'];
+					this.dimensionMembershipIndicateItems[7].dimension = data['件单价'];
+					this.dimensionMembershipIndicateItems[8].dimension = data['交易单数'];
+					this.dimensionMembershipIndicateItems[9].dimension = data['销售数量'];
+					this.dimensionMembershipIndicateItems[10].dimension = data['会员有效积分'];
+					selectProCityArea({
+							parentId: "1"
+						}) //请求会员维度-地域
+						.then((res) => {
+							let data = JSON.parse(Base64.decode(res.data));
+							that.dimensionMembershipItems[2].dimension = data;
+							selectLevalInfo({
+									"userId": this.userInfo.userCode
+								})
+								.then((res) => {
+									let data = JSON.parse(Base64.decode(res.data)),
+										msg = data.data;
+//																				console.log(JSON.stringify(data))
+									that.dimensionMembershipItems[7].dimension = [];
+									msg.forEach((val, index) => {
+										that.dimensionMembershipItems[7].dimension.push(val.key);
+									})
+
+									that.componentItems.push({
+										component: 'dimension-component',
+										dimension: that.dimensionDateItems,
+										type: '日期维度',
+										handle: that.handleCommitBateBrand
+									}, {
+										component: 'dimension-component',
+										dimension: that.dimensionMembershipItems,
+										type: '会员维度',
+										handle: that.handleCommitMemBrand
+									},{
+										component: 'dimension-component',
+										dimension: that.dimensionMembershipLabel,
+										type: '会员标签',
+										handle: that.handleCommitMemLabel
+									}, {
+										component: 'dimension-component',
+										dimension: that.dimensionMembershipIndicateItems,
+										type: '会员指标',
+										handle: that.handleCommitMemIndex
+									}, {
+										component: 'dimension-component',
+										dimension: that.dimensionFixedMultiItems,
+										type: '固定维度(多选)',
+										handle: that.handleCommitFixedBrandMulti
+									}, {
+										component: 'dimension-component',
+										dimension: that.dimensionFixedRadioItems,
+										type: '固定维度(单选)',
+										handle: that.handleCommitFixedBrandRadio
+									}, {
+										component: 'dimension-component',
+										dimension: that.dimensionCustomItems,
+										type: '自定义维度',
+										handle: that.handleCommitCustom
+									});
+								})
+								.catch((err) => {
+//									console.log(err);
+									that.cardLoading = false;
+								})
+							that.cardLoading = false;
+						})
+						.catch((err) => {
+//							 console.log(err);
+							that.cardLoading = false;
+						})
+				}
+			})
+			.catch((err) => {
+//				 console.log(err);
+				that.cardLoading = false;
+			})
+//		GroupCondition({
+//				userId: this.userInfo.userCode
+//			})
+//			.then((res) => {
+//				let data = JSON.parse(Base64.decode(res.data));
+//			})
+//			.catch(err => {
+////				console.log(err)
+//			})
+		// 我的分组
+
+		if(!this.getFormData) {
+			return false;
+		} else {
+			let formData = JSON.parse(this.getFormData);
+//							console.log(JSON.stringify(formData));
+
+			this.searchParams = {
+				dateBrand: formData.dateBrand,
+				memBrand: formData.memBrand,
+				memLabel: formData.memLabel,
+				memIndex: formData.memIndex,
+				fixedBrandMulti: formData.fixedBrandMulti,
+				fixedBrandRadio: formData.fixedBrandRadio,
+				defineJson1: formData.defineJson1
+			};
+			this.groupId = formData.groupId;
+			this.dateBrand = formData.dateBrand;
+			this.memBrand = formData.memBrand;
+			this.memLabel = formData.memLabel;
+			this.memIndex = formData.memIndex;
+			this.fixedBrandMulti = formData.fixedBrandMulti;
+			this.fixedBrandRadio = formData.fixedBrandRadio;
+			this.defineJson1 = formData.defineJson1;
+			//				if(this.dateBrand.day!=""){//由于存的时候存的是近？天，所以返回显示值的时候需要把近和天字去掉
+			//					this.dateBrand.day=this.dateBrand.day.substr(1,this.dateBrand.day.length-2);
+			//				}
+			let obj = {
+				'dateBrand': this.dateBrand,
+				'memBrand': this.memBrand,
+				'memLabel': this.memLabel,
+				'memIndex': this.memIndex,
+				'fixedBrandMulti': this.fixedBrandMulti,
+				'fixedBrandRadio': this.fixedBrandRadio,
+				'defineJson1': this.defineJson1
+			}
+			this.$nextTick(function() {
+				this.handleSearch(obj);
+			})
+		}
+	},
+	computed: {
+		// 计算属性
+		...mapGetters([
+			'userInfo',
+		]),
+		getPageType() { //类型   例如：查看
+			return this.$route.params.pageType;
+		},
+		getFormData() { //列表页带过来的数据
+			return this.$route.params.formData;
+		},
+		getPageName() { //页面名字 所有分组、品牌分组、预置分组、共享分组、我的分组
+			return this.$route.params.pageName;
+		},
+		getId() {
+			let id = this.$route.params.id;
+			return id
+		},
+		getVersion() {
+			let version = this.$route.params.version;
+			return version
+		},
+	},
+};</script>
+<style rel="stylesheet/scss" lang="scss" scoped>@import "src/styles/_function.scss";
+.el-card {
+	width: 100%;
+}
+
+.el-form {
+	/*// width: rem(700px);*/
+	/*// min-width: 500px;*/
+}
+
+.el-form-item {
+	margin: rem(5px);
+}
+
+// 行内文本 span
+.formText {
+	display: inline;
+	line-height: rem(30px);
+}
+
+table {
+	width: 100%;
+	border-color: #CCC;
+	border-top: 1px solid #d2d2d2;
+	border-left: 1px solid #d2d2d2;
+	tr td:first-child {
+		background: #eee;
+	}
+	td {
+		padding: rem(10px);
+		border-bottom: 1px solid #d2d2d2;
+		border-right: 1px solid #d2d2d2;
+	}
+}
+
+.el-form-item--small .el-form-item__content {
+	line-height: 5px;
+}
+
+.el-form-item-td {
+	width: 0px;
+	height: 5px;
+	line-height: 5px;
+	display: inline-block;
+}
+
+.card-dimension {
+	min-height: rem(200px);
+	h5 {
+		font-size: 17px;
+	}
+	.el-icon-remove-outline,
+	.el-icon-circle-plus-outline {
+		cursor: pointer;
+		color: #33b1e8;
+	}
+	.dimensionChunk {
+		text-indent: 20px;
+		line-height: 35px;
+		h6 {
+			color: #d2d2d2;
+			display: inline-block;
+		}
+		.el-form-item__content {
+			white-space: nowrap;
+		}
+		.el-date-editor.el-input,
+		.el-date-editor.el-input__inner {
+			width: 170px!important;
+		}
+		.el-icon-date:before {
+			width: 20px;
+			position: absolute;
+			// left: 0;
+		}
+		.dimension-form-item {
+			width: 320px;
+		}
+		.dimension-ipt {
+			width: 100px;
+		}
+	}
+}
+
+.group-echart {
+	display: inline-block;
+	width: 100%;
+	height: 300px;
+}
+
+.main-card {
+	.button-box {
+		display: block;
+		overflow: hidden;
+	}
+	.float-right {
+		float: right;
+		clear: both;
+	}
+	.btn-save {
+		text-align: center;
+	}
+}
+
+.eChartBox {
+	margin-bottom: 10px;
+}
+
+.eChartBox .el-col {
+	border-right: 1px solid #797979;
+	border-bottom: 1px solid #797979;
+	padding: 10px 0 0 0;
+}
+.width180{
+	width: 180px;
+}
+</style>

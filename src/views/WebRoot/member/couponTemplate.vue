@@ -20,7 +20,8 @@
                             <!-- 功能图标 -->
                             <el-tooltip class="item" content="删除" placement="top">
                                 <!-- 删除 -->
-                                <icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconShanchu(scope.$index, scope.row)"/>
+                                <i class="iconfont icon-view" @click.prevent="iconShanchu(scope.$index, scope.row)" ></i>
+                                <!-- <icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconShanchu(scope.$index, scope.row)"/> -->
                             </el-tooltip>
                             
                         </template>

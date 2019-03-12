@@ -80,11 +80,13 @@
 							<!-- 功能图标 -->
 							<el-tooltip class="item" content="查看" placement="top">
 								<!-- 查看 -->
-								<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakan(scope.$index, scope.row)" />
-							</el-tooltip>
+								<i class="iconfont icon-view"  @click="iconChakan(scope.$index, scope.row)" ></i>
+<!-- 							<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakan(scope.$index, scope.row)" />
+ -->							</el-tooltip>
 							<el-tooltip class="item" content="修改" placement="top" v-if="roleBtn.updateStoresInfo && !scope.row.isEdit">
 								<!-- 修改 -->
-								<icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugai(scope.$index, scope.row)" />
+								<i class="iconfont icon-edit"  v-on:click.prevent="iconXiugai(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugai(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<el-tooltip class="item" content="确认" placement="top" v-if="roleBtn.updateStoresInfo && scope.row.isEdit">
 								<!-- 确认 -->
@@ -92,11 +94,13 @@
 							</el-tooltip>
 							<!-- 启用 -->
 							<el-tooltip class="item" content="启用" placement="top" v-if="roleBtn.onlineStoresInfo && scope.row.shelvesStatus != '是'">
-								<icon-svg icon-class="qiyong" id="icon-qiyong" @click.native.prevent="iconQiyong(scope.$index, tableData)" />
+								<i class="iconfont icon-shezhiqiyong"  @click.prevent="iconQiyong(scope.$index, tableData)"></i>
+								<!-- <icon-svg icon-class="qiyong" id="icon-qiyong" @click.native.prevent="iconQiyong(scope.$index, tableData)" /> -->
 							</el-tooltip>
 							<!-- 停用 -->
 							<el-tooltip class="item" content="停用" placement="top" v-if="roleBtn.onlineStoresInfo && scope.row.shelvesStatus == '是'">
-								<icon-svg icon-class="tingzhi" id="icon-tingzhi" @click.native.prevent="iconTingzhi(scope.$index, tableData)" />
+								<i class="iconfont icon-forbidden"  @click.prevent="iconTingzhi(scope.$index, tableData)" ></i>
+								<!-- <icon-svg icon-class="tingzhi" id="icon-tingzhi" @click.native.prevent="iconTingzhi(scope.$index, tableData)" /> -->
 							</el-tooltip>
 						</template>
 					</el-table-column>

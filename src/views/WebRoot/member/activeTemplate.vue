@@ -48,23 +48,28 @@
                     <template slot-scope="scope">
                             <!-- 查看 -->
                     	<el-tooltip class="item" content="查看" placement="top">
-                            <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconInfo(scope.$index, scope.row)"/>
+                            <i class="iconfont icon-view" @click.prevent="iconInfo(scope.$index, scope.row)" ></i>
+                            <!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconInfo(scope.$index, scope.row)"/> -->
                         </el-tooltip>
                             <!-- 修改--> 
                         <el-tooltip class="item" content="修改" placement="top" v-if="scope.row.tempType != '预置模板'&&roleBtn.updateActiveTemplate">
-                            <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconEdit(scope.$index, scope.row)"/>
+                            <i class="iconfont icon-edit" @click.prevent="iconEdit(scope.$index, scope.row)" ></i>
+                            <!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconEdit(scope.$index, scope.row)"/> -->
                         </el-tooltip>
                             <!-- 复制模板 -->
                         <el-tooltip class="item" content="复制模板" placement="top" v-if="roleBtn.copyActiveTemplate">
-                            <icon-svg icon-class="copy" id="icon-copy" @click.native.prevent="iconCopyTemplate(scope.$index, scope.row)"/>
+                            <i class="iconfont icon-icon_fuzhi" @click.prevent="iconCopyTemplate(scope.$index, scope.row)" ></i>
+                            <!-- <icon-svg icon-class="copy" id="icon-copy" @click.native.prevent="iconCopyTemplate(scope.$index, scope.row)"/> -->
                         </el-tooltip>
                             <!-- 创建活动 -->
                         <el-tooltip class="item" content="创建活动" placement="top" v-if="roleBtn.addActivityManagementInfo1">
-                            <icon-svg icon-class="creatActivity" id="icon-creatActivity" @click.native.prevent="iconCreateActivity(scope.$index, scope.row)"/>
+                            <i class="iconfont icon-createactive" @click.prevent="iconCreateActivity(scope.$index, scope.row)" ></i>
+                            <!-- <icon-svg icon-class="creatActivity" id="icon-creatActivity" @click.native.prevent="iconCreateActivity(scope.$index, scope.row)"/> -->
                         </el-tooltip>
                             <!-- 删除 -->
                         <el-tooltip class="item" content="删除" placement="top" v-if="roleBtn.deleteActiveTemplate&&scope.row.tempType != '预置模板'">
-                            <icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconDelete(scope.$index, scope.row)"/>
+                            <i class="iconfont icon-delete" @click.prevent="iconCopyTemplate(scope.$index, scope.row)" ></i>
+                            <!-- <icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconDelete(scope.$index, scope.row)"/> -->
                         </el-tooltip>
                     </template>
                 </el-table-column>

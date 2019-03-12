@@ -7,7 +7,6 @@
                 <el-checkbox v-if="childPageName == '分组查看'" v-model="childData.selected" @change="handleCheckbox"></el-checkbox>
                 <el-dropdown trigger="click" @command="handleCommand" v-if="childPageName != '分组查看'">
                     <span class="el-dropdown-link">
-                       <!-- <i class="el-icon-tickets"></i> -->
                        <img class="icon" :src="require('@/assets/membershipgrouping_more.png')" alt="">
                     </span>
                     <el-dropdown-menu slot="dropdown" >
@@ -30,7 +29,7 @@
             </div>
         </div>
         <div class="card-box card-bottom">
-            <div class="time left-box">{{childData.createdOn}}</div>
+            <div class="time left-box">更新时间：{{childData.createdOn}}</div>
             <div class="right-box" >
                 <span class="text-blue" @click="toggleDetail">分组条件<i class="el-icon-caret-bottom"></i></span>
             </div>

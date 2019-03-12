@@ -30,11 +30,13 @@
 							<!-- 功能图标 -->
 							<el-tooltip class="item" content="查看" placement="top">
 								<!-- 查看 -->
-								<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakan(scope.$index, scope.row)" />
+								<i class="iconfont icon-view" @click.prevent="iconChakan(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakan(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<el-tooltip class="item" content="修改" placement="top" v-if="roleBtn.updateEmplRoleInfo && !scope.row.isEdit">
 								<!-- 修改 -->
-								<icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugai(scope.$index, scope.row)" />
+								<i class="iconfont icon-edit" @click.prevent="iconXiugai(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugai(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<el-tooltip class="item" content="确认" placement="top" v-if="roleBtn.updateEmplRoleInfo && scope.row.isEdit">
 								<!-- 确认 -->
@@ -42,15 +44,18 @@
 							</el-tooltip>
 							<el-tooltip class="item" content="删除" placement="top" v-if="roleBtn.deleteEmplRoleInfo">
 								<!-- 删除 -->
-								<icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconShanchu(scope.$index, scope.row)" />
+								<i class="iconfont icon-delete" @click.prevent="iconShanchu(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconShanchu(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<el-tooltip class="item" content="设置权限" placement="top" v-if="roleBtn.anthorEmplRoleInfo">
 								<!-- 设置权限 -->
-								<icon-svg icon-class="rule" id="icon-rule" @click.native.prevent="iconSetRole(scope.$index, scope.row)" />
+								<i class="iconfont icon-setting" @click.prevent="iconSetRole(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="rule" id="icon-rule" @click.native.prevent="iconSetRole(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<el-tooltip class="item" content="设置APP权限" placement="top" v-if="roleBtn.anthorAppRoleInfo">
 								<!-- 设置权限 -->
-								<icon-svg icon-class="setMobile" id="icon-setMobile" @click.native.prevent="iconSetRole2(scope.$index, scope.row)" />
+								<i class="iconfont icon-shoujishezhi" @click.prevent="iconSetRole2(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="setMobile" id="icon-setMobile" @click.native.prevent="iconSetRole2(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 						</template>
 					</el-table-column>

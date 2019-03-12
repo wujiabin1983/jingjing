@@ -160,11 +160,14 @@
 			// 维度配置
 			handleDimensionConfig() {
 				let formData = this.$refs.dimensionConfiguration.handleSave();
+				//console.log(formData)
 				let that = this;
 				if(formData.main[0].value==''){
 					return false;
 				}
+
 				if(formData.dimensionName == "") {
+					//console.log(JSON.stringify(that.rowData))
 					let params = {
 						"userId": that.userInfo.userCode, // 用户类型
 						"id": '',
@@ -175,10 +178,10 @@
 						"expendConfigId": that.rowData.id, // 扩展字段id
 						"expendConfigVersion": that.rowData.version, // 扩展字段版本号
 						"subItem": formData.main, // 具体维度信息
-						"subItemName": that.rowData.selected, // 维度名称
+						"subItemName": that.rowData.characterName, // 维度名称
 						"type": "1"
 					}
-										// console.log(JSON.stringify(params));return false;
+										 //console.log(JSON.stringify(params));return false;
 					dimensionAdd(params)
 						.then((res) => {
 							let data = JSON.parse(Base64.decode(res.data)),
@@ -199,7 +202,7 @@
 //							console.log(err);
 						});
 				} else {
-//					console.log(formData);console.log(JSON.stringify(that.rowData));return false;
+					//console.log(formData);console.log(JSON.stringify(that.rowData));
 					let params = {
 						"userId": that.userInfo.userCode, // 用户类型
 						"id": formData.dimenRecordId,
@@ -209,11 +212,11 @@
 						"status": formData.isOpen ? '启用' : '禁止', // 状态（启用、禁止）
 						"expendConfigId": that.rowData.id, // 扩展字段id
 						"expendConfigVersion": that.rowData.version, // 扩展字段版本号
-						"subItem": formData.main, // 具体维度信息
+						"subItem": formData.main, // 具体维度信息 
 						"subItemName": that.rowData.characterName, // 维度名称
 						"type": "1"
 					}
-//					 console.log(params);return false;
+					 //console.log(params);return false;
 					ExtendFieldEdit(params)
 						.then((res) => {
 							let data = JSON.parse(Base64.decode(res.data)),
@@ -325,7 +328,7 @@
 					});
 			},
 			iconXiugai(index, row) {
-//								console.log(JSON.stringify(row))
+				//console.log(JSON.stringify(row))
 				this.rowData = row;
 				this.dimensionInfo.type = row.characterType; // 维度类型
 				this.dimensionInfo.name = row.characterName; // 维度名称

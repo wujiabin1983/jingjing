@@ -47,23 +47,28 @@
 								<!-- 功能图标 -->
 								<!-- 查看 -->
 								<el-tooltip class="item" content="查看" placement="top">
-									<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconShow(scope.$index, scope.row)" />
+									<i class="iconfont icon-view" @click.prevent="iconShow(scope.$index, scope.row)" ></i>
+									<!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconShow(scope.$index, scope.row)" /> -->
 								</el-tooltip>
 								<!-- 启用 -->
 								<el-tooltip class="item" content="启用" placement="top" v-if="scope.row.status == '已停止'&&roleBtn.enableInteExcConfigInfo">
-									<icon-svg icon-class="qiyong" id="icon-qiyong" @click.native.prevent="iconBegin(scope.$index, scope.row)" />
+									<i class="iconfont icon-shezhiqiyong" @click.prevent="iconBegin(scope.$index, scope.row)" ></i>
+									<!-- <icon-svg icon-class="qiyong" id="icon-qiyong" @click.native.prevent="iconBegin(scope.$index, scope.row)" /> -->
 								</el-tooltip>
 								<!-- 停止 -->
 								<el-tooltip class="item" content="停止 " placement="top" v-if="scope.row.status == '执行中'&&roleBtn.disableInteExcConfigInfo">
-									<icon-svg icon-class="tingzhi" id="icon-tingzhi" @click.native.prevent="iconStop(scope.$index, scope.row)" />
+									<i class="iconfont icon-forbidden" @click.prevent="iconStop(scope.$index, scope.row)" ></i>
+									<!-- <icon-svg icon-class="tingzhi" id="icon-tingzhi" @click.native.prevent="iconStop(scope.$index, scope.row)" /> -->
 								</el-tooltip>
 								<!-- 修改 -->
 								<el-tooltip class="item" content="修改" placement="top" v-if="scope.row.status == '未审核'||scope.row.status == '已停止'||scope.row.status == '暂存'&&roleBtn.updateInteExcConfigInfo">
-									<icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconEdit(scope.$index, scope.row)" />
+									<i class="iconfont icon-edit" @click.prevent="iconEdit(scope.$index, scope.row)" ></i>
+									<!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconEdit(scope.$index, scope.row)" /> -->
 								</el-tooltip>
 								<!-- 复制 -->
 								<el-tooltip class="item" content="复制" placement="top" v-if="roleBtn.copyExcConfigInfo">
-									<icon-svg icon-class="copy" id="icon-copy" @click.native.prevent="iconCopyTemplate(scope.$index, scope.row)" />
+									<i class="iconfont icon-icon_fuzhi" @click.prevent="iconCopyTemplate(scope.$index, scope.row)" ></i>
+									<!-- <icon-svg icon-class="copy" id="icon-copy" @click.native.prevent="iconCopyTemplate(scope.$index, scope.row)" /> -->
 								</el-tooltip>
 							</template>
 						</el-table-column>
@@ -91,17 +96,20 @@
 						<el-table-column prop="action" label="操作">
 							<template slot-scope="scope">
 								<!-- 功能图标 -->
+								<!-- 查看详情 -->
+								<el-tooltip class="item" content="查看详情" placement="top">
+									<i class="iconfont icon-view" @click.prevent="iconInfo(scope.$index,  scope.row)" ></i>
+									<!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconInfo(scope.$index,  scope.row)" /> -->
+								</el-tooltip>
 								<!-- 通过 -->
 								<el-tooltip class="item" content="通过" placement="top">
-									<icon-svg icon-class="audioYes" id="icon-audioYes" @click.native.prevent="iconAudioYes(scope.$index, scope.row)" />
+									<i class="iconfont icon-shenhetongguo" @click.prevent="iconAudioYes(scope.$index, scope.row)" ></i>
+									<!-- <icon-svg icon-class="audioYes" id="icon-audioYes" @click.native.prevent="iconAudioYes(scope.$index, scope.row)" /> -->
 								</el-tooltip>
 								<!-- 驳回 -->
 								<el-tooltip class="item" content="驳回" placement="top">
-									<icon-svg icon-class="audioNo" id="icon-audioNo" @click.native.prevent="iconAudioNo(scope.$index, scope.row)" />
-								</el-tooltip>
-								<!-- 查看详情 -->
-								<el-tooltip class="item" content="查看详情" placement="top">
-									<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconInfo(scope.$index,  scope.row)" />
+									<i class="iconfont icon-shenhebutongguo" @click.prevent="iconAudioNo(scope.$index, scope.row)" ></i>
+									<!-- <icon-svg icon-class="audioNo" id="icon-audioNo" @click.native.prevent="iconAudioNo(scope.$index, scope.row)" /> -->
 								</el-tooltip>
 							</template>
 						</el-table-column>

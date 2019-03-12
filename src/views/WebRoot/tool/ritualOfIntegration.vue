@@ -53,23 +53,28 @@
                             <!-- 功能图标 -->
                             <!-- 查看 -->
                             <el-tooltip class="item" content="查看" placement="top" v-if="!scope.row.isEdit">
-                                <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconShow(scope.$index, tableDataOther)"/>
+                                <i class="iconfont icon-view" @click.prevent="iconShow(scope.$index, tableDataOther)" ></i>
+                                <!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconShow(scope.$index, tableDataOther)"/> -->
                             </el-tooltip>
                             <!-- 修改 -->
                             <el-tooltip class="item" content="修改" placement="top"  v-if="scope.row.status == '已生效'&&roleBtn.updateGiftConfigInfo">
-                                <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconEdit(scope.$index, tableDataOther)"/>
+                                <i class="iconfont icon-edit" @click.prevent="iconEdit(scope.$index, tableDataOther)" ></i>
+                                <!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconEdit(scope.$index, tableDataOther)"/> -->
                             </el-tooltip>
                              <!-- 启用 -->
                             <el-tooltip class="item" content="启用" placement="top" v-if="scope.row.status == '已停止'&&roleBtn.enableGiftConfigInfo">
-                     	    	<icon-svg icon-class="qiyong" id="icon-qiyong" @click.native.prevent="iconQiyong(scope.$index, scope.row)"/>
+                                <i class="iconfont icon-shezhiqiyong" @click.prevent="iconQiyong(scope.$index, scope.row)" ></i>
+                     	    	<!-- <icon-svg icon-class="qiyong" id="icon-qiyong" @click.native.prevent="iconQiyong(scope.$index, scope.row)"/> -->
                             </el-tooltip>
                             <!-- 停止 -->
                             <el-tooltip class="item" content="停止 " placement="top" v-if="scope.row.status == '执行中'&&roleBtn.disableGiftConfigInfo">
-                            	<icon-svg icon-class="tingzhi" id="icon-tingzhi" @click.native.prevent="iconTingzhi(scope.$index, scope.row)"/>
+                                <i class="iconfont icon-forbidden" @click.prevent="iconTingzhi(scope.$index, scope.row)" ></i>
+                            	<!-- <icon-svg icon-class="tingzhi" id="icon-tingzhi" @click.native.prevent="iconTingzhi(scope.$index, scope.row)"/> -->
                             </el-tooltip>
                              <!-- 复制链接 -->
 	                        <el-tooltip class="item" content="复制链接" placement="top" v-if="roleBtn.copyGiftConfigInfo">
-	                            <icon-svg icon-class="copyLink" id="icon-copyLink" @click.native.prevent="iconCopyTemplate(scope.$index, scope.row)"/>
+                                <i class="iconfont icon-copyling" @click.prevent="iconCopyTemplate(scope.$index, scope.row)" ></i>
+	                            <!-- <icon-svg icon-class="copyLink" id="icon-copyLink" @click.native.prevent="iconCopyTemplate(scope.$index, scope.row)"/> -->
 	                        </el-tooltip>
                         </template>
                     </el-table-column>
@@ -172,7 +177,8 @@
                             <!-- 功能图标 -->
                             <!-- 查看详情 -->
                             <el-tooltip class="item" content="查看详情" placement="top">
-                                <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconInfo(scope.$index,tableDataTabOther)"/>
+                                <i class="iconfont icon-view" @click.prevent="iconInfo(scope.$index,tableDataTabOther)" ></i>
+                                <!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconInfo(scope.$index,tableDataTabOther)"/> -->
                             </el-tooltip>
                         </template>
                     </el-table-column>

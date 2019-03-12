@@ -25,19 +25,23 @@
 							<!-- 功能图标 -->
 							<!-- 修改 -->
 							<el-tooltip class="item" content="修改" placement="top" v-if="roleBtn.updateAutomaticMarkingInfo&&scope.row.status=='准备中'">
-								<icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugai(scope.$index, scope.row)" />
+								<i class="iconfont icon-edit" @click.prevent="iconXiugai(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugai(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<!-- 删除 -->
 							<el-tooltip class="item" content="删除" placement="top" v-if="roleBtn.deleteAutomaticMarkingInfo">
-								<icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconShanchu(scope.$index, scope.row)" />
+								<i class="iconfont icon-delete" @click.prevent="iconShanchu(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconShanchu(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<!-- 启用 -->
 							<el-tooltip class="item" content="启用" placement="top" v-if="scope.row.status=='停止'&&roleBtn.enableAutomaticMarkingInfo">
-								<icon-svg icon-class="qiyong" id="icon-qiyong" @click.native.prevent="iconBegin(scope.$index, scope.row)" />
+								<i class="iconfont icon-forbidden" @click.prevent="iconBegin(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="qiyong" id="icon-qiyong" @click.native.prevent="iconBegin(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<!-- 停止 -->
 							<el-tooltip class="item" content="停止" placement="top" v-if="scope.row.status=='启用'||scope.row.status=='准备中'&&roleBtn.disableAutomaticMarkingInfo">
-								<icon-svg icon-class="tingzhi" id="icon-tingzhi" @click.native.prevent="iconStop(scope.$index, scope.row)" />
+								<i class="iconfont icon-shezhiqiyong" @click.prevent="iconStop(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="tingzhi" id="icon-tingzhi" @click.native.prevent="iconStop(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 						</template>
 					</el-table-column>

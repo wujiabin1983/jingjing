@@ -127,7 +127,7 @@
 				<el-header>
 					<el-row>
 						<el-col :span="8">
-							{{ childName }}（最多可添加{{ childLimit }}项）
+							{{ childName }} <!--（最多可添加{{ childLimit }}项）-->
 						</el-col>
 						<el-col :span="8" :offset="8">
 							<el-checkbox v-model="formEnterText.isOpen">启用筛选</el-checkbox>

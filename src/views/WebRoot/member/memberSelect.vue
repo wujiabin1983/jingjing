@@ -89,7 +89,8 @@
 						<!--<el-button type="primary" @click="labelInfo(scope.$index, scope.row)">查看</el-button>-->
 						<!-- 查看 -->
 						<el-tooltip class="item" content="打标签" placement="top">
-							<icon-svg icon-class="setLabel" id="icon-setLabel" @click.native.prevent="labelInfo(scope.$index, scope.row)" />
+							<i class="iconfont icon-biaoqian" @click.prevent="labelInfo(scope.$index, scope.row)" ></i>
+							<!-- <icon-svg icon-class="setLabel" id="icon-setLabel" @click.native.prevent="labelInfo(scope.$index, scope.row)" /> -->
 						</el-tooltip>
 					</template>
 				</el-table-column>
@@ -98,7 +99,8 @@
 					<template slot-scope="scope">
 						<!-- 查看 -->
 						<el-tooltip class="item" content="查看" placement="top">
-							<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconInfo(scope.$index, scope.row)" />
+							<i class="iconfont icon-view" @click.prevent="iconInfo(scope.$index, scope.row)" ></i>
+							<!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconInfo(scope.$index, scope.row)" /> -->
 						</el-tooltip>
 					</template>
 				</el-table-column>

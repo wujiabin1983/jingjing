@@ -36,15 +36,18 @@
 							<!-- 功能图标 -->
 							<el-tooltip class="item" content="修改" placement="top" v-if="roleBtn.updateGuideInfo">
 								<!-- 修改 -->
-								<icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugai(scope.$index, scope.row)" />
+								<i class="iconfont icon-edit" @click.prevent="iconXiugai(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugai(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<el-tooltip class="item" content="离职" placement="top" v-if="roleBtn.quitGuideInfo">
 								<!-- 离职 -->
-								<icon-svg icon-class="lizhi" id="icon-lizhi" @click.native.prevent="iconShanchu(scope.$index, scope.row)" />
+								<i class="iconfont icon-renyuanlikai" @click.prevent="iconShanchu(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="lizhi" id="icon-lizhi" @click.native.prevent="iconShanchu(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<el-tooltip class="item" content="入会邀请码" placement="top" v-if="roleBtn.quitGuideInfo&&scope.row.isGuide=='是'">
 								<!-- 入会邀请码 -->
-								<icon-svg icon-class="yaoqing" id="icon-yaoqing" @click.native.prevent="iconInviteInvitation (scope.$index, scope.row)" />
+								<i class="iconfont icon-erweima" @click.prevent="iconInviteInvitation (scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="yaoqing" id="icon-yaoqing" @click.native.prevent="iconInviteInvitation (scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<!-- 设为营销导购 -->
 							<el-switch

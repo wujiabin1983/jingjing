@@ -46,11 +46,13 @@
                             <!-- 功能图标 -->
                             <!-- 修改 -->
                             <el-tooltip class="item" content="修改" placement="top" v-if="!scope.row.isEdit&&roleBtn.updateShakeActivityInfo">
-                                <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugai(scope.$index, scope.row)"/>
+                                <i class="iconfont icon-edit" @click.prevent="iconXiugai(scope.$index, scope.row)" ></i>
+                                <!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugai(scope.$index, scope.row)"/> -->
                             </el-tooltip>
                             <el-tooltip class="item" content="删除" placement="top" v-if="roleBtn.deleteShakeActivityInfo">
                                 <!-- 删除 -->
-                                <icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconShanchu(scope.$index, scope.row)"/>
+                                <i class="iconfont icon-delete" @click.prevent="iconShanchu(scope.$index, scope.row)" ></i>
+                                <!-- <icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconShanchu(scope.$index, scope.row)"/> -->
                             </el-tooltip>
                         </template>
                     </el-table-column>

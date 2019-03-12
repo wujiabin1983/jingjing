@@ -18,7 +18,8 @@
 								:fixedBrandRadio="fixedBrandRadio"
 								:defineJson1="defineJson1"
 								:memBrand="memBrand"
-								@commitParams="item.handle"></div>
+								@commitParams="item.handle">
+							</div>
 						</div>
 					</div>
 				</el-collapse-transition>
@@ -327,6 +328,28 @@ export default {
 				{
 					type: 'buttonM',
 					innerText: '会员标签',
+					dimension: ['已婚', '有房', '有车', '企业家'],
+					field: 'memBrand.lable',
+					model: '',
+				}
+			],
+			dimensionMembershipLable: [{//会员维度
+					type: 'buttonM',
+					innerText: '爱好',
+					dimension: ['足球', '篮球', '羽毛球', '排球'],
+					field: 'memBrand.age',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: '收入',
+					dimension: ['土豪', '乡巴佬'],
+					field: 'memBrand.sex',
+					model: '',
+				},
+				{
+					type: 'buttonM',
+					innerText: '标签组',
 					dimension: ['已婚', '有房', '有车', '企业家'],
 					field: 'memBrand.lable',
 					model: '',
@@ -993,6 +1016,11 @@ export default {
 										component: 'dimension-component',
 										dimension: that.dimensionMembershipItems,
 										type: '会员维度',
+										handle: that.handleCommitMemBrand
+									},{
+										component: 'dimension-component',
+										dimension: that.dimensionMembershipLable,
+										type: '会员标签',
 										handle: that.handleCommitMemBrand
 									}, {
 										component: 'dimension-component',

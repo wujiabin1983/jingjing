@@ -40,15 +40,18 @@
                             <!-- 功能图标 -->
                              <el-tooltip class="item" content="查看" placement="top">
                                 <!-- 查看 -->
-                                <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakan(scope.$index, scope.row)"/>
+                                <i class="iconfont icon-view" @click.prevent="iconChakan(scope.$index, scope.row)" ></i>
+                                <!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakan(scope.$index, scope.row)"/> -->
                             </el-tooltip>
                             <!-- 启用 -->
                             <el-tooltip class="item" content="启用" placement="top" v-if="scope.row.status != '已生效'&&roleBtn.enableStoreVoucherLibraryInfo">
-                     	    	<icon-svg icon-class="qiyong" id="icon-qiyong" @click.native.prevent="iconQiyong(scope.$index, scope.row)"/>
+                            	<i class="iconfont icon-shezhiqiyong" @click.prevent="iconQiyong(scope.$index, scope.row)" ></i>
+                     	    	<!-- <icon-svg icon-class="qiyong" id="icon-qiyong" @click.native.prevent="iconQiyong(scope.$index, scope.row)"/> -->
                             </el-tooltip>
                             <!-- 停用 -->
                             <el-tooltip class="item" content="停用 " placement="top" v-if="scope.row.status == '已生效'&&roleBtn.disableStoreVoucherLibraryInfo">
-                            	<icon-svg icon-class="tingzhi" id="icon-tingzhi" @click.native.prevent="iconTingzhi(scope.$index, scope.row)"/>
+                            	<i class="iconfont icon-forbidden" @click.prevent="iconTingzhi(scope.$index, scope.row)" ></i>
+                            	<!-- <icon-svg icon-class="tingzhi" id="icon-tingzhi" @click.native.prevent="iconTingzhi(scope.$index, scope.row)"/> -->
                             </el-tooltip>
                         </template>
                     </el-table-column>

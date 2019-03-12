@@ -168,11 +168,13 @@
 						<template slot-scope="scope">
 							<!-- 修改 -->
 							<el-tooltip class="iconItem" content="修改" placement="top" v-show="!scope.row.isEdit && roleBtn.updateAutoReplySetMasterInfo">
-								<icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugai(scope.$index, scope.row)" />
+								<i class="iconfont icon-edit" @click.prevent="iconXiugai(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugai(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<!-- 删除 -->
 							<el-tooltip class="iconItem" content="删除" placement="top" v-show="roleBtn.deleteAutoReplySetMasterInfo">
-								<icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconShanchu(scope.$index, scope.row)" />
+								<i class="iconfont icon-delete" @click.prevent="iconShanchu(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconShanchu(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<!-- <el-tooltip class="item" content="删除" placement="top" v-show="scope.row.activityStatus == '暂存'||scope.row.activityStatus == '未通过'">
 								<icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconDelete(scope.$index, scope.row)" />

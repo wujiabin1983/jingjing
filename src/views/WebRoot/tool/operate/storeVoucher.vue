@@ -7,7 +7,8 @@
 					<el-row :gutter="10">
 						<el-col :span="14">
 							<el-form-item label="选择门店" placeholder="请选择门店" prop="useObject">
-								<el-input v-model="storeArr" :readonly="true" placeholder="请选择门店" class="storewidth220></el-input>
+								<el-input v-model="storeArr" :readonly="true" placeholder="请选择门店" class="width220">
+								</el-input>
 								<el-button type="primary" id="search" v-if="this.getPageType!='查看'" @click="searchStorePop">选择</el-button>
 							</el-form-item>
 							<el-form-item label="发送电子券" prop="giveJson">

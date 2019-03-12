@@ -5,12 +5,7 @@
             <navbar @handleNavId="handleNavId" @handleSwitch="handleSwitch"></navbar>
            
         </div> -->
-         <el-dialog
-                class="dialogOne"
-                title="账号管理"
-                :visible.sync="dialogVisible"
-                append-to-body
-                width="70%">
+         <el-dialog class="dialogOne" title="账号管理" :visible.sync="dialogVisible" append-to-body width="70%">
                 <h3>{{this.userInfo.userCode}}</h3>
                 <el-table border ref="singleTable" class="tableData noBgColorTable" :data="tableData" highlight-current-row @current-change="handleCurrentChange" v-loading="tableLoading">
     				<el-table-column type="index" width="50"> </el-table-column>

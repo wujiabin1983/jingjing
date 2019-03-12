@@ -20,11 +20,13 @@
 						<!-- 功能图标 -->
 						<el-tooltip class="item" content="查看" placement="top">
 							<!-- 查看 -->
-							<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakanBrand(scope.$index, scope.row)" />
+							<i class="iconfont icon-view" @click.prevent="iconChakanBrand(scope.$index, scope.row)" ></i>
+							<!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakanBrand(scope.$index, scope.row)" /> -->
 						</el-tooltip>
 						<el-tooltip class="item" content="修改" placement="top" v-if="!scope.row.isEdit">
 							<!-- 修改 -->
-							<icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugaiBrand(scope.$index, scope.row)" />
+							<i class="iconfont icon-edit" @click.prevent="iconXiugaiBrand(scope.$index, scope.row)" ></i>
+							<!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugaiBrand(scope.$index, scope.row)" /> -->
 						</el-tooltip>
 
 					</template>
@@ -49,15 +51,18 @@
 						<!-- 功能图标 -->
 						<el-tooltip class="item" content="查看" placement="top">
 							<!-- 查看 -->
-							<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakanStore(scope.$index, scope.row)" />
+							<i class="iconfont icon-view" @click.prevent="iconChakanStore(scope.$index, scope.row)" ></i>
+							<!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakanStore(scope.$index, scope.row)" /> -->
 						</el-tooltip>
 						<el-tooltip class="item" content="修改" placement="top" v-if="!scope.row.isEdit">
 							<!-- 修改 -->
-							<icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugaiStore(scope.$index, scope.row)" />
+							<i class="iconfont icon-edit" @click.prevent="iconXiugaiStore(scope.$index, scope.row)"></i>
+							<!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugaiStore(scope.$index, scope.row)" /> -->
 						</el-tooltip>
 						<el-tooltip class="item" content="删除" placement="top">
 							<!-- 删除 -->
-							<icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconShanchuBrand(scope.$index, scope.row)" />
+							<i class="iconfont icon-delete" @click.prevent="iconShanchuBrand(scope.$index, scope.row)"></i>
+							<!-- <icon-svg icon-class="shanchu" id="icon-shanchu" @click.native.prevent="iconShanchuBrand(scope.$index, scope.row)" /> -->
 						</el-tooltip>
 					</template>
 				</el-table-column>

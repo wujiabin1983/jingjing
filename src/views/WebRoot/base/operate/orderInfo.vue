@@ -29,7 +29,8 @@
 									<!-- 功能图标 -->
 									<el-tooltip class="item" content="查看" placement="top">
 										<!-- 查看 -->
-										<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakan(scope.$index, scope.row)" />
+										<i class="iconfont icon-view" @click.prevent="iconChakan(scope.$index, scope.row)" ></i>
+										<!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconChakan(scope.$index, scope.row)" /> -->
 									</el-tooltip>
 								</template>
 							</el-table-column>

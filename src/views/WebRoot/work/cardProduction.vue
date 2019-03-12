@@ -20,7 +20,8 @@
                         <template slot-scope="scope">
                             <!-- 功能图标 -->
                             <el-tooltip class="item" content="下载" placement="top">
-                                <icon-svg icon-class="xiazai" id="icon-xiazai" @click.native.prevent="iconShanchu(scope.$index, scope.row)"/>
+                                <i class="iconfont icon-xiazai" @click.prevent="iconShanchu(scope.$index, scope.row)" ></i>
+                                <!-- <icon-svg icon-class="xiazai" id="icon-xiazai" @click.native.prevent="iconShanchu(scope.$index, scope.row)"/> -->
                             </el-tooltip>
                         </template>
                     </el-table-column>
