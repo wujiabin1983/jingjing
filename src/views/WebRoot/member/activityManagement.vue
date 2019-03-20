@@ -47,7 +47,8 @@
 	                <el-table ref="tableData" v-loading="this.tableLoading" :data="tableData" @selection-change="handleSelectionChange">
 	                    <el-table-column type="index" width="50" label="序号"></el-table-column>
 <!--	                    <el-table-column type="selection" width="50" label="选择"></el-table-column>
--->	                    <el-table-column prop="activityName" label="活动名称"></el-table-column>
+-->	                    <el-table-column prop="activityId" label="活动ID"></el-table-column>
+						<el-table-column prop="activityName" label="活动名称"></el-table-column>
 	                    <el-table-column prop="activityType" label="活动类型"></el-table-column>
 	                    <el-table-column prop="createdBy" label="创建人"></el-table-column>
 	                    <el-table-column prop="activityDate" width="180" label="活动时间">
@@ -136,6 +137,7 @@
 	                <el-table ref="tableDataTab" v-loading="this.tableLoading" :data="tableDataTab" @selection-change="handleSelectionChangeTab">
 	                    <el-table-column type="index" width="50" label="序号"></el-table-column>
 <!--	                    <el-table-column type="selection" width="50" label="选择"></el-table-column>-->
+	                    <el-table-column prop="activityId" label="活动ID"></el-table-column>
 	                    <el-table-column prop="activityName" label="活动名称"></el-table-column>
 	                    <el-table-column prop="activityType" label="活动类型"></el-table-column>
 	                    <el-table-column prop="createdBy" label="创建人"></el-table-column>
@@ -219,6 +221,7 @@ export default {
         	selectData:{},
         	// 搜索数据
             form: {
+            	activityId: '',//活动ID
                 activiteType: '', //活动类型
                 activityStatus: '', // 活动状态
                 activityName:''//活动名称
@@ -278,13 +281,15 @@ export default {
     		this.form= {
                 activiteType: '', //活动类型
                 activityStatus: '', // 活动状态
-                activityName:''//活动名称
+                activityName:'',//活动名称
+                activityId:''//活动ID
            };
     	},
     	onResetTab(){
             this.formTab= {
                 activiteType: '', //活动类型
-                activityName:''//活动名称
+                activityName:'',//活动名称
+                activityId:''//活动ID
             };
     	},
     	//tab切换
@@ -339,7 +344,8 @@ export default {
                 limit: limit,
                 activiteType: searchContent.activiteType,
                 activityStatus: searchContent.activityStatus,
-                activityName: searchContent.activityName
+                activityName: searchContent.activityName,
+                activityId: searchContent.activityId
             }
             // 使表格加载
             this.tableLoading = true;
@@ -381,7 +387,8 @@ export default {
                 limit: limit,
                 listType:"审核列表",
                 activiteType: searchContent.activiteType,
-                activityName:searchContent.activityName
+                activityName:searchContent.activityName,
+                activityId:searchContent.activityId
             }
             // 使表格加载
             this.tableLoading = true;

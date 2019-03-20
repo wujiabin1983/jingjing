@@ -72,17 +72,18 @@
 			<span>{{totalSum}}</span>
 			<el-table v-loading="this.tableLoading" ref="tableData" :data="tableData" @selection-change="handleSelectionChange">
 				<el-table-column type="index" width="50" label="序号"></el-table-column>
-				<el-table-column type="selection" width="50" label="选择"></el-table-column>
-				<el-table-column prop="onLineCardNum" width="100px" label="会员卡号"></el-table-column>
-				<el-table-column prop="userUrl" label="头像">
+				<!-- <el-table-column type="selection" width="50" label="选择"></el-table-column> -->
+				<el-table-column prop="userUrl" width="100px" label="头像">
 					<template slot-scope="scope">
 						<div class="pageImg"><img :src="scope.row.userUrl" /></div>
 					</template>
 				</el-table-column>
-				<el-table-column prop="userName" label="姓名"></el-table-column>
-				<el-table-column prop="sex" label="性别"></el-table-column>
-				<el-table-column prop="memberLevel" label="等级"></el-table-column>
-				<el-table-column prop="storeName" label="服务门店"></el-table-column>
+				<el-table-column prop="onLineCardNum" width="150px" label="会员卡号"></el-table-column>
+				<el-table-column prop="mobile" width="150px" label="手机号码"></el-table-column>
+				<el-table-column prop="userName" width="100px"label="姓名"></el-table-column>
+				<el-table-column prop="sex" width="50px" label="性别"></el-table-column>
+				<el-table-column prop="memberLevel" width="100px" label="等级"></el-table-column>
+				<el-table-column prop="storeName" width="300px" label="服务门店"></el-table-column>
 				<el-table-column prop="guideName" label="专属导购"></el-table-column>
 				<el-table-column prop="memberLevel" label="标签">
 					<template slot-scope="scope">

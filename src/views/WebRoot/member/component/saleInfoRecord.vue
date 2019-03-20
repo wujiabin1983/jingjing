@@ -41,8 +41,17 @@
 				<el-table-column prop="discount" label="折扣(%)"></el-table-column>
 				<el-table-column prop="orderRealpayAmount" label="实付金额"></el-table-column>
 				<el-table-column prop="orderDate" width="150" label="销售时间"></el-table-column>
-				<el-table-column prop="orderStatus" label="订单状态"></el-table-column>
-				<el-table-column prop="storeName" label="所属门店"></el-table-column>
+				<el-table-column prop="orderStatus" width="100" label="订单状态"></el-table-column>
+				<el-table-column prop="storeName" label="所属门店">
+					<template slot-scope="scope">
+						<el-popover trigger="hover" placement="top">
+							<p>{{ scope.row.storeName }}</p>
+							<div slot="reference" class="name-wrapper">
+							<el-tag size="medium">{{ scope.row.storeName }}</el-tag>
+							</div>
+						</el-popover>
+					</template>
+				</el-table-column>
 				<el-table-column prop="guideName" label="专属导购"></el-table-column>
 			</el-table>
 	        <!-- 分页 -->

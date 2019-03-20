@@ -30,9 +30,9 @@
 			<el-table :data="detailArray">
 				<el-table-column type="index" width="50" label="序号"></el-table-column>
 				<el-table-column prop="orderNum" label="流水"></el-table-column>
-				<el-table-column prop="integralDate" label="日期"></el-table-column>
-				<el-table-column prop="integralType" label="渠道"></el-table-column>
-				<el-table-column prop="integralDir" label="类别"></el-table-column>
+				<el-table-column prop="integralDate" width="150"label="日期"></el-table-column>
+				<el-table-column prop="integralType" width="100" label="渠道"></el-table-column>
+				<el-table-column prop="integralDir" width="100" label="类别"></el-table-column>
 				<el-table-column prop="integralDeac" label="积分描述"></el-table-column>
 				<el-table-column prop="integralValue" label="积分"></el-table-column>
 				<el-table-column prop="status" label="状态"></el-table-column>

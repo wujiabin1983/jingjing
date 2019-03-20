@@ -7,14 +7,14 @@
 					<div class="dsh-headerImg">
 						<img :src="userInfos.userUrl"/>
 					</div>
-					<div class="dsh-growthValue">
-						<b>成长值:</b><span>{{userInfos.expValue==""?0:userInfos.expValue}}</span>
-					</div>
 				</div>
 				<div class="floatLeft overHidden dsh-otherBasicInfo">
 					<div class="name"><span>姓名：{{userInfos.userName}}</span><span class="sex sexWomen" v-if="this.userInfos.sex=='女'"><img :src="sexWomen"/><span>{{userInfos.age==""?0:userInfos.age}}</span></span><span class="sex sexMan" v-else><img :src="sexMan"/><span>{{userInfos.age==""?0:userInfos.age}}</span></span></div>
 					<div class="name">生日：{{userInfos.birthDate}}</div>
 					<div class="name">等级：{{userInfos.memberLevel}}</div>
+				</div>
+				<div class="dsh-growthValue">
+						<b>成长值:</b><span>{{userInfos.expValue==""?0:userInfos.expValue}}</span>
 				</div>
 				<div class="dsh-progress">
 					<span></span>
@@ -90,7 +90,7 @@
 		</div>
 		<span class="el-title">个人标签</span>
 		<div class="dsh-labelInfo">
-			<span class="dsh-labelAdd" @click="addLabel">+添加自定义标签</span>
+			<!-- <span class="dsh-labelAdd" type="text" @click="dialogVisible = true">+添加自定义标签</span> -->
 			<div class="labelSpan">
 				<div v-for="item in labelInfo" class="labelSpanItem">
 					<div class="labelNames">{{item.labelName}} :<span v-for="labelValue in item.labelValue" :class="labelValue.color">{{labelValue.label}}</span>
@@ -131,7 +131,19 @@
 			    <el-table-column prop="remarks" label="备注"></el-table-column>
 			</el-table>
 		</div>
+		<!-- <el-dialog
+		  title="提示"
+		  :visible.sync="dialogVisible"
+		  width="30%"
+		  :before-close="handleClose">
+		  <span>这是一段信息</span>
+		  <span slot="footer" class="dialog-footer">
+		    <el-button @click="dialogVisible = false">取 消</el-button>
+		    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+		  </span>
+		</el-dialog> -->
 	</el-card>
+	
 </template>
 <script>
 	import { selectMember870} from '@/api/member/memberSelectInfo'
@@ -156,6 +168,8 @@
 	export default {
 		data() {
 			return {
+				//dialogVisible: false,
+				//labelGroupSelect: [],
 				isMoreinformation:true, 
 				img1:img1,
 				img2:img2,
@@ -271,6 +285,14 @@
 			addLabel(){
 				
 			},
+			//对话框
+			handleClose(done) {
+		        this.$confirm('确认关闭？')
+		          .then(_ => {
+		            done();
+		          })
+		          .catch(_ => {});
+		    },
 			//查询会员信息
 			selectMember(){
 				let params={
@@ -532,13 +554,13 @@
 		}
 	}
 	.dsh-growthValue{
-		margin-left: 5px;
+		margin-left: 12px;
 		height: 30px;
-		overflow: hidden;		
-		margin-top: 4px;
+		overflow: hidden;
+		margin-top: 120px;
 		span{
 			display: inline-block;
-			font-size: rem(18px);
+			font-size: rem(16px);
 			color: #ff8a16;
 			height: 30px;
 			line-height: 30px;
@@ -550,15 +572,17 @@
 			line-height: 30px;
 			font-weight: normal;
 			float: left;
+			margin-right: 3px;
 		}
 	}
 	.dsh-otherBasicInfo{
 		width: rem(180px);
+		height: rem(105px);
 		margin-top: 14px;
-		margin-left: rem(10px);
+		margin-left: rem(15px);
 		.name{
-			height: 40px;
-			line-height: 40px;
+			height: 35px;
+			line-height: 30px;
 			position: relative;
 			overflow: hidden;
 		}

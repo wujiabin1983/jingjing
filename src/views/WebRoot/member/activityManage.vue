@@ -31,6 +31,7 @@
 			<el-card>
 				<el-table ref="tableData" v-loading="this.tableLoading" :data="tableData" @selection-change="handleSelectionChange">
 					<el-table-column type="index" width="50" label="序号"></el-table-column>
+					<el-table-column prop="activityId" label="活动ID"></el-table-column>
 					<el-table-column prop="activityName" label="活动名称"></el-table-column>
 					<el-table-column prop="activityType" label="活动类型"></el-table-column>
 					<el-table-column prop="activityObject" label="活动对象"></el-table-column>
@@ -136,6 +137,7 @@ import {selectActivityData} from '@/api/member/activityManagement'
 	                page: start,
 	                limit: limit,
 	                activiteType: this.form.activiteType,
+	                activityId: this.form.activityId,
 	                activityName: this.form.activiteName,
 	                activityNameDateBegin:this.form.activiteDate[0],
 	                activityNameDateEnd:this.form.activiteDate[1]
