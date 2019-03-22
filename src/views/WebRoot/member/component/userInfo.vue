@@ -16,9 +16,15 @@
 				<div class="dsh-growthValue">
 						<b>成长值:</b><span>{{userInfos.expValue==""?0:userInfos.expValue}}</span>
 				</div>
-				<div class="dsh-progress">
-					<span></span>
+				<!-- <div class="dsh-progress" :style="{backgroundImage: 'url(' + grouthvalue + ')' }"> -->
+				<div class="nextGrowth">
+					<div class="dsh-progress">
+						<!-- <img :src="grouthvalue"> -->
+						<span :style="{width:GrowthVal+'%'}"></span>
+					</div>
+					<p>{{userInfos.nextExpValue}}</p>
 				</div>
+
 			</div>
 			<div class="overHidden dsh-otherInfo">
 				<div class="name">手机：{{userInfos.mobile}}</div>
@@ -155,6 +161,7 @@
 	import basicInfoBg from '@/assets/img_userInfo/member_bg_title.png'
 	import sexWomen from '@/assets/img_userInfo/nav_icon_women.png'
 	import sexMan from '@/assets/img_userInfo/nav_icon_man.png'
+	import grouthvalue from '@/assets/img_userInfo/member_bg_grouthvalue.png'
 	import consumption from '@/assets/img_userInfo/member_icon_consumption.png'
 	import integration from '@/assets/img_userInfo/member_icon_integration.png'
 	import activity from '@/assets/img_userInfo/menber_icon_activity.png'
@@ -175,6 +182,7 @@
 				img2:img2,
 				img3:img3,
 				img4:img4,
+				GrowthVal:0,//成长值占比
 				sexWomen:sexWomen,//性别女
 				sexMan:sexMan,//性别男
 				consumption:consumption,//累计消费
@@ -182,6 +190,7 @@
 				activity:activity,//活跃会员
 				recently:recently,//最近消费日期
 				basicInfoBg:basicInfoBg,//背景图片
+				grouthvalue:grouthvalue,//等级进度条
 				moreinformation:moreinformation,//更多资料
 				consumption_big:consumption_big,//累计消费
 				averageconsumption:averageconsumption,//平均消费
@@ -197,6 +206,7 @@
 		            "userName": "",//姓名
 		            "sex": "",//性别
 		            "memberLevel": "",//会员等级
+		            "nextExpValue":"",//下一等级
 		            "onLineCardNum": "",//线上卡号
 		            "lineCardNum": "",//线下卡号
 		            "mobile": "",//手机号码
@@ -323,6 +333,12 @@
 							that.orderInfo = msg.orderInfo;
 							that.interactionInfo = msg.interactionInfo;
 							that.memberChangeInfo = msg.memberChangeInfo;
+							//成长值占比
+							if (!that.userInfos.nextExpValue) {
+								that.GrowthVal = 100
+							}else{
+								that.GrowthVal = that.userInfos.expValue / that.userInfos.nextExpValue * 100
+							};
 							let labelStr = '';
 							that.labelInfo=[];
 							that.labelName.forEach((val,index)=>{
@@ -611,8 +627,17 @@
 			background: #5aa4ff;
 		}
 	}
+
+	.nextGrowth{
+		p{
+			float:left;
+			display:block;
+			line-height: 12px;
+			margin-left: 75%;
+		}
+	}
 	.dsh-progress{
-		width: 80%;
+		width: 70%;
 		height: 14px;
 		background: #e2e2e2;
 		position: absolute;
@@ -621,14 +646,14 @@
 		border-radius: 8px;
 		overflow: hidden;
 		span{
-			width:0%;
-			height: 12px;
+			height: 13px;
 			border-radius: 8px;
-			background: #ff8a16;
+			border:1px solid #ff8a16;
+			background: linear-gradient(180deg, #ffffff 0%,  #ff8a16 50%);
 			display: block;
-			box-shadow: 0px 0px 10px 1px #ff8a16, 0 0 1px #ff8a16, 0 0 1px #ff8a16, 0 0 1px #ff8a16, 0 0 1px #ff8a16, 0 0 1px #ff8a16, 0 0 1px #ff8a16
 		}
 	}
+	
 	.dsh-otherInfo{
 		width: rem(200px);
 		float: left;

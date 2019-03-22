@@ -288,7 +288,10 @@
 					this.nav = "event";
 				}else{
 					this.nav = "";
-					this.form.setEvent = "";
+					this.form.setEvent =  {
+						event:'',
+						level:''
+					}
 				}
 			}
 		},

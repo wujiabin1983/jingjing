@@ -78,23 +78,32 @@
 						<div class="pageImg"><img :src="scope.row.userUrl" /></div>
 					</template>
 				</el-table-column>
-				<el-table-column prop="onLineCardNum" width="150px" label="会员卡号"></el-table-column>
-				<el-table-column prop="mobile" width="150px" label="手机号码"></el-table-column>
-				<el-table-column prop="userName" width="100px"label="姓名"></el-table-column>
-				<el-table-column prop="sex" width="50px" label="性别"></el-table-column>
-				<el-table-column prop="memberLevel" width="100px" label="等级"></el-table-column>
-				<el-table-column prop="storeName" width="300px" label="服务门店"></el-table-column>
-				<el-table-column prop="guideName" label="专属导购"></el-table-column>
-				<el-table-column prop="memberLevel" label="标签">
+				<el-table-column prop="onLineCardNum" label="会员卡号"></el-table-column>
+				<el-table-column prop="mobile"  label="手机号码"></el-table-column>
+				<el-table-column prop="userName" label="姓名"></el-table-column>
+				<el-table-column prop="sex"  label="性别"></el-table-column>
+				<el-table-column prop="memberLevel"  label="等级"></el-table-column>
+				<el-table-column prop="storeName"  label="服务门店">
 					<template slot-scope="scope">
-						<!--<el-button type="primary" @click="labelInfo(scope.$index, scope.row)">查看</el-button>-->
-						<!-- 查看 -->
-						<el-tooltip class="item" content="打标签" placement="top">
-							<i class="iconfont icon-biaoqian" @click.prevent="labelInfo(scope.$index, scope.row)" ></i>
-							<!-- <icon-svg icon-class="setLabel" id="icon-setLabel" @click.native.prevent="labelInfo(scope.$index, scope.row)" /> -->
-						</el-tooltip>
+						<el-popover trigger="hover" placement="top">
+							<p>{{ scope.row.storeName }}</p>
+							<div slot="reference" class="name-wrapper">
+							<el-tag size="medium">{{ scope.row.storeName }}</el-tag>
+							</div>
+						</el-popover>
 					</template>
 				</el-table-column>
+				<el-table-column prop="guideName" label="专属导购"></el-table-column>
+				<!-- <el-table-column prop="memberLevel" label="标签">
+					<template slot-scope="scope"> -->
+						<!--<el-button type="primary" @click="labelInfo(scope.$index, scope.row)">查看</el-button>-->
+						<!-- 查看 -->
+						<!-- <el-tooltip class="item" content="打标签" placement="top">
+							<i class="iconfont icon-biaoqian" @click.prevent="labelInfo(scope.$index, scope.row)" ></i> -->
+							<!-- <icon-svg icon-class="setLabel" id="icon-setLabel" @click.native.prevent="labelInfo(scope.$index, scope.row)" /> -->
+<!-- 						</el-tooltip>
+					</template>
+				</el-table-column> -->
 				<el-table-column prop="action" label="操作">
 					<!-- 功能图标 -->
 					<template slot-scope="scope">
@@ -102,6 +111,10 @@
 						<el-tooltip class="item" content="查看" placement="top">
 							<i class="iconfont icon-view" @click.prevent="iconInfo(scope.$index, scope.row)" ></i>
 							<!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconInfo(scope.$index, scope.row)" /> -->
+						</el-tooltip>
+						<el-tooltip class="item" content="打标签" placement="top">
+							<i class="iconfont icon-biaoqian" @click.prevent="labelInfo(scope.$index, scope.row)" ></i>
+							<!-- <icon-svg icon-class="setLabel" id="icon-setLabel" @click.native.prevent="labelInfo(scope.$index, scope.row)" /> -->
 						</el-tooltip>
 					</template>
 				</el-table-column>
