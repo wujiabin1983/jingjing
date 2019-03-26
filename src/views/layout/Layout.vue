@@ -92,7 +92,6 @@
                 <el-dropdown trigger="click" @command="handleCommand">
                     <span class="el-dropdown-link">
                         <img class="icon" :src="require('@/assets/membershipgrouping_more.png')" alt="">
-                        <!-- <i class="el-icon-arrow-down el-icon-tickets"></i> -->
                     </span>
                     <el-dropdown-menu slot="dropdown" >
                         <el-dropdown-item command="首页">
@@ -104,14 +103,8 @@
                         <el-dropdown-item divided command="退出">退出</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
-            </div>
-            <!-- <div class="sidebar-container"> -->
-                <sidebar  :handleNavId="navId" class="sidebar-container"></sidebar>
-            <!-- </div> -->
-            
-            <!-- <div class="sidebar-bg">
-                <img :src="sidebarBg" alt="">
-            </div> -->
+            </div> 
+            <sidebar :handleNavId="navId" class="sidebar-container"></sidebar>
         </div>
         <div class="main-container">
             <!-- <navbar></navbar>  main-container1-->
@@ -711,8 +704,8 @@ export default {
         .sidebar-container {
             transition: all .28s ease-out;
             height: calc(100% - 154px);
+            // height: 100%;
             top: 0;
-            bottom: 0;
             left: 0;
             right: - rem(17px);
             z-index: 20;

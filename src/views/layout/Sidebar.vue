@@ -25,7 +25,7 @@ import { mapGetters } from 'vuex'
       return {
         activeIndex: '0',
         computedTopNavData: [],
-        navList:[]
+        navList:[],
       }
     },
     computed: {
@@ -124,14 +124,4 @@ import { mapGetters } from 'vuex'
   .el-menu {
     min-height: 100%;
   }
- 
-</style>
-<style lang="scss">
- .scrollbar-wrapper {
-    overflow-x: hidden !important;
-
-    .el-scrollbar__view {
-        height: 100%;
-    }
-    }
-</style>
+</style>=
