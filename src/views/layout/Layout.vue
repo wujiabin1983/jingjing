@@ -694,9 +694,10 @@ export default {
             z-index: 1001;
             overflow: hidden;
             transition: all .28s ease-out;
+            background-size: cover;
             //background:url('../../assets/nav_bg.png') 50% 50%/cover no-repeat;
             //background-position: 50% 50%; 　
-　　        //background-size: cover;
+　　        //
             //background-repeat: repeat-y;
             .sidebarBg {
                 position: absolute;
@@ -718,7 +719,13 @@ export default {
             &::-webkit-scrollbar {
                 display: none;
             }
+            scrollbar-width: none;
+             /*隐藏滚动条，当IE下溢出，仍然可以滚动*/
+            -ms-overflow-style:none;
+            /*火狐下隐藏滚动条*/
+            overflow:-moz-scrollbars-none;
         }
+
         .main-container {
             // margin-top: $top;
             min-height: 100%;
