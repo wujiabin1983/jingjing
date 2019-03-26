@@ -309,7 +309,7 @@
         });
       },
       handleBack() {
-  
+        this.$router.go(-1)
       },
   
       openSelectGroup() {

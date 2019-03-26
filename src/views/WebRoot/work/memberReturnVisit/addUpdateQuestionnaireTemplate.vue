@@ -209,7 +209,7 @@ import { mapGetters } from 'vuex'
         this.form.revisitTaskTempDtl.splice(index,1);
       },
       handleBack() {
-  
+        this.$router.go(-1)
       },
       reset() {
         this.initForm()

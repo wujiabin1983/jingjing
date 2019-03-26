@@ -34,7 +34,7 @@
               <!-- 正在执行/已结束/已停止/待执行 -->
 
 							<el-tooltip class="item" :content="scope.row.taskStatus=='正在执行'?'禁用':'启用'" placement="top" v-if="roleBtn.forbiddenMemberReturnTask && scope.row.taskStatus!='已结束'">
-                <i class="iconfont icon-forbidden"  @click="changeTaskStatus(scope.row)"></i>
+                <i :class="`iconfont icon-${scope.row.taskStatus=='正在执行'? 'forbidden':'shezhiqiyong'}`"  @click="changeTaskStatus(scope.row)"></i>
 							</el-tooltip>
 							<el-tooltip class="item" content="删除" placement="top" v-if="roleBtn.deleteMemberReturnTask">
                 <i class="iconfont icon-delete"  @click="deleteTask(scope.row)"></i>

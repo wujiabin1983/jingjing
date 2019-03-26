@@ -237,7 +237,7 @@ import { apiAddMemberReturnTask } from '@/api/work/memberReturnVisit.js'
       },
       
       handleBack() {
-  
+        this.$router.go(-1)
       },
       reset() {
         this.initForm()

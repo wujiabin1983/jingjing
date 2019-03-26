@@ -23,7 +23,7 @@
                 <i class="iconfont icon-edit"  @click="updateTask(scope.row)"></i>
 							</el-tooltip>
 							<el-tooltip class="item" :content="scope.row.stauts=='启用'?'禁用':'启用'" placement="top" v-if="roleBtn.forbiddenQuestionnaireTemplate">
-                <i class="iconfont icon-forbidden"  @click="changeTaskStatus(scope.row)"></i>
+                <i :class="`iconfont icon-${scope.row.stauts=='启用'? 'forbidden':'shezhiqiyong'}`" @click="changeTaskStatus(scope.row)"></i>
 							</el-tooltip>
 							<el-tooltip class="item" content="删除" placement="top" v-if="roleBtn.apiDeleteQuestionnaireTemplate">
                 <i class="iconfont icon-delete"  @click="deleteTask(scope.row)"></i>
