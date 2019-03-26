@@ -3,7 +3,7 @@
     <div class="card" :style="cardHeaderBg">
         <div class="card-box card-top ">
             <div class="group-name left-box">{{childData.groupName}}</div>
-            <div class="icon-setting right-box">
+            <div class="right-box">
                 <el-checkbox v-if="childPageName == '分组查看'" v-model="childData.selected" @change="handleCheckbox"></el-checkbox>
                 <el-dropdown trigger="click" @command="handleCommand" v-if="childPageName != '分组查看'">
                     <span class="el-dropdown-link">
