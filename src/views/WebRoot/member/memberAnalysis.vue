@@ -20,8 +20,11 @@
 		<el-row class="panel-group" :gutter="16" v-loading="echartLoading">
 			<el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
 				<div class='card-panel'>
-					<div class="card-panel-icon-wrapper icon-people">
-						<icon-svg icon-class="salejine" id="icon-salejine" class-name="card-panel-icon" />
+					<div class="card-panel-icon-wrapper people-box">
+						<div class="circle-box">
+							<i class="iconfont icon-money-symbol"></i>
+						</div>
+						<!-- <icon-svg icon-class="salejine" id="icon-salejine" class-name="card-panel-icon" /> -->
 					</div>
 					<div class="card-panel-description">
 						<div class="card-panel-text">粉丝<br />数量</div>
@@ -31,8 +34,11 @@
 			</el-col>
 			<el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
 				<div class="card-panel">
-					<div class="card-panel-icon-wrapper icon-message">
-						<icon-svg icon-class="salejine" id="icon-salejine" class-name="card-panel-icon" />
+					<div class="card-panel-icon-wrapper message-box">
+						<div class="circle-box">
+							<i class="iconfont icon-money-symbol"></i>
+						</div>
+						<!-- <icon-svg icon-class="salejine" id="icon-salejine" class-name="card-panel-icon" /> -->
 					</div>
 					<div class="card-panel-description">
 						<div class="card-panel-text">会员<br/>数量</div>
@@ -47,8 +53,11 @@
 			</el-col>
 			<el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
 				<div class="card-panel">
-					<div class="card-panel-icon-wrapper icon-money">
-						<icon-svg icon-class="salejine" id="icon-salejine" class-name="card-panel-icon" />
+					<div class="card-panel-icon-wrapper money-box">
+						<div class="circle-box">
+							<i class="iconfont icon-money-symbol"></i>
+						</div>
+						<!-- <icon-svg icon-class="salejine" id="icon-salejine" class-name="card-panel-icon" /> -->
 					</div>
 					<div class="card-panel-description">
 						<div class="card-panel-text">入会<br />已消费</div>
@@ -63,8 +72,11 @@
 			</el-col>
 			<el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
 				<div class="card-panel">
-					<div class="card-panel-icon-wrapper icon-shoppingCard">
-						<icon-svg icon-class="salejine" id="icon-salejine" class-name="card-panel-icon" />
+					<div class="card-panel-icon-wrapper shoppingCard-box">
+						<div class="circle-box">
+							<i class="iconfont icon-money-symbol"></i>
+						</div>
+						<!-- <icon-svg icon-class="salejine" id="icon-salejine" class-name="card-panel-icon" /> -->
 					</div>
 					<div class="card-panel-description">
 						<div class="card-panel-text">入会<br />未消费</div>
@@ -1919,6 +1931,22 @@
 	};
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+.circle-box{
+	width: 60px;
+	height: 60px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	background: #2ec7c9;
+	transition: all ease 0.3s;
+	.iconfont{
+		font-size: 25px;
+		color:#fff;
+		transition: all ease 0.3s;
+	}
+	
+}
 	@import "src/styles/_function.scss";
 	.group-echart {
 		display: inline-block;
@@ -1961,6 +1989,7 @@
 			margin-bottom: 16px;
 		}
 		.card-panel {
+			
 			border-radius: 8px;
 			height: 85px;
 			cursor: pointer;
@@ -1973,28 +2002,67 @@
 			border-color: rgba(0, 0, 0, .05);
 			&:hover {
 				.card-panel-icon-wrapper {
-					#icon-salejine {
-						color: #fff;
+					.circle-box{
+						background-color: #fff;
+						transition: all ease 0.3s;
+					}
+					transition: all ease 0.3s;
+				}
+				.people-box {
+					background: #2ec7c9;
+					.icon-money-symbol{
+						color:#2ec7c9;
 					}
 				}
-				.icon-people {
+				.message-box {
+					background: #b6a2d4;
+					.icon-money-symbol{
+						color:#b6a2d4;
+					}
+				}
+				.money-box {
+					background: #5ab1ef;
+					.icon-money-symbol{
+						color:#5ab1ef;
+					}
+				}
+				.shoppingCard-box {
+					background: #ffb980;
+					.icon-money-symbol{
+						color:#ffb980;
+					}
+				}
+			}
+			.people-box {
+				.circle-box{
 					background: #2ec7c9;
 				}
-				.icon-message {
-					background: #b6a2d4;
-				}
-				.icon-money {
+			}
+			.message-box {
+				.circle-box{
+				background: #b6a2d4;
+			}
+			}
+			.money-box {
+				.circle-box{
 					background: #5ab1ef;
 				}
-				.icon-shoppingCard {
+			}
+			.shoppingCard-box {
+					.circle-box{
 					background: #ffb980;
 				}
 			}
 			.card-panel-icon-wrapper {
+				width:85px;
 				float: left;
 				margin: 0;
 				padding: 5px;
 				--border-radius: 6px;
+				height:100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
 			}
 			.card-panel-icon-wrapper #icon-salejine {
 				transition: all 0.38s ease-out;
@@ -2007,7 +2075,7 @@
 				float: left;
 				font-weight: bold;
 				margin-top: 25px;
-				margin-left: 5px;
+				margin-left: 10px;
 				margin-right: 3px;
 				.card-panel-text {
 					width: 55px;
