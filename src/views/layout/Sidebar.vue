@@ -1,15 +1,17 @@
 <template>
-  <el-menu mode="vertical" :default-active="$route.path" :unique-opened="true" :router="true" text-color="#eaecf0" active-text-color="#111" background-color="#2f4050" @open="handleOpen" @close="handleClose" @select="handleSelect">
-    <template v-for="(nav,navIndex) in navList" >
-      <el-submenu :index="nav.name" :key="navIndex">
-        <template slot="title">
-          <i class="iconfont" :class="`icon-${nav.name}`"></i>
-        {{nav.menu}}
-        </template>
-        <sidebar-item :routes="nav.children" :navId="handleNavId" ></sidebar-item>
-      </el-submenu>
-    </template>
-  </el-menu>
+  <el-scrollbar wrap-class="scrollbar-wrapper">
+    <el-menu mode="vertical" :default-active="$route.path" :unique-opened="true" :router="true" text-color="#eaecf0" active-text-color="#111" background-color="#2f4050" @open="handleOpen" @close="handleClose" @select="handleSelect">
+      <template v-for="(nav,navIndex) in navList" >
+        <el-submenu :index="nav.name" :key="navIndex">
+          <template slot="title">
+            <i class="iconfont" :class="`icon-${nav.name}`"></i>
+          {{nav.menu}}
+          </template>
+          <sidebar-item :routes="nav.children" :navId="handleNavId" ></sidebar-item>
+        </el-submenu>
+      </template>
+    </el-menu>
+  </el-scrollbar>
 </template>
 
 <script>
@@ -122,4 +124,14 @@ import { mapGetters } from 'vuex'
   .el-menu {
     min-height: 100%;
   }
+ 
+</style>
+<style lang="scss">
+ .scrollbar-wrapper {
+    overflow-x: hidden !important;
+
+    .el-scrollbar__view {
+        height: 100%;
+    }
+    }
 </style>

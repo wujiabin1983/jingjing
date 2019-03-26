@@ -1,5 +1,6 @@
 <template>
     <div class="app-wrapper" :class="{hideSidebar:!sidebar.opened}">
+
         <!-- <div class="heade-wrapperr">
             <div class="logo"><img :src="logo"/></div>
             <navbar @handleNavId="handleNavId" @handleSwitch="handleSwitch"></navbar>
@@ -104,9 +105,9 @@
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
-            <div class="sidebar-container">
-                <sidebar  :handleNavId="navId"></sidebar>
-            </div>
+            <!-- <div class="sidebar-container"> -->
+                <sidebar  :handleNavId="navId" class="sidebar-container"></sidebar>
+            <!-- </div> -->
             
             <!-- <div class="sidebar-bg">
                 <img :src="sidebarBg" alt="">
@@ -706,6 +707,7 @@ export default {
                 opacity: .2;
             }
         }
+        
         .sidebar-container {
             transition: all .28s ease-out;
             height: calc(100% - 154px);
@@ -713,17 +715,7 @@ export default {
             bottom: 0;
             left: 0;
             right: - rem(17px);
-            overflow-y: scroll;
-            overflow-x: hidden;
             z-index: 20;
-            &::-webkit-scrollbar {
-                display: none;
-            }
-            scrollbar-width: none;
-             /*隐藏滚动条，当IE下溢出，仍然可以滚动*/
-            -ms-overflow-style:none;
-            /*火狐下隐藏滚动条*/
-            overflow:-moz-scrollbars-none;
         }
 
         .main-container {
