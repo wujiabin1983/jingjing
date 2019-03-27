@@ -124,4 +124,10 @@ import { mapGetters } from 'vuex'
   .el-menu {
     min-height: 100%;
   }
-</style>=
+ 
+</style>
+<style lang="scss">
+  .el-scrollbar__wrap{
+    overflow-x: hidden !important;
+  }
+</style>
