@@ -172,6 +172,13 @@
 						<el-input type="textarea" :disabled="disabled" :autosize="{ minRows: 4, maxRows: 4}" resize="none" placeholder="请输入自提说明" v-model="form.explainDesc">
 						</el-input>
 					</el-form-item>
+					<el-form-item label="审核人" prop="auditBy">
+						<el-input v-model="form.auditBy" class="width220" :disabled="disabled" v-if="this.getPageType=='查看'" placeholder="请输入"></el-input>
+						<el-select v-model="form.auditBy" placeholder="请选择审核人" @change="audioSelect" v-else>
+							<el-option v-for="item in audioUser" :key="item.key" :label="item.key" :value="item.index">
+							</el-option>
+						</el-select>
+					</el-form-item>
 					<el-row :gutter="10" v-if="this.getPageType!='查看'">
 						<el-col :span="24">
 							<el-form-item>
@@ -396,6 +403,7 @@
 		          	}
 		        },  
 		        tableSelectLoading:false,
+		        audioUser: [], //审核人
 				disabled: false,
 				imgLoading: false,
 				setDisabled: false,
@@ -503,7 +511,9 @@
 					"coupName": "", //兑换礼品券Name,
 					"couDate":"", //券有效期, {}
 					"coupTest":"",
-					"explainDesc": "" //自提说明
+					"explainDesc": "", //自提说明
+					"auditPersionId": "", //审核人id
+					"auditBy": "" //审核人姓名
 				},
 				norules: {},
 				rules: {
@@ -579,6 +589,11 @@
 						message: '请输入券有效期',
 						trigger: 'change'
 					}],
+					auditBy: [{
+						required: true,
+						message: '请选择审核人',
+						trigger: 'change'
+					}]
 				},
 				mainLogoUrl: '', //主图url
 				mainLogoUrlArr: [], //附图url
@@ -672,6 +687,12 @@
 				this.coupTempName = val.coupName;
 				this.form.coupName = val.coupName;
 				this.form.coupId = val.coupId;
+			},
+			//选择审核人
+			audioSelect(val) {
+				//      	console.log(this.audioUser[val].value);
+				this.form.auditPersionId = this.audioUser[val].value;
+				this.form.auditBy = this.audioUser[val].key;
 			},
 			// 方法
 			submitForm() {
@@ -1368,6 +1389,23 @@
 			}
 		},
 		created() {
+			let that = this;
+			var params = {
+				userId: this.userInfo.userCode
+			}
+			that.tableLoading = true;
+			selectAudioUser(params) //请求审核人
+				.then(function(res) {
+					let data = JSON.parse(Base64.decode(res.data));
+					let result = [];
+					//console.log(JSON.stringify(data)+"审核人")
+					that.audioUser = data.data;
+					that.tableLoading = false;
+				})
+				.catch(function(err) {
+					// console.log(err);
+					that.tableLoading = false;
+				});
 			// console.log(this.getPageType);
 			if(this.getPageType == '查看') {
 				this.disabled = true;

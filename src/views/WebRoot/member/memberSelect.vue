@@ -94,16 +94,6 @@
 					</template>
 				</el-table-column>
 				<el-table-column prop="guideName" label="专属导购"></el-table-column>
-				<!-- <el-table-column prop="memberLevel" label="标签">
-					<template slot-scope="scope"> -->
-						<!--<el-button type="primary" @click="labelInfo(scope.$index, scope.row)">查看</el-button>-->
-						<!-- 查看 -->
-						<!-- <el-tooltip class="item" content="打标签" placement="top">
-							<i class="iconfont icon-biaoqian" @click.prevent="labelInfo(scope.$index, scope.row)" ></i> -->
-							<!-- <icon-svg icon-class="setLabel" id="icon-setLabel" @click.native.prevent="labelInfo(scope.$index, scope.row)" /> -->
-<!-- 						</el-tooltip>
-					</template>
-				</el-table-column> -->
 				<el-table-column prop="action" label="操作">
 					<!-- 功能图标 -->
 					<template slot-scope="scope">

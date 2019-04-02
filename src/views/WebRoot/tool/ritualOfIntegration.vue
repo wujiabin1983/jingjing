@@ -13,7 +13,7 @@
 		                		<el-form-item label="状态">
 			                        <el-select v-model="form.status" clearable placeholder="请选择状态">
 										<el-option label="未审核" value="未审核"></el-option>
-										<el-option label="已生效" value="已生效"></el-option>
+										<el-option label="待执行" value="待执行"></el-option>
 										<el-option label="执行中" value="执行中"></el-option>
 										<el-option label="已停止" value="已停止"></el-option>
 										<el-option label="已结束" value="已结束"></el-option>
@@ -39,16 +39,16 @@
                     	</template>
                     </el-table-column>
                     <el-table-column prop="activityName" label="活动名称"></el-table-column>
-                    <el-table-column prop="" width="180px"  label="兑换有效期">
+                    <el-table-column prop="" label="兑换有效期">
                     	<template slot-scope="scope" >
                 			{{scope.row.validityDateBegin+" ~ "+scope.row.validityDateEnd}}
                     	</template>
                     </el-table-column>
-                    <el-table-column prop="goodType" width="80px" label="礼品类型"></el-table-column>
-                    <el-table-column prop="totalNum" width="100px" label="可兑换总数"></el-table-column>
-                    <el-table-column prop="residualQty" width="80px" label="剩余数量"></el-table-column>
-                    <el-table-column prop="status"  width="100px" label="活动状态"></el-table-column>
-                    <el-table-column prop="action" label="操作" width="120">
+                    <el-table-column prop="goodType" label="礼品类型"></el-table-column>
+                    <el-table-column prop="totalNum" label="可兑换总数"></el-table-column>
+                    <el-table-column prop="residualQty" label="剩余数量"></el-table-column>
+                    <el-table-column prop="status"  label="活动状态"></el-table-column>
+                    <el-table-column prop="action" label="操作">
                         <template slot-scope="scope">
                             <!-- 功能图标 -->
                             <!-- 查看 -->
@@ -57,7 +57,7 @@
                                 <!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconShow(scope.$index, tableDataOther)"/> -->
                             </el-tooltip>
                             <!-- 修改 -->
-                            <el-tooltip class="item" content="修改" placement="top"  v-if="scope.row.status == '已生效'&&roleBtn.updateGiftConfigInfo">
+                            <el-tooltip class="item" content="修改" placement="top"  v-if="scope.row.status == '未审核'&&roleBtn.updateGiftConfigInfo">
                                 <i class="iconfont icon-edit" @click.prevent="iconEdit(scope.$index, tableDataOther)" ></i>
                                 <!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconEdit(scope.$index, tableDataOther)"/> -->
                             </el-tooltip>
@@ -93,6 +93,7 @@
 	            </el-footer>
             </el-card>
 		</el-tab-pane>
+
 		<el-tab-pane label="订单管理" name="second">
 			<el-header>
 	            <el-card>
@@ -197,6 +198,61 @@
                 </el-footer>
             </el-card>
 		</el-tab-pane>
+
+        <el-tab-pane label="审核列表" name="third">
+            <el-card>
+                <el-table ref="tableAuditData" v-loading="this.tableLoading" :data="tableAuditData" >
+                    <!--<el-table-column type="index" width="50" label="序号"></el-table-column>-->
+                    <el-table-column prop="goodName" label="商品" width="190">
+                        <template slot-scope="scope" >
+                            <div class="page"><img :src="scope.row.goodUrl"/><span>{{scope.row.goodName}}</span><span>{{scope.row.goodCode}}</span><span>￥{{scope.row.salePrice}}元</span></div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="activityName" label="活动名称"></el-table-column>
+                    <el-table-column prop="" label="兑换有效期">
+                        <template slot-scope="scope" >
+                            {{scope.row.validityDateBegin+" ~ "+scope.row.validityDateEnd}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="goodType" label="礼品类型"></el-table-column>
+                    <el-table-column prop="totalNum" label="可兑换总数"></el-table-column>
+                    <el-table-column prop="residualQty" label="剩余数量"></el-table-column>
+                    <el-table-column prop="status"  label="活动状态"></el-table-column>
+                    <el-table-column prop="action" label="操作">
+                        <template slot-scope="scope">
+                                <!-- 功能图标 -->
+                                <!-- 查看详情 -->
+                                <el-tooltip class="item" content="查看详情" placement="top">
+                                    <i class="iconfont icon-view" @click.prevent="iconInfo(scope.$index,  scope.row)" ></i>
+                                    <!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconInfo(scope.$index,  scope.row)" /> -->
+                                </el-tooltip>
+                                <!-- 通过 -->
+                                <el-tooltip class="item" content="通过" placement="top">
+                                    <i class="iconfont icon-shenhetongguo" @click.prevent="iconAuditYes(scope.$index, scope.row)" ></i>
+                                    <!-- <icon-svg icon-class="audioYes" id="icon-audioYes" @click.native.prevent="iconAudioYes(scope.$index, scope.row)" /> -->
+                                </el-tooltip>
+                                <!-- 驳回 -->
+                                <el-tooltip class="item" content="驳回" placement="top">
+                                    <i class="iconfont icon-shenhebutongguo" @click.prevent="iconAuditNo(scope.$index, scope.row)" ></i>
+                                    <!-- <icon-svg icon-class="audioNo" id="icon-audioNo" @click.native.prevent="iconAudioNo(scope.$index, scope.row)" /> -->
+                                </el-tooltip>
+                            </template>
+                    </el-table-column>
+                </el-table>
+                <!-- 分页 -->
+                <el-footer v-if="count != 0">
+                    <el-pagination 
+                        background 
+                        class="pagination" 
+                        layout="prev, pager, next, jumper" 
+                        :page-size="limit"
+                        :total="count" 
+                        @size-change="handleSizeChangeAudit"
+                        @current-change="handleCurrentChangeAudit">
+                    </el-pagination>
+                </el-footer>
+            </el-card>
+        </el-tab-pane>
 		</el-tabs>
 		<el-dialog title="订单详情" :visible.sync="orderInfoDialog" class="orderInfoDialog">
 			<el-form :model="orderForm" ref="orderForm" class="orderDialog">
@@ -253,7 +309,7 @@
   	</el-container>
 </template>
 <script>
-import {selectRitualData,selectOrderData,beginRitual,stopRitual,exportData,creatRitualQrcode} from '@/api/tool/ritualOflntegration'
+import {selectRitualData,selectRitualDataAudit,selectOrderData,beginRitual,stopRitual,exportData,creatRitualQrcode} from '@/api/tool/ritualOflntegration'
 import { mapGetters } from 'vuex'
 import Cookie from 'js-cookie'
 import qrcode from '@/components/tool/qrcode'
@@ -281,6 +337,10 @@ export default {
                 status: '', // 活动状态
                 activityName:''//活动名称
             },
+            formAudit: {
+                status: '', // 活动状态
+                activityName:''//活动名称
+            },
             formTab: {
                 orderNum: '', //活动类型
                 consigneeName:'',//活动名称
@@ -293,10 +353,14 @@ export default {
             tableData: [],
             tableDataOther: [],
             // 表格数据
+            tableAuditData: [],
+            tableAuditDataOther: [],
+            // 表格数据
             tableDataTab: [],
             tableDataTabOther: [],
             // 表格多选
             multipleSelection: [],
+            multipleSelectionAudit: [],
             multipleSelectionTab: [],
             // 表格是否为加载状态
             tableLoading: false,
@@ -310,6 +374,10 @@ export default {
                     { max: 100, message: '最小长度为20', trigger: 'change' }       
                 ]
             },
+            // 审核分页
+            pageAudit: 0, // 当前页
+            countAudit: 0, // 总条数
+            limitAudit: this.GLOBAL.limit, // 条/页
             // 订单分页
             pageTab: 0, // 当前页
             countTab: 0, // 总条数
@@ -326,13 +394,19 @@ export default {
 			let type=event.target.firstChild.data;
 			if(type=="礼品列表"){
             	this.showTable(this.page, this.limit, this.form);
-			}else{
+			}else if(type=="审核列表"){
+                this.showTableAudit(this.pageAudit, this.limitAudit, this.formAudit);
+            }else{
 				this.showTableTab(this.pageTab, this.limitTab, this.formTab);
-			}
+            }
     	},
     	// 活动列表表格选择数据
         handleSelectionChange(val) {
             this.multipleSelection = val;
+        },
+        // 列表审核表格选择数据
+        handleSelectionChangeAudit(val) {
+            this.multipleSelectionAudit = val;
         },
     	// 订单列表表格选择数据
         handleSelectionChangeTab(val) {
@@ -342,6 +416,11 @@ export default {
         handleCurrentChange(val) {
             this.page = val;
             this.showTable(val, this.limit, this.form);
+        },
+        // 列表审核分页
+        handleCurrentChangeAudit(val) {
+            this.page = val;
+            this.showTableAudit(val, this.limit, this.form);
         },
     	// 订单列表分页
         handleCurrentChangeTab(val) {
@@ -376,6 +455,10 @@ export default {
 			this.limit = val;
 			this.showTable(this.page, this.limit,this.formTab,this.form);
 		},
+        handleSizeChangeAudit(val) {
+            this.limitAudit = val;
+            this.showTableAudit(this.pageAudit, this.limitAudit,this.formTab,this.form);
+        },
 		handleSizeChangeTab(val) {
 			this.limitTab = val;
 			this.showTableTab(this.pageTab, this.limitTab,this.formTab);
@@ -426,13 +509,13 @@ export default {
             // 使表格加载
             this.tableLoading = true;
             // 查询接口
-        //  console.log(params)
+    //  console.log(params)
             selectRitualData(params)
                 .then(function(res) {
                     let data = JSON.parse(Base64.decode(res.data));
                     let result = [];
                     let resultOther = [];
-//              	console.log(JSON.stringify(data));
+//             	console.log(JSON.stringify(data));
 					if(data.data){
 	                    data.data.forEach((val, index) => {
 	                        resultOther.push({
@@ -440,6 +523,7 @@ export default {
 	                            ...val
 	                        });
 	                    })
+
 	                    data.data.forEach((val, index) => {
 	                        result.push({
 	                            isEdit: false,
@@ -456,6 +540,59 @@ export default {
 								type: 'warning'
 							});
 					}
+                    that.tableLoading = false;
+                })
+                .catch(function(err) {
+                    // console.log(err);
+                    that.tableLoading = false;
+                });
+        },
+
+        //活动审核列表查询方法
+        showTableAudit(start, limit, searchContent) {
+            let that = this;
+            let params = {
+                userId: this.userInfo.userCode,
+                page: start,
+                limit: limit,
+                status: searchContent.status,
+                activityName: searchContent.activityName
+            }
+            // 使表格加载
+            this.tableLoading = true;
+            // 查询接口
+    //  console.log(params)
+            selectRitualDataAudit(params)
+                .then(function(res) {
+                    let data = JSON.parse(Base64.decode(res.data));
+                    let result = [];
+                    let resultOther = [];
+//              console.log(JSON.stringify(data));
+                    if(data.data){
+                        data.data.forEach((val, index) => {
+                            resultOther.push({
+                                isEdit: false,
+                                ...val
+                            });
+                        })
+
+                        data.data.forEach((val, index) => {
+                            result.push({
+                                isEdit: false,
+                                ...val,
+                                goodUrl: val.goodUrl.main.attaUrl
+                            });
+                        })
+                        that.count = data.count;
+                        that.tableAuditData = result;
+                        that.tableDataAuditOther = resultOther;
+                        
+                    }else if(data.messageType != 'SUCCESS'){
+                            that.$message({
+                                message: data.messageContent,
+                                type: 'warning'
+                            });
+                    }
                     that.tableLoading = false;
                 })
                 .catch(function(err) {
@@ -663,7 +800,7 @@ export default {
             });
         },
         // 订单列表图标 - 通过
-        iconAudioYes(index, row) {
+        iconAuditYes(index, row) {
             let that = this;
             that.tableLoading = true;
         	this.$confirm('您确定要审核通过这条数据吗?', '提示', {
@@ -677,7 +814,7 @@ export default {
 		            	id:row.id
 		            };
 		            // console.log(params)
-		        	audioYesData(params)
+		        	auditYesData(params)
 		                .then(function(res) {
 		                //  console.log(res);
 		                    let data = JSON.parse(Base64.decode(res.data));
@@ -714,7 +851,7 @@ export default {
 		            };
 		            // console.log(JSON.stringify(params))
 		            let that = this;
-		        	audioNoData(params)
+		        	auditNoData(params)
 		                .then(function(res) {
 		                    // console.log(res);
 		                    let data = JSON.parse(Base64.decode(res.data));

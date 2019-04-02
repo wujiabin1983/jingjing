@@ -12,6 +12,39 @@ export function selectRitualData(data) {
         data: result
     })
 }
+
+// 积分兑礼审核-礼品审核列表-分页及详情查询
+export function selectRitualDataAudit(data) {
+    let result = Base64.encode(JSON.stringify(data))
+    return fetch({
+        url: '/I_SCRM_INTERFACE_636_1.action',
+        method: 'post',
+        data: result
+    })
+}
+
+// 积分兑礼审核-礼品审核列表-通过请求
+export function AuditYesData(data) {
+    let result = Base64.encode(JSON.stringify(data))
+    return fetch({
+        url: '/I_SCRM_INTERFACE_636_2.action',
+        method: 'post',
+        data: result
+    })
+}
+
+// 积分兑礼审核-礼品审核列表-驳回请求
+export function AuditNoData(data) {
+    let result = Base64.encode(JSON.stringify(data))
+    return fetch({
+        url: '/I_SCRM_INTERFACE_636_2.action',
+        method: 'post',
+        data: result
+    })
+}
+
+
+
 // 查询订单管理列表表格数据
 export function selectOrderData(data) {
     let result = Base64.encode(JSON.stringify(data))

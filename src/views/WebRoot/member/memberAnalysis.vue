@@ -1,12 +1,12 @@
 <!--会员分析-->
 <template>
 	<div class="dashboard-editor-container">
-		<el-row class="panel-group panel-group-select" :gutter="16">
-			<el-col :xs="24" :sm="24" :lg="24" class="card-panel-col">
-				<el-card>
+		<el-row class="panel-group panel-group-select" :gutter="10">
+			<el-col :xs="24" :sm="24" :lg="24">
+				<el-card shadow="always">
 					<el-form label-width="80px">
 						<el-form-item label="" class="floatRight">
-							<el-button type="primary" @click="onSubmit">查询</el-button>
+							<el-button class="SelectButton" type="primary" @click="onSubmit">查询</el-button>
 							<el-button type="primary" @click="onReset">重置</el-button>
 						</el-form-item>
 						<el-form-item label="选择组织" class="floatRight">
@@ -17,18 +17,19 @@
 				</el-card>
 			</el-col>
 		</el-row>
-		<el-row class="panel-group" :gutter="16" v-loading="echartLoading">
+		<el-row class="panel-group" :gutter="10" v-loading="echartLoading">
 			<el-col :xs="24" :sm="12" :lg="6" class="card-panel-col">
 				<div class='card-panel'>
 					<div class="card-panel-icon-wrapper people-box">
 						<div class="circle-box">
-							<i class="iconfont icon-money-symbol"></i>
+							<i class="iconfont icon-guanzu"></i>
 						</div>
 						<!-- <icon-svg icon-class="salejine" id="icon-salejine" class-name="card-panel-icon" /> -->
 					</div>
 					<div class="card-panel-description">
-						<div class="card-panel-text">粉丝<br />数量</div>
+						<div class="card-panel-text">粉丝数量</div>
 						<count-to class="card-panel-num" :startVal="0" :endVal="header.fansCount.value" :duration="2600"></count-to>
+						<el-progress :percentage="100" status="success"></el-progress>
 					</div>
 				</div>
 			</el-col>
@@ -36,18 +37,19 @@
 				<div class="card-panel">
 					<div class="card-panel-icon-wrapper message-box">
 						<div class="circle-box">
-							<i class="iconfont icon-money-symbol"></i>
+							<i class="iconfont icon-huiyuan"></i>
 						</div>
 						<!-- <icon-svg icon-class="salejine" id="icon-salejine" class-name="card-panel-icon" /> -->
 					</div>
 					<div class="card-panel-description">
-						<div class="card-panel-text">会员<br/>数量</div>
+						<div class="card-panel-text">会员数量</div>
 						<count-to class="card-panel-num" :startVal="0" :endVal="header.memCount.value" :duration="3000"></count-to>
-						<div class="card-panel-progress">
+						<!-- <div class="card-panel-progress">
 							<div class="card-panel-progress-bg">
 								<span class="card-panel-progress-pro card-panel-progress-b" :style="memCount"></span>
 							</div>
-						</div>
+						</div> -->
+						<el-progress class="card-panel-progress-vue" :percentage="80" color="#8e71c7"></el-progress>
 					</div>
 				</div>
 			</el-col>
@@ -55,18 +57,14 @@
 				<div class="card-panel">
 					<div class="card-panel-icon-wrapper money-box">
 						<div class="circle-box">
-							<i class="iconfont icon-money-symbol"></i>
+							<i class="iconfont icon-ruhui"></i>
 						</div>
 						<!-- <icon-svg icon-class="salejine" id="icon-salejine" class-name="card-panel-icon" /> -->
 					</div>
 					<div class="card-panel-description">
-						<div class="card-panel-text">入会<br />已消费</div>
+						<div class="card-panel-text">入会已消费</div>
 						<count-to class="card-panel-num" :startVal="0" :endVal="header.consumedCount.value" :duration="3200"></count-to>
-						<div class="card-panel-progress">
-							<div class="card-panel-progress-bg">
-								<span class="card-panel-progress-pro card-panel-progress-c" :style="consumedCount"></span>
-							</div>
-						</div>
+						<el-progress class="card-panel-progress-vue" :percentage="70"></el-progress>
 					</div>
 				</div>
 			</el-col>
@@ -74,27 +72,23 @@
 				<div class="card-panel">
 					<div class="card-panel-icon-wrapper shoppingCard-box">
 						<div class="circle-box">
-							<i class="iconfont icon-money-symbol"></i>
+							<i class="iconfont icon-ruhuix"></i>
 						</div>
 						<!-- <icon-svg icon-class="salejine" id="icon-salejine" class-name="card-panel-icon" /> -->
 					</div>
 					<div class="card-panel-description">
-						<div class="card-panel-text">入会<br />未消费</div>
+						<div class="card-panel-text">入会未消费</div>
 						<count-to class="card-panel-num" :startVal="0" :endVal="header.unconsumedCount.value" :duration="3600"></count-to>
-						<div class="card-panel-progress">
-							<div class="card-panel-progress-bg">
-								<span class="card-panel-progress-pro card-panel-progress-d" :style="unconsumedCount"></span>
-							</div>
-						</div>
+						<el-progress class="card-panel-progress-vue" :percentage="70"></el-progress>
 					</div>
 				</div>
 			</el-col>
 		</el-row>
-		<el-row :gutter="16" v-loading="echartLoading">
+		<el-row :gutter="10" v-loading="echartLoading">
 			<el-col :xs="24" :sm="24" :lg="14">
 				<div class="chart-wrapper chart-contanier">
-					<el-form label-width="40px">
-						<el-form-item label="地区">
+					<el-form label-width="80px">
+						<el-form-item label="统计维度">
 							<el-select v-model="provinceName" @change="areaChange" clearable placeholder="请选择">
 								<el-option label="按会员地区" value="按会员地区"></el-option>
 								<el-option label="按服务门店" value="按服务门店"></el-option>
@@ -111,7 +105,7 @@
 			</el-col>
 		</el-row>
 
-		<el-row :gutter="16" v-loading="echartLoading">
+		<el-row :gutter="10" v-loading="echartLoading">
 			<!--新老会员-->
 			<el-col :xs="24" :sm="8" :lg="8">
 				<div class="chart-wrapper">
@@ -131,7 +125,7 @@
 				</div>
 			</el-col>
 		</el-row>
-		<el-row :gutter="16" v-loading="echartLoading">
+		<el-row :gutter="10" v-loading="echartLoading">
 			<!--入会时长-->
 			<el-col :xs="24" :sm="12" :lg="12">
 				<div class="chart-wrapper">
@@ -145,7 +139,7 @@
 				</div>
 			</el-col>
 		</el-row>
-		<el-row :gutter="16" v-loading="echartLoading">
+		<el-row :gutter="10" v-loading="echartLoading">
 			<!--会员等级占比-->
 			<el-col :xs="24" :sm="12" :lg="12">
 				<div class="chart-wrapper">
@@ -159,12 +153,12 @@
 				</div>
 			</el-col>
 		</el-row>
-		<el-row class="panel-group panel-group-select" :gutter="16">
-			<el-col :xs="24" :sm="24" :lg="24" class="card-panel-col">
+		<el-row class="panel-group panel-group-select" :gutter="10">
+			<el-col :xs="24" :sm="24" :lg="24">
 				<el-card>
 					<el-form label-width="80px">
 						<div class="floatRight">
-							<el-button type="primary" @click="onSubmit1">查询</el-button>
+							<el-button class="SelectButton" type="primary" @click="onSubmit1">查询</el-button>
 							<el-button type="primary" @click="onReset1">重置</el-button>
 						</div>
 						<el-form-item label="选择组织" class="floatRight width280">
@@ -183,7 +177,7 @@
 				</el-card>
 			</el-col>
 		</el-row>
-		<el-row :gutter="16" v-loading="echartLoading1">
+		<el-row :gutter="10" v-loading="echartLoading1">
 			<!--消费时间-->
 			<el-col :xs="24" :sm="8" :lg="8">
 				<div class="chart-wrapper">
@@ -204,7 +198,7 @@
 			</el-col>
 		</el-row>
 
-		<el-row :gutter="16" v-loading="echartLoading1">
+		<el-row :gutter="10" v-loading="echartLoading1">
 			<!--客单价-->
 			<el-col :xs="24" :sm="12" :lg="6">
 				<div class="chart-wrapper">
@@ -367,10 +361,12 @@
 					title: {
 						text: '新老会员占比',
 						subtext: '',
-						x: 'center',
+						x: 'left',
 						textStyle: {
 							color: '#000',
-							fontWeight: 'normal'
+							fontWeight: 'normal',
+							fontFamily: 'Microsoft YaHei',
+							fontSize: 16
 						}
 					},
 					tooltip: {
@@ -382,6 +378,7 @@
 						orient: 'vertical',
 						right: 5,
 						y: 'center',
+						x: '55%',
 						data: [],
 						itemWidth: 15,
 						itemHeight: 11,
@@ -389,19 +386,19 @@
 							fontSize: 12
 						}
 					},
-					color:['#B6A2DE','#2EC7C9'],
+					color:['#0FA1D3','#EF5959'],
 					calculable: true,
 					series: [{
 						name: '新老会员占比',
 						type: 'pie',
 						radius: [50, 70],
-						center: ['35%', '50%'],
+						center: ['25%', '50%'],
 						avoidLabelOverlap: false,
 						label: {
 							normal: {
 								show: false,
 								position: 'center',
-								formatter: '{d}% \n {b}'
+								formatter: '{b} \n {d}%'
 							},
 							emphasis: {
 								show: true,
@@ -425,10 +422,12 @@
 					title: {
 						text: '年龄分布',
 						subtext: '',
-						x: 'center',
+						x: 'left',
 						textStyle: {
 							color: '#000',
-							fontWeight: 'normal'
+							fontWeight: 'normal',
+							fontFamily: 'Microsoft YaHei',
+							fontSize: 16
 						}
 					},
 					tooltip: {
@@ -441,6 +440,7 @@
 						orient: 'vertical',
 						right: 5,
 						y: 'center',
+						x: '55%',
 						data: [],
 						itemWidth: 15,
 						itemHeight: 11,
@@ -448,25 +448,27 @@
 							fontSize: 12
 						}
 					},
-					color:['#2EC7C9','#B6A2DE','#5AB1EF','#FFB980','#D87A80','#8D98B3'],
+					color:['#9443A8','#FFAA61','#3B969A','#C8D928','#49CE4C','#E37777'],
 					calculable: true,
 					series: [{
 						name: '年龄分布',
 						type: 'pie',
-						clockWise: false,
-						radius: [0, 70],
-						center: ['35%', '50%'],
-						roseType: 'radius',
+						//clockWise: false,
+						radius: [50, 70],
+						center: ['25%', '50%'],
+						avoidLabelOverlap: false,
+						//roseType: 'radius',
 						label: {
 							normal: {
 								show: false,
-								position: 'inside',
-								formatter: '{d}% \n {b}'
+								//position: 'inside',
+								position: 'center',
+								formatter: '{b} \n {d}%',
 							},
 							emphasis: {
 								show: true,
 								textStyle: {
-									fontSize: '12',
+									fontSize: '16',
 									fontWeight: 'bold'
 								}
 							}
@@ -487,10 +489,12 @@
 					title: {
 						text: '性别占比',
 						subtext: '',
-						x: 'center',
+						x: 'left',
 						textStyle: {
 							color: '#000',
-							fontWeight: 'normal'
+							fontWeight: 'normal',
+							fontFamily: 'Microsoft YaHei',
+							fontSize: 16
 						}
 					},
 					tooltip: {
@@ -502,6 +506,7 @@
 						orient: 'vertical',
 						right: 5,
 						y: 'center',
+						x: '55%',
 						data: [],
 						itemWidth: 15,
 						itemHeight: 11,
@@ -509,19 +514,26 @@
 							fontSize: 12
 						}
 					},
-					color:['#5AB1EF','#D87A80'],
+					color:['#0FA1D3','#EF5959'],
 					calculable: true,
 					series: [{
 						name: '性别占比',
 						type: 'pie',
-						radius: [0, 70],
-						center: ['35%', '50%'],
+						radius: [50, 70],
+						center: ['25%', '50%'],
 						avoidLabelOverlap: false,
 						label: {
 							normal: {
-								show: true,
-								position: 'inside',
+								show: false,
+								position: 'center',
 								formatter: '{b} \n {d}%'
+							},
+							emphasis: {
+								show: true,
+								textStyle: {
+									fontSize: '16',
+									fontWeight: 'bold'
+								}
 							}
 						},
 						labelLine: {
@@ -543,10 +555,12 @@
 					title: {
 						text: '会员等级占比',
 						subtext: '',
-						x: 'center',
+						x: 'letf',
 						textStyle: {
 							color: '#000',
-							fontWeight: 'normal'
+							fontWeight: 'normal',
+							fontFamily: 'Microsoft YaHei',
+							fontSize: 16
 						}
 					},
 					tooltip: {
@@ -558,6 +572,7 @@
 						orient: 'vertical',
 						right: 0,
 						y: 'center',
+						x: '65%',
 						data: [],
 						itemWidth: 15,
 						itemHeight: 11,
@@ -566,7 +581,7 @@
 						}
 					},
 					calculable: true,
-					color:['#5AB1EF','#FFB980','#D87A80','#8D98B3'],
+					color:['#0FA1D3','#EF5959','#9443A8','#FF6A28'],
 					series: [{
 						name: '会员活跃占比',
 						type: 'pie',
@@ -602,10 +617,12 @@
 						text: '入会时长',
 						subtext: '',
 						itemGap: 5,
-						x: 'center',
+						x: 'left',
 						textStyle: {
 							color: '#000',
-							fontWeight: 'normal'
+							fontWeight: 'normal',
+							fontFamily: 'Microsoft YaHei',
+							fontSize: 16
 						}
 					},
 					tooltip: {
@@ -643,17 +660,18 @@
 						type: 'bar',
 						itemStyle: {
 							normal: {
-								barBorderRadius: [3, 3, 0, 0],
-								color: function(params) {
-									// build a color map as your need.
-									var colorList = [
-										'#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80',
-										'#8d98b3', '#e5cf0d', '#97b552', '#95706d', '#dc69aa',
-										'#07a2a4', '#9a7fd1', '#588dd5', '#f5994e', '#c05050',
-										'#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
-									]
-									return colorList[params.dataIndex]
-								},
+								barBorderRadius: [0, 0, 0, 0],
+								color:'#0FA1D3',
+								// color: function(params) {
+								// 	// build a color map as your need.
+								// 	var colorList = [
+								// 		'#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80',
+								// 		'#8d98b3', '#e5cf0d', '#97b552', '#95706d', '#dc69aa',
+								// 		'#07a2a4', '#9a7fd1', '#588dd5', '#f5994e', '#c05050',
+								// 		'#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
+								// 	]
+								// 	return colorList[params.dataIndex]
+								// },
 								label: {
 									show: true,
 									position: 'right',
@@ -669,10 +687,12 @@
 					title: {
 						text: '会员活跃占比',
 						subtext: '',
-						x: 'center',
+						x: 'left',
 						textStyle: {
 							color: '#000',
-							fontWeight: 'normal'
+							fontWeight: 'normal',
+							fontFamily: 'Microsoft YaHei',
+							fontSize: 16
 						}
 					},
 					tooltip: {
@@ -684,6 +704,7 @@
 						orient: 'vertical',
 						right: 0,
 						y: 'center',
+						x: '65%',
 						data: [],
 						itemWidth: 15,
 						itemHeight: 11,
@@ -692,7 +713,7 @@
 						}
 					},
 					calculable: true,
-					color:['#5AB1EF','#FFB980','#D87A80','#8D98B3','#91C7AE'],
+					color:['#9443A8','#FFAA61','#3B969A','#C8D928','#B0B0B0'],
 					series: [{
 						name: '会员活跃占比',
 						type: 'pie',
@@ -727,10 +748,12 @@
 					title: {
 						text: '会员注册渠道占比',
 						subtext: '',
-						x: 'center',
+						x: 'left',
 						textStyle: {
 							color: '#000',
-							fontWeight: 'normal'
+							fontWeight: 'normal',
+							fontFamily: 'Microsoft YaHei',
+							fontSize: 16
 						}
 					},
 					tooltip: {
@@ -743,6 +766,7 @@
 						orient: 'vertical',
 						right: 0,
 						y: 'center',
+						x: '65%',
 						data: [],
 						itemWidth: 15,
 						itemHeight: 11,
@@ -751,7 +775,7 @@
 						}
 					},
 					calculable: true,
-					color:['#2EC7C9','#B6A2DE','#5AB1EF','#FFB980','#D87A80','#8D98B3'],
+					color:['#9443A8','#FFAA61','#3B969A','#C8D928'],
 					series: [{
 						name: '会员注册渠道占比',
 						type: 'pie',
@@ -787,10 +811,12 @@
 						text: '消费次数',
 						subtext: '',
 						itemGap: 5,
-						x: 'center',
+						x: 'letf',
 						textStyle: {
 							color: '#000',
-							fontWeight: 'normal'
+							fontWeight: 'normal',
+							fontFamily: 'Microsoft YaHei',
+							fontSize: 16
 						}
 					},
 					tooltip: {
@@ -867,17 +893,18 @@
 							type: 'bar',
 							itemStyle: {
 								normal: {
-									barBorderRadius: [0, 3, 3, 0],
-									color: function(params) {
-										// build a color map as your need.
-										var colorList = [
-											'#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80',
-											'#8d98b3', '#e5cf0d', '#97b552', '#95706d', '#dc69aa',
-											'#07a2a4', '#9a7fd1', '#588dd5', '#f5994e', '#c05050',
-											'#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
-										]
-										return colorList[params.dataIndex]
-									},
+									barBorderRadius: [0, 0, 0, 0],
+									color:'#0FA1D3',
+									// color: function(params) {
+									// 	// build a color map as your need.
+									// 	var colorList = [
+									// 		'#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80',
+									// 		'#8d98b3', '#e5cf0d', '#97b552', '#95706d', '#dc69aa',
+									// 		'#07a2a4', '#9a7fd1', '#588dd5', '#f5994e', '#c05050',
+									// 		'#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
+									// 	]
+									// 	return colorList[params.dataIndex]
+									// },
 									label: {
 										show: false,
 										position: 'right',
@@ -895,10 +922,12 @@
 						text: '消费时间',
 						subtext: '',
 						itemGap: 5,
-						x: 'center',
+						x: 'left',
 						textStyle: {
 							color: '#000',
-							fontWeight: 'normal'
+							fontWeight: 'normal',
+							fontFamily: 'Microsoft YaHei',
+							fontSize: 16
 						}
 					},
 					tooltip: {
@@ -928,22 +957,23 @@
 						}
 					}],
 					series: [{
-						barWidth: 25,
+						barWidth: 20,
 						data: [],
 						type: 'bar',
 						itemStyle: {
 							normal: {
-								barBorderRadius: [3, 3, 0, 0],
-								color: function(params) {
-									// build a color map as your need.
-									var colorList = [
-										'#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80',
-										'#8d98b3', '#e5cf0d', '#97b552', '#95706d', '#dc69aa',
-										'#07a2a4', '#9a7fd1', '#588dd5', '#f5994e', '#c05050',
-										'#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
-									]
-									return colorList[params.dataIndex]
-								},
+								barBorderRadius: [0, 0, 0, 0],
+								color:'#0FA1D3',
+								// color: function(params) {
+								// 	// build a color map as your need.
+								// 	var colorList = [
+								// 		'#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80',
+								// 		'#8d98b3', '#e5cf0d', '#97b552', '#95706d', '#dc69aa',
+								// 		'#07a2a4', '#9a7fd1', '#588dd5', '#f5994e', '#c05050',
+								// 		'#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
+								// 	]
+								// 	return colorList[params.dataIndex]
+								// },
 								label: {
 									show: true,
 									position: 'right',
@@ -960,10 +990,12 @@
 						text: '消费金额',
 						subtext: '',
 						itemGap: 5,
-						x: 'center',
+						x: 'left',
 						textStyle: {
 							color: '#000',
-							fontWeight: 'normal'
+							fontWeight: 'normal',
+							fontFamily: 'Microsoft YaHei',
+							fontSize: 16
 						}
 					},
 					tooltip: {
@@ -980,42 +1012,56 @@
 						containLabel: true
 					},
 					xAxis: [{
-						type: 'category',
-						axisLabel: {
-							interval: 0,
-							rotate: 45
-						},
-						data: [],
+						type: 'value',
 						axisTick: {
 							alignWithLabel: true
 						}
 					}],
 					yAxis: [{
-						type: 'value',
+						type: 'category',
+						data: [],
 						axisTick: {
 							show: false
 						}
 					}],
+					// xAxis: [{
+					// 	type: 'category',
+					// 	axisLabel: {
+					// 		interval: 0,
+					// 		rotate: 45
+					// 	},
+					// 	data: [],
+					// 	axisTick: {
+					// 		alignWithLabel: true
+					// 	}
+					// }],
+					// yAxis: [{
+					// 	type: 'value',
+					// 	axisTick: {
+					// 		show: false
+					// 	}
+					// }],
 					series: [{
-						barWidth: 23,
+						barWidth: 20,
 						data: [],
 						type: 'bar',
 						itemStyle: {
 							normal: {
-								barBorderRadius: [3, 3, 0, 0],
-								color: function(params) {
-									// build a color map as your need.
-									var colorList = [
-										'#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80',
-										'#8d98b3', '#e5cf0d', '#97b552', '#95706d', '#dc69aa',
-										'#07a2a4', '#9a7fd1', '#588dd5', '#f5994e', '#c05050',
-										'#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
-									]
-									return colorList[params.dataIndex]
-								},
+								barBorderRadius: [0, 0, 0, 0],
+								color:'#0FA1D3',
+								// color: function(params) {
+								// 	// build a color map as your need.
+								// 	var colorList = [
+								// 		'#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80',
+								// 		'#8d98b3', '#e5cf0d', '#97b552', '#95706d', '#dc69aa',
+								// 		'#07a2a4', '#9a7fd1', '#588dd5', '#f5994e', '#c05050',
+								// 		'#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
+								// 	]
+								// 	return colorList[params.dataIndex]
+								// },
 								label: {
 									show: true,
-									position: 'top',
+									position: 'right',
 									formatter: '{c}'
 								}
 							}
@@ -1028,10 +1074,12 @@
 					title: {
 						text: '客单价',
 						subtext: '',
-						x: 'center',
+						x: 'left',
 						textStyle: {
 							color: '#000',
-							fontWeight: 'normal'
+							fontWeight: 'normal',
+							fontFamily: 'Microsoft YaHei',
+							fontSize: 16
 						}
 					},
 					tooltip: {
@@ -1044,6 +1092,7 @@
 						orient: 'vertical',
 						right: 0,
 						y: 'center',
+						x: '65%',
 						data: [],
 						itemWidth: 15,
 						itemHeight: 11,
@@ -1052,11 +1101,12 @@
 						}
 					},
 					calculable: true,
+					color:['#9443A8','#FFAA61','#3B969A','#C8D928','#49CE4C','#E37777'],
 					series: [{
 						name: '会员注册渠道占比',
 						type: 'pie',
-						radius: [0, 70],
-						center: ['35%', '50%'],
+						radius: [50, 70],
+						center: ['30%', '50%'],
 						avoidLabelOverlap: false,
 						label: {
 							normal: {
@@ -1087,10 +1137,12 @@
 					title: {
 						text: '件单价',
 						subtext: '',
-						x: 'center',
+						x: 'left',
 						textStyle: {
 							color: '#000',
-							fontWeight: 'normal'
+							fontWeight: 'normal',
+							fontFamily: 'Microsoft YaHei',
+							fontSize: 16
 						}
 					},
 					tooltip: {
@@ -1103,6 +1155,7 @@
 						orient: 'vertical',
 						right: 0,
 						y: 'center',
+						x: '65%',
 						data: [],
 						itemWidth: 15,
 						itemHeight: 11,
@@ -1111,11 +1164,12 @@
 						}
 					},
 					calculable: true,
+					color:['#9443A8','#FFAA61','#3B969A','#C8D928','#49CE4C','#E37777'],
 					series: [{
 						name: '会员注册渠道占比',
 						type: 'pie',
 						radius: [50, 70],
-						center: ['35%', '50%'],
+						center: ['30%', '50%'],
 						avoidLabelOverlap: false,
 						label: {
 							normal: {
@@ -1146,10 +1200,12 @@
 					title: {
 						text: '折扣率',
 						subtext: '',
-						x: 'center',
+						x: 'left',
 						textStyle: {
 							color: '#000',
-							fontWeight: 'normal'
+							fontWeight: 'normal',
+							fontFamily: 'Microsoft YaHei',
+							fontSize: 16
 						}
 					},
 					tooltip: {
@@ -1162,6 +1218,7 @@
 						orient: 'vertical',
 						right: 0,
 						y: 'center',
+						x: '65%',
 						data: [],
 						itemWidth: 15,
 						itemHeight: 11,
@@ -1170,11 +1227,12 @@
 						}
 					},
 					calculable: true,
+					color:['#9443A8','#FFAA61','#3B969A','#C8D928','#49CE4C','#E37777'],
 					series: [{
 						name: '折率',
 						type: 'pie',
 						radius: [50, 70],
-						center: ['35%', '50%'],
+						center: ['30%', '50%'],
 						avoidLabelOverlap: false,
 						label: {
 							normal: {
@@ -1204,10 +1262,12 @@
 					title: {
 						text: '连带率占比',
 						subtext: '',
-						x: 'center',
+						x: 'left',
 						textStyle: {
 							color: '#000',
-							fontWeight: 'normal'
+							fontWeight: 'normal',
+							fontFamily: 'Microsoft YaHei',
+							fontSize: 16
 						}
 					},
 					tooltip: {
@@ -1220,6 +1280,7 @@
 						orient: 'vertical',
 						right: 0,
 						y: 'center',
+						x: '65%',
 						data: [],
 						itemWidth: 15,
 						itemHeight: 11,
@@ -1228,11 +1289,12 @@
 						}
 					},
 					calculable: true,
+					color:['#9443A8','#FFAA61','#3B969A','#C8D928','#49CE4C','#E37777'],
 					series: [{
 						name: '折率',
 						type: 'pie',
 						radius: [50, 70],
-						center: ['35%', '50%'],
+						center: ['30%', '50%'],
 						avoidLabelOverlap: false,
 						label: {
 							normal: {
@@ -1260,14 +1322,17 @@
 
 				},
 				optionaa: {
+					claculable: true,
 					title: {
 						text: '各省会员数量排名',
 						subtext: '',
 						itemGap: 5,
-						x: 'center',
+						x: 'left',
 						textStyle: {
 							color: '#000',
-							fontWeight: 'normal'
+							fontWeight: 'normal',
+							fontFamily: 'Microsoft YaHei',
+							fontSize: 16
 						}
 					},
 					tooltip: {
@@ -1283,6 +1348,16 @@
 						bottom: '3%',
 						containLabel: true
 					},
+					dataZoom: [
+						{
+				            type: 'slider',
+				            show: true,
+				            yAxisIndex: [0],
+				            left: '93%',
+				            start: 1,
+				            end: 50
+				        }
+					],
 					yAxis: [{
 						type: 'category',
 						data: [],
@@ -1303,16 +1378,17 @@
 						itemStyle: {
 							normal: {
 								barBorderRadius: [3, 3, 0, 0],
-								color: function(params) {
-									// build a color map as your need.
-									var colorList = [
-										'#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80',
-										'#8d98b3', '#e5cf0d', '#97b552', '#95706d', '#dc69aa',
-										'#07a2a4', '#9a7fd1', '#588dd5', '#f5994e', '#c05050',
-										'#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
-									]
-									return colorList[params.dataIndex]
-								},
+								color:'#0FA1D3',
+								// color: function(params) {
+								// 	// build a color map as your need.
+								// 	var colorList = [
+								// 		'#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80',
+								// 		'#8d98b3', '#e5cf0d', '#97b552', '#95706d', '#dc69aa',
+								// 		'#07a2a4', '#9a7fd1', '#588dd5', '#f5994e', '#c05050',
+								// 		'#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
+								// 	]
+								// 	return colorList[params.dataIndex]
+								// },
 								label: {
 									show: true,
 									position: 'right',
@@ -1327,33 +1403,37 @@
 				optionChina: {
 					title: {
 						text: '全国会员分布情况',
-						x: 'center'
+						x: 'left',
+						textStyle: {
+							color: '#000',
+							fontWeight: 'normal',
+							fontFamily: 'Microsoft YaHei',
+							fontSize: 16
+						}
 					},
 					tooltip: {
 						trigger: 'item',
 						formatter: '{b}<br/>{c} (人)'
 					},
 					visualMap: { //最大值最小值
-						min: 100,
-						max: 50000,
+						min: 1,
+						max: 10,
 						text: ['High', 'Low'],
 						realtime: false,
 						calculable: true,
 						inRange: {
-							color: ['lightskyblue', 'yellow', 'orangered']
+							color: ['#FEC8BC', '#CE4861']
 						}
 					},
 					series: [{
 						name: '全国会员分布情况',
 						type: 'map',
 						mapType: 'HK', // 自定义扩展图表类型
-						zoom: 1.2,
-						roam: true,
-						scaleLimit:{min:1,max:3.5},
+						top:60,
 						itemStyle: {
 							normal: {
 								label: {
-									show: true
+									show: false
 								}
 							},
 							emphasis: {
@@ -1363,7 +1443,7 @@
 							}
 						},
 						data: [],
-						layoutSize: 1000,
+						//layoutSize: 500,
 					}]
 				},
 			}
@@ -1875,10 +1955,10 @@
 							this.$refs.optionII.initEcharts(this.optionII,'II');
 							//消费金额
 							if(data.messageContent.buyAmount.labelData.length>0){
-								this.optionKK.xAxis[0].data=data.messageContent.buyAmount.labelData;
+								this.optionKK.yAxis[0].data=data.messageContent.buyAmount.labelData;
 								this.optionKK.series[0].data=data.messageContent.buyAmount.recordData;
 							}else{
-								this.optionKK.xAxis[0].data=['暂无数据'];
+								this.optionKK.yAxis[0].data=['暂无数据'];
 								this.optionKK.series[0].data=[0];
 							}
 							this.$refs.optionKK.initEcharts(this.optionKK,'KK');
@@ -1931,9 +2011,10 @@
 	};
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+
 .circle-box{
-	width: 60px;
-	height: 60px;
+	width: 50px;
+	height: 50px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -1945,217 +2026,161 @@
 		color:#fff;
 		transition: all ease 0.3s;
 	}
-	
 }
-	@import "src/styles/_function.scss";
-	.group-echart {
-		display: inline-block;
-		width: 100%;
-		height: 220px;
-		text-align: center;
-		overflow: hidden;
+@import "src/styles/_function.scss";
+.group-echart {
+	display: inline-block;
+	width: 100%;
+	height: 220px;
+	text-align: center;
+	overflow: hidden;
+}
+
+.dashboard-editor-container {
+	padding: 10px;
+	background-color: #f0f0f0;
+}
+
+.dashboard-editor-container .chart-wrapper {
+	background: #fff;
+	padding: 10px 10px 0;
+	margin-bottom: 10px;
+	border-radius: 8px;
+}
+
+.group-echart-top {
+	height: 380px;
+}
+.el-form {
+	width: 100%;
+	display: inline-block;
+	padding: 0;
+	height: 32px;
+	.el-form-item {
+		margin-right: 5px;
 	}
-	
-	.dashboard-editor-container {
-		padding: 16px;
-		background-color: #f0f0f0;
-	}
-	
-	.dashboard-editor-container .chart-wrapper {
-		background: #fff;
-		padding: 16px 16px 0;
-		margin-bottom: 16px;
-		border-radius: 8px;
-	}
-	
-	.group-echart-top {
-		height: 380px
-	}
-	.el-form {
-		width: 100%;
-		display: inline-block;
-		padding: 0;
-		height: 32px;
-		.el-form-item {
-			margin-right: 6px;
-		}
-	}
-	.width280{
-		width: 280px;
-	}
-	.panel-group {
-		margin-top: 0px;
-		.card-panel-col {
-			margin-bottom: 16px;
-		}
-		.card-panel {
-			
-			border-radius: 8px;
-			height: 85px;
-			cursor: pointer;
-			font-size: 12px;
-			position: relative;
-			overflow: hidden;
-			color: #666;
-			background: #fff;
-			box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
-			border-color: rgba(0, 0, 0, .05);
-			&:hover {
-				.card-panel-icon-wrapper {
-					.circle-box{
-						background-color: #fff;
-						transition: all ease 0.3s;
-					}
-					transition: all ease 0.3s;
-				}
-				.people-box {
-					background: #2ec7c9;
-					.icon-money-symbol{
-						color:#2ec7c9;
-					}
-				}
-				.message-box {
-					background: #b6a2d4;
-					.icon-money-symbol{
-						color:#b6a2d4;
-					}
-				}
-				.money-box {
-					background: #5ab1ef;
-					.icon-money-symbol{
-						color:#5ab1ef;
-					}
-				}
-				.shoppingCard-box {
-					background: #ffb980;
-					.icon-money-symbol{
-						color:#ffb980;
-					}
-				}
-			}
-			.people-box {
-				.circle-box{
-					background: #2ec7c9;
-				}
-			}
-			.message-box {
-				.circle-box{
-				background: #b6a2d4;
-			}
-			}
-			.money-box {
-				.circle-box{
-					background: #5ab1ef;
-				}
-			}
-			.shoppingCard-box {
-					.circle-box{
-					background: #ffb980;
-				}
-			}
-			.card-panel-icon-wrapper {
-				width:85px;
-				float: left;
-				margin: 0;
-				padding: 5px;
-				--border-radius: 6px;
-				height:100%;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-			.card-panel-icon-wrapper #icon-salejine {
-				transition: all 0.38s ease-out;
-			}
-			.card-panel-icon {
-				float: left;
-				font-size: 75px;
-			}
-			.card-panel-description {
-				float: left;
-				font-weight: bold;
-				margin-top: 25px;
-				margin-left: 10px;
-				margin-right: 3px;
-				.card-panel-text {
-					width: 55px;
-					float: left;
-					line-height: 18px;
-					color: rgba(0, 0, 0, 0.45);
-					font-size: 10px;
-					margin-bottom: 5px;
-				}
-				.card-panel-num {
-					margin-top: 5px;
-					font-size: 20px;
-					float: right;
-				}
-				.card-panel-progress {
-					margin-top: 40px;
-					width: 135px;
-					height: 8px;
-					z-index:99;
-					--background: yellow;
-					position: relative;
-					.card-panel-progress-bg {
-						position: absolute;
-						z-index: 1001;
-						float: left;
-						width: 100%;
-						height: 6px;
-						margin: 0;
-						background: #ebebeb;
-						border-left: 1px solid transparent;
-						border-right: 1px solid transparent;
-						border-radius: 10px;
-						overflow: hidden;
-						.card-panel-progress-pro {
-							position: absolute;
-							z-index: 1002;
-							float: left;
-							margin: 0 -1px;
-							height: 6px;
-							text-align: right;
-							background: #cccccc;
-							border-radius: 10px;
-						}
-						.card-panel-progress-b {
-							background: #b6a2d4;
-						}
-						.card-panel-progress-c {
-							background: #5ab1ef;
-						}
-						.card-panel-progress-d {
-							background: #ffb980;
-						}
-					}
-				}
-			}
-		}
-	}
-	.panel-group-select .card-panel-col{
-		padding: 0 2px 0 2px!important;
-	}
-	
-	.searchContent {
-		width: 160px;
+}
+.width280{
+	width: 280px;
+}
+.panel-group {
+	margin-top: 0px;
+	margin-left: 0px;
+	--margin-bottom: 10px;
+	.card-panel-col {
 		margin-bottom: 10px;
 	}
-	.chart-contanier{
+	.card-panel {
+
+		border-radius: 6px;
+		height: 85px;
+		cursor: pointer;
+		font-size: 12px;
 		position: relative;
-		.el-form{
-			position: absolute;
-			width:500px;
-			z-index: 90;
-			.el-form-item{
-				width:410px
-			}
-			.el-select{
-				width:140px
+		overflow: hidden;
+		color: #666;
+		background: #fff;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+		border-color: rgba(0, 0, 0, .05);
+		.people-box {
+			.circle-box{
+				background: #0fa1d3;
 			}
 		}
-		#chinaInfo{
-			z-index: 80;
+		.message-box {
+			.circle-box{
+			background: #ef5959;
+		}
+		}
+		.money-box {
+			.circle-box{
+				background: #eaaa3a;
+			}
+		}
+		.shoppingCard-box {
+				.circle-box{
+				background: #b672c7;
+			}
+		}
+		.card-panel-icon-wrapper {
+			width:85px;
+			float: left;
+			margin: 0;
+			padding: 5px;
+			--border-radius: 6px;
+			height:100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.card-panel-icon-wrapper #icon-salejine {
+			transition: all 0.38s ease-out;
+		}
+		.card-panel-icon {
+			float: left;
+			font-size: 75px;
+		}
+		.card-panel-description {
+			height:70px;
+			width:62%;
+			float: left;
+			font-weight: bold;
+			margin-top: 10px;
+			.card-panel-text {
+				width: 100%;
+				line-height: 18px;
+				color: #666;
+				font-size: 10px;
+				margin-bottom: 0px;
+			}
+			.card-panel-num {
+				--display: block;
+				--margin-top: 15px;
+				font-size: 20px;
+				color: #111;
+			}
+			.card-panel-progress-vue{
+				width:100%;
+			}
 		}
 	}
+}
+
+
+.searchContent {
+	width: 160px;
+	margin-bottom: 10px;
+}
+.chart-contanier{
+	box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+	position: relative;
+	.el-form{
+		position: absolute;
+		right: 2px;
+		width:230px;
+		z-index: 90;
+		.el-form-item{
+			width:100%;
+			margin-bottom: 0px;
+		}
+		.el-select{
+			width:140px
+		}
+	}
+	#chinaInfo{
+		z-index: 80;
+	}
+}
+.chart-wrapper{
+	box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+}
+.el-card {
+     border: none;
+     float: left;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+     color: #333;
+     width: 100%!important;
+     margin: 0 0 10px 0;
+     padding-top: 10px;
+ }
 </style>

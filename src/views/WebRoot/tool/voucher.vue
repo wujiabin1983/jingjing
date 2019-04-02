@@ -578,10 +578,10 @@
 			},
 		},
 		created() {
+			console.log(this);
 			this.showTable(this.page, this.limit, this.form);
-			// 钩子函数 -- 初始化
+			// 钩子函数 -- 初始化.
 			if(this.getPageType){
-//				console.log(this.getPageType)
 				if(this.getPageType=="审核"){
 					this.activeName= 'second';
 					this.showTableTab(this.pageTab, this.limitTab);
