@@ -12,8 +12,9 @@
 							<div class="floatRight">
 								<el-form-item label="状态">
 									<el-select v-model="form.status" clearable placeholder="请选择状态">
+										<el-option label="未提交" value="未提交"></el-option>
 										<el-option label="未审核" value="未审核"></el-option>
-										<el-option label="已生效" value="已生效"></el-option>
+										<el-option label="已驳回" value="已驳回"></el-option>
 										<el-option label="执行中" value="执行中"></el-option>
 										<el-option label="已停止" value="已停止"></el-option>
 										<el-option label="已结束" value="已结束"></el-option>
@@ -61,7 +62,7 @@
 									<!-- <icon-svg icon-class="tingzhi" id="icon-tingzhi" @click.native.prevent="iconStop(scope.$index, scope.row)" /> -->
 								</el-tooltip>
 								<!-- 修改 -->
-								<el-tooltip class="item" content="修改" placement="top" v-if="scope.row.status == '未审核'||scope.row.status == '已停止'||scope.row.status == '暂存'&&roleBtn.updateInteExcConfigInfo">
+								<el-tooltip class="item" content="修改" placement="top" v-if="(scope.row.status == '未提交'||scope.row.status == '已驳回') && roleBtn.updateInteExcConfigInfo">
 									<i class="iconfont icon-edit" @click.prevent="iconEdit(scope.$index, scope.row)" ></i>
 									<!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconEdit(scope.$index, scope.row)" /> -->
 								</el-tooltip>

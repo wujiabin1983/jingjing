@@ -1161,7 +1161,7 @@
 				.then(function(res) {
 					let data = JSON.parse(Base64.decode(res.data));
 					let result = [];
-					//              console.log(JSON.stringify(data)+"审核人")
+					//console.log(JSON.stringify(data)+"审核人")
 					that.audioUser = data.data;
 					that.tableLoading = false;
 				})
@@ -1173,11 +1173,11 @@
 				userId: this.userInfo.userCode
 			}
 			that.tableLoading = true;
-			selectLevalInfo(params) //请求审核人
+			selectLevalInfo(params) //请求等级
 				.then(function(res) {
 					let data = JSON.parse(Base64.decode(res.data));
 					let result = [];
-					//              console.log(JSON.stringify(data)+"审核人")
+					//console.log(JSON.stringify(data)+"等级")
 					that.leavelOptions = data.data;
 					that.tableLoading = false;
 				})

@@ -37,7 +37,7 @@ export function AuditYesData(data) {
 export function AuditNoData(data) {
     let result = Base64.encode(JSON.stringify(data))
     return fetch({
-        url: '/I_SCRM_INTERFACE_636_2.action',
+        url: '/I_SCRM_INTERFACE_636_3.action',
         method: 'post',
         data: result
     })

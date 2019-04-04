@@ -102,19 +102,20 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr v-for="(item, index) in addTableData" :key="item">
+										<!--debugger-->
+										<tr v-for="(item, index) in addTableData" :key="item.index">
 											<td>
 												<el-select v-model="item.level" @change="levelChange(item.level,index)" :disabled="disabled" class="tableSelect" clearable placeholder="请选择">
-													<el-option v-for="item in levalInfo" :key="item.key" :label="item.key" :value="item.key">
+													<el-option v-for="itemLevel in levalInfo" :key="itemLevel.key" :label="itemLevel.key" :value="itemLevel.key">
 													</el-option>
 												</el-select>
 											</td>
 											<td>
-												<el-input v-model="item.integral" @change="integralChange(item.integral,index)" :disabled="disabled"></el-input>
+												<el-input v-model="item.integral" @change="integralChange(item.integral,index)" :disabled="disabled" placeholder="请输入积分"></el-input>
 												</el-input>
 											</td>
 											<td>
-												<el-input v-model="item.amount" @change="amountChange(item.amount,index)" :disabled="disabled"></el-input>
+												<el-input v-model="item.amount" @change="amountChange(item.amount,index)" :disabled="disabled" placeholder="请输入金额"></el-input>
 												</el-input>
 											</td>
 											<td>
@@ -183,7 +184,8 @@
 						<el-col :span="24">
 							<el-form-item>
 								<el-button @click="handleBack">返回</el-button>
-								<el-button type="primary" @click="submitForm('form')">确定</el-button>
+								<el-button type="primary" @click="submitForm('form')">提交</el-button>
+								<el-button type="primary" @click="submitFormStorage('form')">保存</el-button>
 							</el-form-item>
 						</el-col>
 					</el-row>
@@ -412,6 +414,7 @@
 				addTableData: [{
 					integral: '',
 					amount: '',
+					index:0,
 					level: ''
 				}],
 				type: '',
@@ -633,7 +636,7 @@
 					}
 					this.form.integralJson = JSON.stringify(params);
 				}
-//				console.log(val,index)
+				//console.log(this.form.integralJson);
 			},
 			integralChange(val,index){
 				if(this.addTableData[index].level!=""&&this.addTableData[index].amount!=""){
@@ -660,7 +663,13 @@
 //				console.log(val,index)
 			},
 			iconAddTr() { // 添加
-				let setTableData = this.addTableData[this.count];
+				console.log(this.getPageType);
+				if(this.getPageType === "修改"){
+					var setTableData = this.addTableData[this.count - 1];
+				}else{
+					var setTableData = this.addTableData[this.count];
+				}
+				console.log(JSON.stringify(setTableData))
 				if(setTableData.level == '') {
 					this.$message.warning('请选择等级');
 				} else if(setTableData.integral == '') {
@@ -670,8 +679,11 @@
 					this.addTableData.push({
 						integral: '',
 						amount: '',
+						index:this.count,
 						level: ''
 					});
+					console.log(this.addTableData);
+					console.log(this.count);
 				}
 			},
 			//删除
@@ -690,11 +702,10 @@
 			},
 			//选择审核人
 			audioSelect(val) {
-				//      	console.log(this.audioUser[val].value);
 				this.form.auditPersionId = this.audioUser[val].value;
 				this.form.auditBy = this.audioUser[val].key;
 			},
-			// 方法
+			// 提交方法
 			submitForm() {
 				if(this.getPageType == '查看') {
 					this.$router.push({
@@ -762,7 +773,139 @@
 					if(valid) {
 						var params = {
 							userId: this.userInfo.userCode,
-							...this.form
+							...this.form,
+							status: '未审核'
+						}
+						if(JSON.parse(params.coupTest).times){
+							var activityDate = new Date(params.validityDateEnd).getTime();
+							var coupDate = new Date(JSON.parse(params.coupTest).times.end).getTime();
+							if(activityDate>coupDate){
+								this.$message.warning('优惠券有效期不能小于活动日期！');
+								return false;
+							}
+						}
+						this.tableLoading = true;
+//						console.log(JSON.stringify(params));
+//						return false;
+						if(this.getPageType == '添加') {
+							creatRitualData(params)
+								.then(function(res) {
+									let data = JSON.parse(Base64.decode(res.data));
+									//						console.log(JSON.stringify(data))
+									if(data.messageType == 'SUCCESS') {
+										that.$router.push({
+											name: '积分兑礼'
+										});
+										that.$message.success(data.messageContent);
+										that.tableLoading = false;
+									} else {
+										that.$message.error(data.messageContent);
+										that.tableLoading = false;
+									}
+								})
+								.catch(function(err) {
+									// console.log(err);
+									that.tableLoading = false;
+								});
+						}
+						if(this.getPageType == '修改') {
+//							console.log(JSON.stringify(params))
+							setRitualData(params)
+								.then(function(res) {
+									let data = JSON.parse(Base64.decode(res.data));
+									// console.log(JSON.stringify(data))
+									if(data.messageType == 'SUCCESS') {
+										that.$router.push({
+											name: '积分兑礼'
+										});
+										that.$message.success(data.messageContent);
+										that.tableLoading = false;
+									} else {
+										that.$message.error(data.messageContent);
+										that.tableLoading = false;
+									}
+								})
+								.catch(function(err) {
+									// console.log(err);
+									that.tableLoading = false;
+								});
+						}
+					} else {
+						// console.log('error submit!!');
+						return false;
+					}
+				});
+			},
+			// 暂存方法
+			submitFormStorage() {
+				if(this.getPageType == '查看') {
+					this.$router.push({
+						name: '积分兑礼'
+					});
+					return false;
+				}
+				var that = this;
+				var goodUrlObj = {};
+				if(this.mainLogoUrl != "") {
+					var params = {
+						goodType: "主图",
+						attaUrl: this.mainLogoUrl
+					}
+					goodUrlObj.main = params;
+				}
+				if(this.mainLogoUrlArr.length > 0) {
+					let dialogImageUrlStr = '';
+					this.mainLogoUrlArr.forEach((val, index) => {
+						dialogImageUrlStr += val + ",";
+					})
+					var params = {
+						goodType: "附图",
+						attaUrl: dialogImageUrlStr
+					}
+					goodUrlObj.atta = params;
+				}
+				this.form.goodUrl = JSON.stringify(goodUrlObj);
+//				if(this.coupDate == "长期") {
+//					var params = {
+//						type: this.couDateType
+//					}
+//					this.form.couDate = JSON.stringify(params);
+//				}
+				var params = {
+					type: this.integral,
+					integral: this.formIntegral.integralValue,
+					amount: this.formIntegral.amountValue,
+					data: this.addTableData
+				}
+				if(this.integral == "统一设置") {
+					this.$refs['rulesIntegral'].validate((valid) => {
+						if(valid) {
+							var params = {
+								type: this.integral,
+								integral: this.formIntegral.integralValue,
+								amount: this.formIntegral.amountValue,
+								data: ''
+							}
+							this.form.integralJson = JSON.stringify(params);
+						}
+					})
+				}
+				if(this.integral == "按等级设置") {
+					var params = {
+						type: this.integral,
+						integral: '',
+						amount: '',
+						data: this.addTableData
+					}
+					this.form.integralJson = JSON.stringify(params);
+				}
+				
+				this.$refs['form'].validate((valid) => {
+					if(valid) {
+						var params = {
+							userId: this.userInfo.userCode,
+							...this.form,
+							status: '暂存'
 						}
 						if(JSON.parse(params.coupTest).times){
 							var activityDate = new Date(params.validityDateEnd).getTime();
@@ -976,8 +1119,9 @@
 					name: '积分兑礼'
 				});
 			},
-			//兑换积分值单选
+			//兑换积分值单选项
 			radioIntegral(str) {
+				this.count=0;
 				if(str == "按等级设置") {
 					this.$nextTick(function(){
 						this.loadinglevel();
@@ -989,6 +1133,7 @@
 					this.addTableData = [{
 						integral: '',
 						amount: '',
+						index:0,
 						level: ''
 					}];
 				}
@@ -1380,12 +1525,12 @@
 					.then(function(res) {
 						let data = JSON.parse(Base64.decode(res.data));
 						let result = [];
-//						console.log(JSON.stringify(data)+"会员等级")				
+						//console.log(JSON.stringify(data)+"会员等级")
 						that.levalInfo = data.data;
 					})
 					.catch(function(err) {
 	//					 console.log(err);
-					});
+					})
 			}
 		},
 		created() {
@@ -1406,7 +1551,17 @@
 					// console.log(err);
 					that.tableLoading = false;
 				});
-			// console.log(this.getPageType);
+			selectLevalInfo(params) //请求会员等级
+					.then(function(res) {
+						let data = JSON.parse(Base64.decode(res.data));
+						let result = [];
+						//console.log(JSON.stringify(data)+"会员等级")
+						that.levalInfo = data.data;
+					})
+					.catch(function(err) {
+	//					 console.log(err);
+				});
+			//console.log(this.getPageType)
 			if(this.getPageType == '查看') {
 				this.disabled = true;
 				this.setDisabled = true;
@@ -1416,13 +1571,14 @@
 				this.form = {
 					...res
 				}
-//				console.log(JSON.stringify(this.form));
+				//console.log(JSON.stringify(this.form));
 				this.integral = this.form.integralJson.type;
 				if(this.integral == "统一设置") {
 					this.formIntegral.integralValue = this.form.integralJson.integral;
 					this.formIntegral.amountValue = this.form.integralJson.amount;
 				}
 				if(this.integral == "按等级设置") {
+					//console.log(this.form.integralJson.data);
 					this.addTableData = this.form.integralJson.data;
 				}
 				//兑换有效期
@@ -1462,12 +1618,12 @@
 				this.form.goodUrl=JSON.stringify(this.form.goodUrl);
 				this.form.integralJson=JSON.stringify(this.form.integralJson);
 			} else if(this.getPageType == '修改') {
-				this.setDisabled = true;
+				this.setDisabled = false;
 				let res = JSON.parse(this.getFormData);
 				this.form = {
 					...res
 				}
-//				console.log(JSON.stringify(this.form));
+				//console.log(JSON.stringify(this.form));
 				//兑换积分值
 				this.integral = this.form.integralJson.type;
 				if(this.integral == "统一设置") {
@@ -1475,7 +1631,9 @@
 					this.formIntegral.amountValue = this.form.integralJson.amount;
 				}
 				if(this.integral == "按等级设置") {
+					//console.log(this.form.integralJson.data);
 					this.addTableData = this.form.integralJson.data;
+					this.count = this.form.integralJson.data.length;
 				}
 				//兑换有效期
 				this.timeRangeArr.push(this.form.validityDateBegin);

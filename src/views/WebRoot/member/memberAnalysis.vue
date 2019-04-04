@@ -1354,7 +1354,7 @@
 				            show: true,
 				            yAxisIndex: [0],
 				            left: '93%',
-				            start: 1,
+				            start: 100,
 				            end: 50
 				        }
 					],

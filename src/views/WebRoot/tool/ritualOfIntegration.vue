@@ -12,11 +12,12 @@
 		                	<div class="floatRight">
 		                		<el-form-item label="状态">
 			                        <el-select v-model="form.status" clearable placeholder="请选择状态">
-										<el-option label="未审核" value="未审核"></el-option>
-										<el-option label="待执行" value="待执行"></el-option>
-										<el-option label="执行中" value="执行中"></el-option>
-										<el-option label="已停止" value="已停止"></el-option>
-										<el-option label="已结束" value="已结束"></el-option>
+                                        <el-option label="未提交" value="未提交"></el-option>
+                                        <el-option label="未审核" value="未审核"></el-option>
+                                        <el-option label="已驳回" value="已驳回"></el-option>
+                                        <el-option label="执行中" value="执行中"></el-option>
+                                        <el-option label="已停止" value="已停止"></el-option>
+                                        <el-option label="已结束" value="已结束"></el-option>
 			                        </el-select>
 			                    </el-form-item>
 			                    <el-form-item>
@@ -57,7 +58,7 @@
                                 <!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconShow(scope.$index, tableDataOther)"/> -->
                             </el-tooltip>
                             <!-- 修改 -->
-                            <el-tooltip class="item" content="修改" placement="top"  v-if="scope.row.status == '未审核'&&roleBtn.updateGiftConfigInfo">
+                            <el-tooltip class="item" content="修改" placement="top"  v-if="(scope.row.status == '未提交'||scope.row.status == '已驳回')&&roleBtn.updateGiftConfigInfo">
                                 <i class="iconfont icon-edit" @click.prevent="iconEdit(scope.$index, tableDataOther)" ></i>
                                 <!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconEdit(scope.$index, tableDataOther)"/> -->
                             </el-tooltip>
@@ -67,7 +68,7 @@
                      	    	<!-- <icon-svg icon-class="qiyong" id="icon-qiyong" @click.native.prevent="iconQiyong(scope.$index, scope.row)"/> -->
                             </el-tooltip>
                             <!-- 停止 -->
-                            <el-tooltip class="item" content="停止 " placement="top" v-if="scope.row.status == '执行中'&&roleBtn.disableGiftConfigInfo">
+                            <el-tooltip class="item" content="停止 " placement="top" v-if="scope.row.status == '执行中'||scope.row.status == '待执行'&&roleBtn.disableGiftConfigInfo">
                                 <i class="iconfont icon-forbidden" @click.prevent="iconTingzhi(scope.$index, scope.row)" ></i>
                             	<!-- <icon-svg icon-class="tingzhi" id="icon-tingzhi" @click.native.prevent="iconTingzhi(scope.$index, scope.row)"/> -->
                             </el-tooltip>
@@ -223,7 +224,7 @@
                                 <!-- 功能图标 -->
                                 <!-- 查看详情 -->
                                 <el-tooltip class="item" content="查看详情" placement="top">
-                                    <i class="iconfont icon-view" @click.prevent="iconInfo(scope.$index,  scope.row)" ></i>
+                                    <i class="iconfont icon-view" @click.prevent="iconShow(scope.$index, tableDataOther)" ></i>
                                     <!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="iconInfo(scope.$index,  scope.row)" /> -->
                                 </el-tooltip>
                                 <!-- 通过 -->
@@ -254,6 +255,18 @@
             </el-card>
         </el-tab-pane>
 		</el-tabs>
+<!--         <el-dialog title="驳回" :visible.sync="handleStoreDialog">
+            <el-form :model="formAudio" ref="formName" :rules="rules" class="width80">
+                <el-form-item label="驳回理由" prop="reasonForRejection" :label-width="formLabelWidth">
+                    <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" resize="none" placeholder="请输入驳回理由" v-model="formAudio.reasonForRejection">
+                    </el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer overHidden">
+                <el-button @click="handleStoreDialog = false">取 消</el-button>
+                <el-button type="primary" @click="addLabelFn">确 定</el-button>
+            </div>
+        </el-dialog> -->
 		<el-dialog title="订单详情" :visible.sync="orderInfoDialog" class="orderInfoDialog">
 			<el-form :model="orderForm" ref="orderForm" class="orderDialog">
 				<el-form-item label="订单号" :label-width="formLabelWidth">
@@ -309,7 +322,7 @@
   	</el-container>
 </template>
 <script>
-import {selectRitualData,selectRitualDataAudit,selectOrderData,beginRitual,stopRitual,exportData,creatRitualQrcode} from '@/api/tool/ritualOflntegration'
+import {selectRitualData,selectRitualDataAudit,AuditYesData,AuditNoData,selectOrderData,beginRitual,stopRitual,exportData,creatRitualQrcode} from '@/api/tool/ritualOflntegration'
 import { mapGetters } from 'vuex'
 import Cookie from 'js-cookie'
 import qrcode from '@/components/tool/qrcode'
@@ -420,7 +433,7 @@ export default {
         // 列表审核分页
         handleCurrentChangeAudit(val) {
             this.page = val;
-            this.showTableAudit(val, this.limit, this.form);
+            this.showTableAudit(val, this.limit, this.formAudit);
         },
     	// 订单列表分页
         handleCurrentChangeTab(val) {
@@ -586,7 +599,6 @@ export default {
                         that.count = data.count;
                         that.tableAuditData = result;
                         that.tableDataAuditOther = resultOther;
-                        
                     }else if(data.messageType != 'SUCCESS'){
                             that.$message({
                                 message: data.messageContent,
@@ -814,18 +826,20 @@ export default {
 		            	id:row.id
 		            };
 		            // console.log(params)
-		        	auditYesData(params)
+		        	AuditYesData(params)
 		                .then(function(res) {
 		                //  console.log(res);
 		                    let data = JSON.parse(Base64.decode(res.data));
 		                    if(data.messageType == 'SUCCESS') {
 		                        that.$message.success(data.messageContent);
-		        				that.showTableTab(that.pageTab, that.limitTab,that.formTab);
-		        				that.showTable(that.page, that.limit,that.form);
+		        				//that.showTableTab(that.pageTab, that.limitTab,that.formTab);
+                                that.showTableAudit(that.pageAudit, that.limitAudit,that.formAudit);
+		        				//that.showTable(that.page, that.limit,that.form);
 		                        that.tableLoading = false;
 		                    }else {
-		        				that.showTableTab(that.pageTab, that.limitTab,that.formTab);
-		        				that.showTable(that.page, that.limit,that.form);
+		        				//that.showTableTab(that.pageTab, that.limitTab,that.formTab);
+                                that.showTableTab(that.pageAudit, that.limitAudit,that.formAudit);
+		        				//that.showTable(that.page, that.limit,that.form);
 		                        that.$message.warning(data.messageContent);
 		                        that.tableLoading = false;
 		                    }
@@ -851,7 +865,7 @@ export default {
 		            };
 		            // console.log(JSON.stringify(params))
 		            let that = this;
-		        	auditNoData(params)
+		        	AuditNoData(params)
 		                .then(function(res) {
 		                    // console.log(res);
 		                    let data = JSON.parse(Base64.decode(res.data));
@@ -875,19 +889,46 @@ export default {
 			});
         },
         // 订单列表图标 - 驳回
-        iconAudioNo(index, row) {
+        iconAuditNo(index, row) {
             let that = this;
             that.tableLoading = true;
-        	this.$confirm('您确定要审核驳回这条数据吗?', '提示', {
-					confirmButtonText: '确定',
-					cancelButtonText: '取消',
-					type: 'warning'
-				}).then(() => {
-		         	this.selectData=this.tableDataTab[index];
-		            this.handleStoreDialog=true;
-          		}).catch(() => {
-					that.tableLoading = false;
-				});
+            this.$confirm('您确定要审核通过这条数据吗?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                var params = {
+                    userId: this.userInfo.userCode,
+                    id: row.id,
+                    version: row.version,
+                    status: '驳回'
+                };
+                // console.log(JSON.stringify(params))
+                AuditNoData(params)
+                    .then(function(res) {
+                        // console.log(res);
+                        let data = JSON.parse(Base64.decode(res.data));
+                        if(data.messageType == 'SUCCESS') {
+                            that.$message.success(data.messageContent);
+                            //that.showTableTab(that.pageTab, that.limitTab);
+                            that.showTableAudit(that.pageAudit, that.limitAudit, that.formAudit);
+                            //that.showTable(that.page, that.limit, that.form);
+                            that.tableLoading = false;
+                        } else {
+                            that.$message.warning(data.messageContent);
+                            //that.showTableTab(that.pageTab, that.limitTab);
+                            that.showTableAudit(that.pageAudit, that.limitAudit, that.formAudit);
+                            //that.showTable(that.page, that.limit, that.form);
+                            that.tableLoading = false;
+                        }
+                    })
+                    .catch(function(err) {
+                        // console.log(err);
+                        that.tableLoading = false;
+                    });
+            }).catch(() => {
+                that.tableLoading = false;
+            });
         },
         //复制链接
 	    iconCopyTemplate(index,row){
