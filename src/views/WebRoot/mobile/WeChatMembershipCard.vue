@@ -37,25 +37,27 @@
 									<el-col :span="8">
 										<el-row class="borderRight">
 											<el-col>积分</el-col>
-											<el-col class="colorActive">0</el-col>
+											<el-col :style="centerkeycolor">查看</el-col>
 										</el-row>
 									</el-col>
 									<el-col :span="8">
 										<el-row class="borderRight">
 											<el-col>优惠券</el-col>
-											<el-col class="colorActive">查看</el-col>
+											<el-col :style="centerkeycolor">查看</el-col>
 										</el-row>
 									</el-col>
 									<el-col :span="8">
 										<el-row>
 											<el-col>等级</el-col>
-											<el-col class="colorActive">普通会员</el-col>
+											<el-col :style="centerkeycolor">普通会员</el-col>
 										</el-row>
 									</el-col>
 								</el-row>
 							</div>
-							<div class="btnMenberCenter" @click="contDisabled ? clickNo() : groupType = '中心按钮'" v-if="form.customButtom.buttomType == '自定义按钮'">
-								<el-button type="primary">{{form.customButtom.buttomName}}</el-button>
+							<!-- 暂时改为不可编辑-->
+							<!-- <div class="btnMenberCenter" @click="contDisabled ? clickNo() : groupType = '中心按钮'" v-if="form.customButtom.buttomType == '自定义按钮'">  -->
+							<div class="btnMenberCenter"> 
+								<el-button plain disabled ref="centkeycolor" :style="centerkeycolor">{{form.customButtom.buttomName}}</el-button>
 							</div>
 							<div class="btnAdd" @click="contDisabled ? clickNo() : groupType = '添加自定义入口'">
 								<div class="weui-cells">
@@ -229,7 +231,7 @@
 										<el-input v-model="item.name" placeholder="请输入入口名" :disabled="disabled[index] && contDisabled"></el-input>
 										<span>链接到</span>
 										<el-dropdown trigger="click" @visible-change="handleBtnDropDown(index)" @command="handleClickDropdown" :disabled="contDisabled">
-											<el-button type="primary" class="minWidth50" :disabled="disabled[index]">
+											<el-button type="primary" class="minWidth50" >
 												{{item.urlName}}<i class="el-icon-arrow-down el-icon--right"></i>
 											</el-button>
 											<el-dropdown-menu slot="dropdown">
@@ -237,24 +239,21 @@
 											</el-dropdown-menu>
 										</el-dropdown>
 
-										<a class="marginLR colorRed" href="javascript:;" @click="contDisabled ? clickNo() : handleCustomEntryEdit(index)" v-if="disabled[index]" :disabled="contDisabled">
+										<!-- <a class="marginLR colorRed" href="javascript:;" @click="contDisabled ? clickNo() : handleCustomEntryEdit(index)" v-if="disabled[index]" :disabled="contDisabled">
 											<el-tooltip class="item" content="修改" placement="top">
-												<!-- 修改 -->
-												<icon-svg icon-class="xiugai" id="icon-xiugai" />
+												<i class="iconfont icon-edit" ></i>
 											</el-tooltip>
 										</a>
 										<a class="marginLR colorBlue" href="javascript:;" @click="contDisabled ? clickNo() : handleCustomEntryEdit(index)" v-else :disabled="contDisabled">
 											<el-tooltip class="item" content="确认" placement="top">
-												<!-- 确认 -->
-												<icon-svg icon-class="queren" id="icon-queren"/>
+												<i class="iconfont icon-shezhiqiyong" ></i>
 											</el-tooltip>
 										</a>
 										<a class="marginLR" href="javascript:;" @click="contDisabled ? clickNo() : handleCustomEctryDelete(index)" :disabled="contDisabled">
 											<el-tooltip class="item" content="删除" placement="top">
-												<!-- 删除 -->
-												<icon-svg icon-class="shanchu" id="icon-shanchu" />
+												<i class="iconfont icon-delete"  ></i>
 											</el-tooltip>
-										</a>
+										</a> -->
 									</el-form-item>
 								</div>
 								<el-button class="width70" @click="contDisabled ? clickNo() : handleCustomEctryAdd()" :disabled="contDisabled">添加</el-button>
@@ -425,6 +424,7 @@
 						"hint": "" // 提示语
 					}
 				},
+				centerkeycolor: {"color":"#63b359","border-color":"#63b359"},
 				disabled: [true, true, true],
 				rules: {
 					title: [
@@ -545,12 +545,12 @@
 				let params = {
 					"userId": this.userInfo.userCode
 				}
-				WeChatMembershipCardShow(params)
+				WeChatMembershipCardShow(params) //830配置信息
 					.then((res) => {
 						let data = JSON.parse(Base64.decode(res.data)),
 							code = data.messageType,
 							msg = data.messageContent;
-						//                      console.log(JSON.stringify(msg));
+						    console.log(JSON.stringify(msg));
 						if(code == 'SUCCESS') {
 							if(JSON.stringify(msg) != '{}') {
 								this.dialogImageUrl = msg.brandLogo;
@@ -605,7 +605,7 @@
 				let params = {
 					userId:this.userInfo.userCode
 				}
-				getCustomLinksConstCustomize(params)
+				getCustomLinksConstCustomize(params) //381菜单列表
 					.then((res) => {
 						let data = JSON.parse(Base64.decode(res.data)),
 							msg = data.messageContent;
@@ -821,14 +821,14 @@
 			this.roleBtn = permission(this.roleBtn);
 			// 钩子函数 -- 初始化
 			// this.handleTableDataShow(); // 显示表格
-			this.droupDownShow(); // dropDownShow
-			this.tableShow();
+			this.droupDownShow(); // dropDownShow 381菜单列表
+			this.tableShow();//830配置信息
 
 			// 会员模式
 			let params = {
 				userId: this.userInfo.userCode
 			}
-			customizeSelect(params)
+			customizeSelect(params) //343品牌
 				.then((res) => {
 					let data = JSON.parse(Base64.decode(res.data)),
 						code = data.messageType,
@@ -849,7 +849,7 @@
 			let params2 = {
 				userId: this.userInfo.userCode
 			}
-			selectLevalInfo(params2) //请求会员等级
+			selectLevalInfo(params2) //请求会员等级603
 				.then(function(res) {
 					let data = JSON.parse(Base64.decode(res.data));
 					if(!data.data) {
@@ -873,6 +873,8 @@
 			'form.coverDesc': function(val, index) {
 				if(this.form.coverType == '颜色') {
 					this.$refs.imgBox.style.backgroundColor = colorSelect[val];
+					this.centerkeycolor.color = colorSelect[val];
+					this.centerkeycolor.borderColor = colorSelect[val];
 				}
 			},
             'form.cardBrandName': function(val, oldVal) {
@@ -994,7 +996,8 @@
 	.btnMenberCenter {
 		text-align: center;
 		.el-button {
-			width: 60%;
+			width: 30%;
+			height:40px;
 		}
 	}
 
