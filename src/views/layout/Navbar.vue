@@ -1,3 +1,4 @@
+<!-- old -->
 <template>
 	<el-menu class="navbar" mode="horizontal" text-color="#333" active-text-color="#00ff00">
 		<top-nav @handleNavId="handleNavId"></top-nav>

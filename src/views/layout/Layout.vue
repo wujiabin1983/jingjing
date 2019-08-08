@@ -1,3 +1,4 @@
+<!-- 设置菜单 -->
 <template>
     <div class="app-wrapper" :class="{hideSidebar:!sidebar.opened}">
 
@@ -83,10 +84,11 @@
             <div class="siderbar-user-wrap">
                 <div class="user-info">
                     <div class="avatar-box">
-                        <img class="user-avatar" src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80">
+                        <img class="user-avatar" :src='headImg'>
                     </div>
                     <div class="user-name">
-                        {{!userInfo.userCode ? username : userInfo.userCode}}
+                        <!-- {{!this.userInfo.userCode ? this.userInfo.userName : this.userInfo.userCode}} -->
+                        {{InfoUserName}}
                     </div>
                 </div>
                 <el-dropdown trigger="click" @command="handleCommand">
@@ -171,6 +173,8 @@ export default {
     	logo:logo,
         // 个人信息
         personalInfo: '',
+        //用户名
+        InfoUserName: 'USER',
         //左侧导航
         isSidebar:false,
         // 切换账号
@@ -179,7 +183,8 @@ export default {
         // 选择账号
         radio: null,
         tableLoading: false,
-
+        //头像
+        headImg:"https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80",
 		setPasswordLoding:false,
         navId: 1,
         //   图片
@@ -237,6 +242,7 @@ export default {
         handleCurrentChange(val) {
             this.radio = val;
         },
+        //切换角色
         handleSure() {
             this.tableLoading = true;
             let that = this;
@@ -260,10 +266,11 @@ export default {
                             setTimeout(function() {
                                 // 权限
                                 let userType = data.messageContent.userType;
+                                console.log(userType+'layout/Layout.vue');
                                 if(userType == 'EMPLOYEE') {
                                     let roles = JSON.stringify(data.messageContent.roleMenu);
                                     let rolesTop = data.messageContent.platformMenu;
-                                    // console.log(roles);
+                                    //console.log(roles);
                                     that.tableLoading = false;
                                     let storeUserInfo = {
                                         userType: data.messageContent.userType, // 用户类型
@@ -273,6 +280,7 @@ export default {
 									sessionStorage.setItem('userId', data.messageContent.userCode);
                                     Cookies.set('userType', data.messageContent.userType);
 									sessionStorage.setItem('userType', data.messageContent.userType);
+                                    sessionStorage.setItem('routeType', 'emplayee');//为了登录后自动跳转
                                     Cookies.set('userCode', data.messageContent.userCode);
                                     Cookies.set('roles', roles);
                                     Cookies.set('rolesTop', rolesTop); // 顶部导航
@@ -281,7 +289,7 @@ export default {
                                     that.$store.dispatch('Roles', roles); // 权限
                                     that.$store.dispatch('Login', storeUserInfo);
                                     that.$store.dispatch('Router', JSON.stringify(data.messageContent.asyncRouterMap.SUCCESS)); // 路由全新权限
-                                    // console.log(data.messageContent.userInfo.userCode, 'data.messageContent.userInfo.userCode');
+                                    console.log(data.messageContent.userInfo.userCode, 'data.messageContent.userInfo.userCode');
                                     that.$store.dispatch('GetEmplayeeNum', data.messageContent.userInfo.userCode); // 员工编号
                                     sessionStorage.setItem('GetEmplayeeNum', data.messageContent.userInfo.userCode);
                                     // alert(1)
@@ -299,9 +307,9 @@ export default {
                                         userCode: data.messageContent.userInfo.userName //用户代码
                                     }
                                     sessionStorage.setItem('userInfoUserName', data.messageContent.userInfo.userName);
-                                    //  console.log(data, 'loginData');
                                     // 将数据存储在 cookie 里面
 									sessionStorage.setItem('userType', data.messageContent.userType);
+                                    sessionStorage.setItem('routeType', 'seller');//为了登录后自动跳转
                                     Cookies.set('userType', data.messageContent.userType);
                                     Cookies.set('userCode', data.messageContent.userInfo.userName);
                                     Cookies.set('roles', roles);
@@ -355,6 +363,7 @@ export default {
                 sessionStorage.removeItem('userId')
                 sessionStorage.removeItem('userToken')
                 sessionStorage.removeItem('userType')
+                sessionStorage.removeItem('routeType')
                 router.push({
                     path: '/login'
                 });
@@ -544,9 +553,12 @@ export default {
         let userCode = Cookies.get('userCode');
         let userType = Cookies.get('userType');
         let rolesTop = Cookies.get('rolesTop');
-        // console.log(rolesTop, 'rolesTop');
+        let userName = Cookies.get('userNmae');
+        this.InfoUserName = Cookies.get('InfoUserName');//用户名称
+        this.headImg = Cookies.get('InfouserHeaderUrl'); //用户头像
+        //console.log(rolesTop, 'rolesTop');
         // let userCode = this.userInfo.userCode;
-        // console.log(userCode);
+        //console.log(userCode,'userCode');
         if(typeof userType == 'undefined' || userType == '') {
             this.$message.error('用户会话已经过期或未登录!请重新登陆!');
             setTimeout(function() {
@@ -555,7 +567,8 @@ export default {
         }else {
             let storeUserInfo = {
                 userCode: Cookies.get('userCode'),
-                userType: Cookies.get('userType')
+                userType: Cookies.get('userType'),
+                userName: Cookies.get('userName')
             }
             that.$store.dispatch('Roles', Cookies.get('roles')); // 权限
             that.$store.dispatch('Login', storeUserInfo);
@@ -666,6 +679,7 @@ export default {
             .user-name{
                 color: #0fa1d3;
                 margin-top: 10px;
+                font-size: 15px;
             }
             .el-dropdown{
                 position: absolute;

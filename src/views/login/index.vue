@@ -2,7 +2,7 @@
 	<div class="login-container">
 		<div class="warp">
 			<div class="top">
-				<span class="logoImg flaotLeft"><img :src="logo"/></span><span class="top-tel floatRight">15606009777</span><span class="companyName flaotLeft">XXXX有限公司</span><span class="top-tel-icon floatRight"><img :src="tel" alt="" /></span>
+				<span class="logoImg flaotLeft"><img :src="logo"/></span><span class="top-tel floatRight">15606009777</span><span class="companyName flaotLeft">厦门导客信息科技有限公司</span><span class="top-tel-icon floatRight"><img :src="tel" alt="" /></span>
 			</div>
 		</div>
 		<div class="main" :style="{backgroundImage: `url(${background})`}">
@@ -339,7 +339,7 @@
 								Cookies.set('rolesTop', rolesTop);
 								if(data.messageContent.userType == "EMPLOYEE") {
 									// emplayee 品牌管理员
-									//									that.loading = true;
+									//that.loading = true;
 									if(data.messageType == 'SUCCESS') {
 										that.disabled = true;
 										let result = [];
@@ -513,7 +513,9 @@
 						if(data.messageType == 'SUCCESS') {
 							// 账户类型
 							let userType = data.messageContent.userType;
-							console.log(userType)
+							console.log(userType+'login/index.vue')
+							Cookies.set('InfoUserName', data.messageContent.userInfo.userName);
+							Cookies.set('InfouserHeaderUrl', data.messageContent.userInfo.userHeaderUrl);
 							if(userType == 'EMPLOYEE') {
 								let roles = JSON.stringify(data.messageContent.roleMenu);
 								let rolesTop = data.messageContent.platformMenu;
@@ -539,7 +541,7 @@
 								that.$store.dispatch('LoginTip', data.messageContent.loginTip);
 								sessionStorage.setItem('router', that.$store.getters.router);
 								that.$router.push({
-									path: '/'
+									path: '/member/member-1-1'
 								});
 							} else {
 								let roles = JSON.stringify(data.messageContent.roleMenu);

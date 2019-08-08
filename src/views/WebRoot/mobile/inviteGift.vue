@@ -49,19 +49,23 @@
 							<!-- 功能图标 -->
 							<el-tooltip class="item" content="修改" placement="top" v-if="!scope.row.isEdit && roleBtn.updateInviteSetInfo">
 								<!-- 修改 -->
-								<icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugai(scope.$index, scope.row)" />
+								<i class="iconfont icon-edit" @click.prevent="iconXiugai(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="xiugai" id="icon-xiugai" @click.native.prevent="iconXiugai(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 							<el-tooltip class="item" content="启用" placement="top" v-if="scope.row.activityStatus == '禁止' && roleBtn.enableInviteSetInfo">
 								<!-- 启用 -->
-								<icon-svg icon-class="qiyong" id="icon-qiyong" @click.native.prevent="iconChangeStatus(scope.$index, tableData)" />
+								<i class="iconfont icon-shezhiqiyong" @click.prevent="iconChangeStatus(scope.$index, tableData)" ></i>
+								<!-- <icon-svg icon-class="qiyong" id="icon-qiyong" @click.native.prevent="iconChangeStatus(scope.$index, tableData)" /> -->
 							</el-tooltip>
 							<el-tooltip class="item" content="禁用" placement="top" v-if="scope.row.activityStatus == '启用' && roleBtn.disableInviteSetInfo">
 								<!-- 禁用 -->
-								<icon-svg icon-class="tingzhi" id="icon-tingzhi" @click.native.prevent="iconChangeStatus(scope.$index, tableData) " />
+								<i class="iconfont icon-forbidden" @click.prevent="iconChangeStatus(scope.$index, tableData)" ></i>
+								<!-- <icon-svg icon-class="tingzhi" id="icon-tingzhi" @click.native.prevent="iconChangeStatus(scope.$index, tableData) " /> -->
 							</el-tooltip>
 							<el-tooltip class="item" content="查看邀请记录" placement="top">
 								<!-- 查看 -->
-								<icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="handleShowInfo(scope.$index, scope.row)" />
+								<i class="iconfont icon-view" @click.prevent="handleShowInfo(scope.$index, scope.row)" ></i>
+								<!-- <icon-svg icon-class="chakan" id="icon-chakan" @click.native.prevent="handleShowInfo(scope.$index, scope.row)" /> -->
 							</el-tooltip>
 						</template>
 					</el-table-column>

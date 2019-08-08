@@ -29,11 +29,21 @@ export default {
         that.$store.dispatch('LoginTip', '');
       }, 500);
     }
-		if(sessionStorage.getItem('loginType')){
-	    that.$router.push({
-				path: '/member/member-1-1'
-			});
-		}
+		// if(sessionStorage.getItem('loginType') == 'emplayee'){
+  //     console.log(sessionStorage.getItem('routerType'))
+	 //    that.$router.push({
+		// 		path: '/member/member-1-1'
+		// 	});
+		// }
+    if(sessionStorage.getItem('routeType') == "emplayee"){
+      that.$router.push({
+        path: '/member/member-1-1'
+      });
+    }else{
+      that.$router.push({
+        path: '/'
+      })
+    }
   },
 }
 </script>

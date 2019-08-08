@@ -1,3 +1,4 @@
+<!-- 导般菜单 -->
 <template>
   <el-scrollbar wrap-class="scrollbar-wrapper">
     <el-menu mode="vertical" :default-active="$route.path" :unique-opened="true" :router="true" text-color="#eaecf0" active-text-color="#111" background-color="#2f4050" @open="handleOpen" @close="handleClose" @select="handleSelect">
@@ -79,7 +80,7 @@ import { mapGetters } from 'vuex'
             ...val
           })
         })
-        console.log(this.computedTopNavData)
+        //console.log(this.computedTopNavData)
       },
       setNavList(){
         this.navList = this.$Lodash.cloneDeep(this.computedTopNavData)

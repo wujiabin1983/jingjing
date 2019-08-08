@@ -1,4 +1,4 @@
-<!--顶部导航 组件-->
+<!--顶部导航 组件 old-->
 <template>
   <el-menu :default-active="activeIndex"
     class="el-menu-demo"
