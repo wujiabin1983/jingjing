@@ -1,3 +1,4 @@
+<!-- 主要文件-登陆页面 -->
 <template>
 	<div class="login-container">
 		<div class="warp">
@@ -381,6 +382,7 @@
 															// 将数据存储在 cookie 里面
 															Cookies.set('userType', data.messageContent.userType);
 															sessionStorage.setItem('userType', data.messageContent.userType);
+															sessionStorage.setItem('routeType', data.messageContent.userType);
 															Cookies.set('userCode', data.messageContent.userCode);
 															Cookies.set('roles', roles);
 															Cookies.set('rolesTop', rolesTop); // 顶部导航
@@ -409,6 +411,7 @@
 															// 将数据存储在 cookie 里面
 															Cookies.set('userType', data.messageContent.userType);
 															sessionStorage.setItem('userType', data.messageContent.userType);
+															sessionStorage.setItem('routeType', data.messageContent.userType);
 															Cookies.set('userCode', data.messageContent.userInfo.userName);
 															Cookies.set('roles', roles);
 															Cookies.set('rolesTop', rolesTop); // 顶部导航
@@ -513,10 +516,11 @@
 						if(data.messageType == 'SUCCESS') {
 							// 账户类型
 							let userType = data.messageContent.userType;
-							console.log(userType+'login/index.vue')
+							console.log(userType+' login/index.vue')
 							Cookies.set('InfoUserName', data.messageContent.userInfo.userName);
 							Cookies.set('InfouserHeaderUrl', data.messageContent.userInfo.userHeaderUrl);
 							if(userType == 'EMPLOYEE') {
+								//debugger
 								let roles = JSON.stringify(data.messageContent.roleMenu);
 								let rolesTop = data.messageContent.platformMenu;
 								sessionStorage.setItem('loginType', 'emplayee');
@@ -529,6 +533,7 @@
 								// 将数据存储在 cookie 里面
 								Cookies.set('userType', data.messageContent.userType);
 								sessionStorage.setItem('userType', data.messageContent.userType);
+								sessionStorage.setItem('routeType', data.messageContent.userType);
 								Cookies.set('userCode', data.messageContent.userCode);
 								Cookies.set('roles', roles);
 								Cookies.set('rolesTop', rolesTop); // 顶部导航
@@ -541,7 +546,7 @@
 								that.$store.dispatch('LoginTip', data.messageContent.loginTip);
 								sessionStorage.setItem('router', that.$store.getters.router);
 								that.$router.push({
-									path: '/member/member-1-1'
+									path: '/'
 								});
 							} else {
 								let roles = JSON.stringify(data.messageContent.roleMenu);
@@ -553,6 +558,7 @@
 								}
 								sessionStorage.setItem('userId', data.messageContent.userInfo.userName);
 								sessionStorage.setItem('userType', data.messageContent.userType);
+								sessionStorage.setItem('routeType', data.messageContent.userType);
 								sessionStorage.setItem('userInfoUserName', data.messageContent.userInfo.userName);
 								// 将数据存储在 cookie 里面
 								Cookies.set('userType', data.messageContent.userType);

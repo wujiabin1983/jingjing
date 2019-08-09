@@ -1,4 +1,4 @@
-<!-- 设置菜单 -->
+<!-- 主要文件-设置菜单 -->
 <template>
     <div class="app-wrapper" :class="{hideSidebar:!sidebar.opened}">
 
@@ -96,8 +96,8 @@
                         <img class="icon" :src="require('@/assets/membershipgrouping_more.png')" alt="">
                     </span>
                     <el-dropdown-menu slot="dropdown" >
-                        <el-dropdown-item command="首页">
-                            <router-link class='inlineBlock' to="/">主页</router-link>
+                        <el-dropdown-item command="首页">首页
+                            <!-- <router-link class='inlineBlock' to="/">主页</router-link> -->
                         </el-dropdown-item>
                          <el-dropdown-item command="个人信息" v-if="userInfo.userType == 'EMPLOYEE' && userInfo.userCode != ''">个人信息</el-dropdown-item>
                         <el-dropdown-item v-if="userInfo.userType == 'EMPLOYEE'||userInfo.userType == 'SELLER' && userInfo.userCode != ''" command="切换账号">切换账号</el-dropdown-item>
@@ -266,7 +266,7 @@ export default {
                             setTimeout(function() {
                                 // 权限
                                 let userType = data.messageContent.userType;
-                                console.log(userType+'layout/Layout.vue');
+                                console.log(userType+' layout/Layout.vue');
                                 if(userType == 'EMPLOYEE') {
                                     let roles = JSON.stringify(data.messageContent.roleMenu);
                                     let rolesTop = data.messageContent.platformMenu;
@@ -280,7 +280,7 @@ export default {
 									sessionStorage.setItem('userId', data.messageContent.userCode);
                                     Cookies.set('userType', data.messageContent.userType);
 									sessionStorage.setItem('userType', data.messageContent.userType);
-                                    sessionStorage.setItem('routeType', 'emplayee');//为了登录后自动跳转
+                                    sessionStorage.setItem('routeType', 'EMPLOYEE');//为了登录后自动跳转
                                     Cookies.set('userCode', data.messageContent.userCode);
                                     Cookies.set('roles', roles);
                                     Cookies.set('rolesTop', rolesTop); // 顶部导航
@@ -289,18 +289,17 @@ export default {
                                     that.$store.dispatch('Roles', roles); // 权限
                                     that.$store.dispatch('Login', storeUserInfo);
                                     that.$store.dispatch('Router', JSON.stringify(data.messageContent.asyncRouterMap.SUCCESS)); // 路由全新权限
-                                    console.log(data.messageContent.userInfo.userCode, 'data.messageContent.userInfo.userCode');
+                                    //console.log(data.messageContent.userInfo.userCode, 'data.messageContent.userInfo.userCode');
                                     that.$store.dispatch('GetEmplayeeNum', data.messageContent.userInfo.userCode); // 员工编号
                                     sessionStorage.setItem('GetEmplayeeNum', data.messageContent.userInfo.userCode);
                                     // alert(1)
                                     that.$store.dispatch('LoginTip', data.messageContent.loginTip);
                                     sessionStorage.setItem('router', that.$store.getters.router);
                                     that.$router.push({ path: '/' });
-                                    // that.$router.push({ path: '/' });
                                 }else {
+                                    //let roles = JSON.parse(data.messageContent.roleMenu);
                                     let roles = JSON.stringify(data.messageContent.roleMenu);
                                     let rolesTop = data.messageContent.platformMenu;
-                                    // console.log(roles);
                                     that.tableLoading = false;
                                     let storeUserInfo = {
                                         userType: data.messageContent.userType, // 用户类型
@@ -322,6 +321,7 @@ export default {
                                     // console.log(data.messageContent, 'loginTui');
                                     that.$store.dispatch('LoginTip', data.messageContent.loginTip);
                                     sessionStorage.setItem('router', that.$store.getters.router);
+                                    console.log("aaaaaaaaaa")
                                     that.$router.push({ path: '/' });
                                 }
                                 that.tableLoading = false;
@@ -355,6 +355,7 @@ export default {
             if(command == '退出') {
                 //this.logout();
                 //return
+                var that = this
                 sessionStorage.removeItem('loginRadio')
                 sessionStorage.removeItem('roles')
                 sessionStorage.removeItem('router')
@@ -364,6 +365,17 @@ export default {
                 sessionStorage.removeItem('userToken')
                 sessionStorage.removeItem('userType')
                 sessionStorage.removeItem('routeType')
+                sessionStorage.removeItem('userInfoUserName')
+                sessionStorage.removeItem('path')
+                sessionStorage.removeItem('indexPath')
+                Cookies.remove('InfoUserName')
+                Cookies.remove('InfouserHeaderUrl')
+                Cookies.remove('mpuv')
+                Cookies.remove('roles')
+                Cookies.remove('rolesTop')
+                Cookies.remove('topNav')
+                Cookies.remove('userCode')
+                Cookies.remove('userType')
                 router.push({
                     path: '/login'
                 });
@@ -376,6 +388,11 @@ export default {
             if(str == '切换账号') {
                 this.showTable();
             }
+            if (str == '首页') {
+                router.push({
+                    path: '/'
+                });
+            };
             if(str == '个人信息') {
                 // this.$router.push({
                 //     name: '员工管理'

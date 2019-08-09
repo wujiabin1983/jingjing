@@ -1,3 +1,4 @@
+<!-- 主要文件-主页跳转 -->
 <template>
   <div class="dashboard-container">
     <!-- <div class='dashboard-text'>name:{{name}}</div>
@@ -35,10 +36,15 @@ export default {
 		// 		path: '/member/member-1-1'
 		// 	});
 		// }
-    if(sessionStorage.getItem('routeType') == "emplayee"){
+    console.log(sessionStorage.getItem('routeType')+' dashboard/index.vue')
+    if(sessionStorage.getItem('routeType') == "EMPLOYEE"){
       that.$router.push({
         path: '/member/member-1-1'
       });
+    }else if(sessionStorage.getItem('routeType') == "SELLER"){
+      that.$router.push({
+        path: '/master/master-1'
+      })
     }else{
       that.$router.push({
         path: '/'
